@@ -33,7 +33,7 @@ const ProfileSection = () => {
 				</div>
 				<h3 className="text-lg font-semibold mb-2">Previously I've:</h3>
 				<ul className="mb-4 text-gray-700">
-					<li>Interned <b>SellStatic</b>: Cloud infra, backend, frontend</li>
+					<li>Interned @ <b>SellStatic</b>: Cloud infra, backend, frontend</li>
 					<li>Researched <b>Drone vision</b> @ University of Toronto</li>
 				</ul>
 				<button className="px-6 py-3 rounded border border-gray-600 bg-[#f5f5dc] text-gray-800 font-semibold shadow hover:bg-[#e5e5c0] transition mt-2">I'm always building. Check it out!</button>
