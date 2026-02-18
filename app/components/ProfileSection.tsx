@@ -27,14 +27,14 @@ const ProfileSection = () => {
 				<h2 className="text-lg text-gray-700 mb-4">Electrical Engineering @ YorkU</h2>
 				<div className="border-l-2 border-[#d6c9a5] pl-4 mb-4">
 					<p className="mb-2 text-gray-700">
-						Interested in <b>big data analytics</b> and <b>LLMs</b>, specifically in analyzing large-scale datasets for trends, predictive modeling, sports analytics, finance, and human behavior.<br />
-						SPORTS FAN!!! (Liverpool, Toronto Maple Leafs, Milwaukee Bucks)
+						Interested in <b>robotics</b> and <b>autonomous systems</b>, especially building and programming robots for real-world problem solving, automation, and human-robot interaction.<br />
+						SPORTS FAN!!! (Tennis, Rock Climbing, Hockey)
 					</p>
 				</div>
 				<h3 className="text-lg font-semibold mb-2">Previously I've:</h3>
 				<ul className="mb-4 text-gray-700">
-					<li>Interned <b>RBC</b>, managing API proxies</li>
-					<li>Researched <b>HRI</b> @ McMaster University</li>
+					<li>Interned <b>SellStatic</b>: Cloud infra, backend, frontend</li>
+					<li>Researched <b>Drone vision</b> @ University of Toronto</li>
 				</ul>
 				<button className="px-6 py-3 rounded border border-gray-600 bg-[#f5f5dc] text-gray-800 font-semibold shadow hover:bg-[#e5e5c0] transition mt-2">I'm always building. Check it out!</button>
 			</div>
