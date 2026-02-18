@@ -28,7 +28,7 @@ const ProfileSection = () => {
 				<div className="border-l-2 border-[#d6c9a5] pl-4 mb-4">
 					<p className="mb-2 text-gray-700">
 						Interested in <b>robotics</b> and <b>autonomous systems</b>, especially building and programming robots for real-world problem solving, automation, and human-robot interaction.<br />
-						SPORTS FAN!!! (Tennis, Rock Climbing, Hockey)
+						I like Tennis, Rock Climbing, Hockey
 					</p>
 				</div>
 				<h3 className="text-lg font-semibold mb-2">Previously I've:</h3>

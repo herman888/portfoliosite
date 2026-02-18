@@ -1,28 +1,28 @@
-import Image from 'next/image';
+"use client";
 
 const projects = [
-	{
-		title: 'RedLamp (UofTHacks Winner)',
-		description:
-			'RedLamp is a project that won UofTHacks. [Add your description here about what RedLamp does, tech stack, and your role.]',
-		tags: ['Hackathon', 'Winner', 'UofTHacks', 'React', 'Node.js'],
-		image: '/project-redlamp.jpg',
-		code: 'https://github.com/herman888/redlamp',
-	},
 	{
 		title: 'CityPath AI (Shopify Hackathon Winner)',
 		description:
 			'CityPath AI is a Shopify Hackathon winning project. [Add your description here about what CityPath AI does, tech stack, and your role.]',
 		tags: ['AI', 'Shopify', 'Hackathon', 'Winner', 'Python'],
-		image: '/project-citypath.jpg',
+		image: '/shopify.png',
 		code: 'https://github.com/herman888/citypath-ai',
+	},
+	{
+		title: 'RedLamp (UofTHacks Winner)',
+		description:
+			'RedLamp is a project that won UofTHacks. [Add your description here about what RedLamp does, tech stack, and your role.]',
+		tags: ['Hackathon', 'Winner', 'UofTHacks', 'React', 'Node.js'],
+		image: '/uofthacks.png',
+		code: 'https://github.com/herman888/redlamp',
 	},
 	{
 		title: 'GrowthSync (CTRLHACKDEL)',
 		description:
 			'GrowthSync was built for CTRLHACKDEL. [Add your description here about what GrowthSync does, tech stack, and your role.]',
 		tags: ['CTRLHACKDEL', 'Growth', 'React', 'Node.js'],
-		image: '/project-growthsync.jpg',
+		image: '/ctrlhackdel.png',
 		code: 'https://github.com/herman888/growthsync',
 	},
 	{
@@ -46,7 +46,7 @@ const projects = [
 		description:
 			'Giveway project. [Add your description here about what Giveway does, tech stack, and your role.]',
 		tags: ['Web', 'React', 'Node.js'],
-		image: '/project-giveway.jpg',
+		image: '/giveway.png',
 		code: 'https://github.com/herman888/giveway',
 	},
 	{
@@ -78,15 +78,33 @@ export default function ProjectsPage() {
 						key={project.title}
 						className="bg-[#f5f5dc] rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col"
 					>
-						<div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-							<Image
-								src={project.image}
-								alt={project.title}
-								width={400}
-								height={192}
-								className="object-cover w-full h-full"
-							/>
-						</div>
+						{project.title === 'Finding N.E.M.O (ConUHacks)' ? (
+							<div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+								<iframe
+									title="Finding N.E.M.O Demo"
+									width="400"
+									height="192"
+									src="https://www.youtube.com/embed/PQBeq-7WKRE"
+									frameBorder="0"
+									className="object-cover w-full h-full"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowFullScreen
+								></iframe>
+							</div>
+						) : (
+							<div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+								<img
+									src={project.image}
+									alt={project.title}
+									width={400}
+									height={192}
+									className="object-cover w-full h-full"
+									onError={(e) => {
+										e.currentTarget.src = '/fallback.png';
+									}}
+								/>
+							</div>
+						)}
 						<div className="p-4 flex-1 flex flex-col">
 							<h3 className="text-lg font-bold text-[#bfa94c] mb-1">
 								{project.title}
