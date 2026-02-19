@@ -15,10 +15,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: '[Your Name] - Developer',
+	title: 'Herman Isayenka - Developer Portfolio',
 	description:
-		'Welcome to my portfolio! I am a passionate developer who believes in simplicity and effectiveness. I focus on creating straightforward solutions that solve real problems, with clean code and intuitive user experiences.',
+		'Portfolio site for Herman Isayenka, showcasing projects, hackathon wins, and more.',
 	keywords: [
+		'Herman Isayenka',
+		'Portfolio',
+		'Projects',
+		'Vercel',
+		'Hackathon',
+		'Developer',
 		'Software Developer',
 		'Web Developer',
 		'Clean Code',
@@ -33,21 +39,20 @@ export const metadata: Metadata = {
 		'Web Development',
 		'Frontend Development',
 		'Backend Development',
-		'[Your Name]',
 	],
-	authors: [{ name: '[Your Name]' }],
-	creator: '[Your Name]',
+	authors: [{ name: 'Herman Isayenka' }],
+	creator: 'Herman Isayenka',
 	openGraph: {
-		title: '[Your Name] - Developer Portfolio',
-		description: 'Passionate developer creating simple and effective solutions. Explore my projects and development approach.',
-		url: 'https://your-domain.com',
-		siteName: '[Your Name] - Portfolio',
+		title: 'Herman Isayenka - Developer Portfolio',
+		description: 'Portfolio site for Herman Isayenka, showcasing projects, hackathon wins, and more.',
+		url: 'https://hermanisayenka.vercel.app',
+		siteName: 'Herman Isayenka - Portfolio',
 		images: [
 			{
 				url: '/og-image.jpg',
 				width: 1200,
 				height: 630,
-				alt: '[Your Name] - Developer Portfolio',
+				alt: 'Herman Isayenka - Developer Portfolio',
 			},
 		],
 		locale: 'en_US',
@@ -55,9 +60,9 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: '[Your Name] - Developer',
-		description: 'Passionate developer creating simple and effective solutions. Explore my projects and development approach.',
-		creator: '@yourusername',
+		title: 'Herman Isayenka - Developer Portfolio',
+		description: 'Portfolio site for Herman Isayenka, showcasing projects, hackathon wins, and more.',
+		creator: '@hermanisayenka',
 		images: ['/og-image.jpg'],
 	},
 	robots: {
