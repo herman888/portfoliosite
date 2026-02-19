@@ -17,7 +17,7 @@ function checkWinner(board: Player[]): Player {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  for (let line of lines) {
+  for (const line of lines) {
     const [a, b, c] = line;
     if (board[a] && board[a] === board[b] && board[a] === board[c]) {
       return board[a];
@@ -125,7 +125,7 @@ const TicTacToe = () => {
         ) : board.every(Boolean) ? (
           <span style={{ color: "#7c6f4c", fontWeight: 600 }}>Draw!</span>
         ) : (
-          <span style={{ color: "#7c6f4c" }}>{xIsNext ? "Your" : "Bot"}'s turn</span>
+          <span style={{ color: "#7c6f4c" }}>{xIsNext ? "Your" : "Bot"}&apos;s turn</span>
         )}
       </div>
       <button onClick={reset} style={{ marginTop: 8, fontSize: 12, color: "#7c6f4c", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>Reset</button>
