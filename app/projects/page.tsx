@@ -79,7 +79,7 @@ const projects = [
 ];
 
 export default function ProjectsPage() {
-	const [arduinoIndex, setArduinoIndex] = useState(0);
+	const [arduinoIndex] = useState(0);
 	const arduinoProject = projects.find(
 		(p) => p.title === "Arduino/Hardware Projects"
 	);
