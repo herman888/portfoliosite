@@ -85,17 +85,6 @@ export default function ProjectsPage() {
 	);
 	const arduinoImages = arduinoProject?.images || [];
 
-	const handlePrev = () => {
-		setArduinoIndex((prev) =>
-			prev === 0 ? arduinoImages.length - 1 : prev - 1
-		);
-	};
-	const handleNext = () => {
-		setArduinoIndex((prev) =>
-			prev === arduinoImages.length - 1 ? 0 : prev + 1
-		);
-	};
-
 	return (
 		<div className="max-w-5xl mx-auto py-16 px-4">
 			<h2 className="text-2xl font-bold mb-6">All Projects</h2>
