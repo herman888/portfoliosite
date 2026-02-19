@@ -80,14 +80,14 @@ export default function ArduinoProjectsPage() {
 									alt={project.title}
 									className="rounded object-cover w-full h-full block p-0 m-0"
 									style={
-										project.style || {
+										(project.style || {
 											objectFit: "cover",
 											width: "100%",
 											height: "100%",
 											display: "block",
 											padding: 0,
 											margin: 0,
-										}
+										}) as React.CSSProperties
 									}
 									onError={(e) => {
 										if (
