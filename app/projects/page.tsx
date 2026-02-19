@@ -41,7 +41,7 @@ const projects = [
 		description:
 			'A collection of Arduino and hardware-based projects. [Add your description here about your hardware projects, tech stack, and your role.]',
 		tags: ['Arduino', 'Hardware', 'Electronics', 'IoT'],
-		images: ['/car.jpg'], // Add more image paths as needed
+		images: ['/arduino.png'], // Use arduino.png as the project image
 		code: 'https://github.com/herman888/arduino-hardware-projects',
 		link: '/projects/arduino', // Add a link to the new Arduino projects page
 	},
@@ -102,13 +102,13 @@ export default function ProjectsPage() {
 							className="bg-[#f5f5dc] rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col cursor-pointer transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#bfa94c]"
 							style={{ textDecoration: 'none' }}
 						>
-							<div className="w-full h-48 bg-gray-200 flex items-center justify-center relative">
+							<div className="w-full aspect-square bg-gray-200 flex items-center justify-center relative">
 								<img
 									src={arduinoImages[arduinoIndex]}
 									alt={project.title + ' ' + (arduinoIndex + 1)}
 									width={400}
-									height={192}
-									style={{ objectFit: 'cover', width: '100%', height: '100%', objectPosition: 'top center', transform: arduinoIndex === 0 ? 'scale(0.92)' : 'none' }}
+									height={400}
+									style={{ objectFit: 'contain', width: '100%', height: '100%', objectPosition: 'center 100%', transform: arduinoIndex === 0 ? 'scale(1)' : 'none' }}
 									className="rounded"
 									onError={(e) => {
 										if (e.currentTarget.src.indexOf('/fallback.png') === -1) {
@@ -134,11 +134,13 @@ export default function ProjectsPage() {
 										</span>
 									))}
 								</div>
-								<a
-									href={project.code}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="inline-flex items-center px-3 py-1 border border-gray-400 rounded shadow text-gray-700 bg-white hover:bg-[#f5e5c0] transition text-sm"
+								<button
+									type="button"
+									onClick={(e) => {
+										e.stopPropagation();
+										window.open(project.code, '_blank', 'noopener,noreferrer');
+									}}
+									className="inline-flex items-center px-3 py-1 border border-gray-400 rounded shadow text-gray-700 bg-white hover:bg-[#f5e5c0] transition text-sm mt-2"
 								>
 									<svg
 										className="mr-1"
@@ -153,7 +155,7 @@ export default function ProjectsPage() {
 										/>
 									</svg>
 									Code
-								</a>
+								</button>
 							</div>
 						</Link>
 					) : (
@@ -162,25 +164,23 @@ export default function ProjectsPage() {
 							className="bg-[#f5f5dc] rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col"
 						>
 							{project.title === 'Finding N.E.M.O (ConUHacks)' ? (
-								<div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+								<div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
 									<iframe
 										title="Finding N.E.M.O Demo"
-										width="400"
-										height="192"
 										src="https://www.youtube.com/embed/PQBeq-7WKRE"
 										frameBorder="0"
-										className="object-cover w-full h-full"
 										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 										allowFullScreen
+										className="object-cover w-full h-full rounded"
 									></iframe>
 								</div>
 							) : (
-								<div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+								<div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
 									<img
 										src={project.image}
 										alt={project.title}
 										width={400}
-										height={192}
+										height={400}
 										className="object-cover w-full h-full"
 										onError={(e) => {
 											if (e.currentTarget.src.indexOf('/fallback.png') === -1) {
