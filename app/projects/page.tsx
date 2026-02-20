@@ -34,7 +34,7 @@ const projects = [
 	{
 		title: 'Finding N.E.M.O (ConUHacks)',
 		description:
-			'Finding N.E.M.O was built at ConUHacks. [Add your description here about what Finding N.E.M.O does, tech stack, and your role.]',
+			'Finding N.E.M.O reimagines the classic pirate treasure hunt for the modern era—users track and recover lost shipping containers in a tech-powered, interactive simulation. It’s both a fun digital adventure and a practical tool for shipping, logistics, and environmental professionals to visualize container drift and simulate recovery missions.',
 		tags: ['ConUHacks', 'NLP', 'Python', 'Hackathon'],
 		image: '/project-nemo.jpg',
 		code: 'https://github.com/herman888/container-search', // updated repo link
