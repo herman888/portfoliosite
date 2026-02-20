@@ -225,6 +225,26 @@ export default function ProjectsPage() {
 												</svg>
 												Demo
 											</button>
+										) : project.title === 'Arduino/Hardware Projects' ? (
+											<button
+												type="button"
+												onClick={() => window.location.href = project.link || '/projects/arduino'}
+												className="inline-flex items-center px-3 py-1 border border-yellow-600 rounded shadow text-yellow-800 bg-white hover:bg-yellow-100 transition text-sm"
+											>
+												<svg
+													className="mr-1"
+													width="16"
+													height="16"
+													fill="none"
+													viewBox="0 0 24 24"
+												>
+													<path
+														fill="currentColor"
+														d="M3 6h18M3 12h18M3 18h18"
+													/>
+												</svg>
+												View All Projects
+											</button>
 										) : (
 											project.code && (
 												<a
