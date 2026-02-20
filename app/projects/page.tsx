@@ -25,7 +25,7 @@ const projects = [
 	{
 		title: 'GrowthSync (CTRLHACKDEL)',
 		description:
-			'GrowthSync was built for CTRLHACKDEL. [Add your description here about what GrowthSync does, tech stack, and your role.]',
+			'GrowthSync (City Sync) empowers urban planners and citizens to visualize and experiment with city layouts in real time, bridging complex urban data with engaging, interactive interfaces. Built with Next.js, React, TypeScript, and Framer Motion, we learned advanced UI state management and animation while overcoming challenges in real-time updates and team collaboration.',
 		tags: ['CTRLHACKDEL', 'Growth', 'React', 'Node.js'],
 		image: '/ctrlhackdel.png',
 		code: 'https://github.com/EVAnunit1307/City_Sync', // updated repo link
