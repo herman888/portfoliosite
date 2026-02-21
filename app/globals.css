@@ -7,6 +7,7 @@ body {
   min-height: 100vh;
   font-family: 'Geist', 'Geist_Mono', sans-serif;
   color: #5a4a1b;
+  cursor: none;
 }
 
 /* Card styles */

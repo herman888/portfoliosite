@@ -4,9 +4,9 @@ export default function ContactPage() {
       <h1 className="text-3xl font-bold mb-4 text-[#bfa94c]">Contact</h1>
       <p className="text-gray-700 mb-6">Let’s connect! Reach out for collaborations, questions, or opportunities.</p>
       <div className="mb-6 flex flex-col items-center gap-2">
-        <a href="mailto:your@email.com" className="text-lg text-blue-700 hover:underline">your@email.com</a>
+        <a href="mailto:herman.isayenka@gmail.com" className="text-lg text-blue-700 hover:underline">herman.isayenka@gmail.com</a>
         <div className="flex gap-4 justify-center mt-2">
-          <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/in/hermanisayenka/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path fill="#0A66C2" d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8.98h5V24H0V8.98zm7.5 0h4.78v2.08h.07c.67-1.27 2.3-2.61 4.73-2.61 5.06 0 6 3.33 6 7.66V24h-5v-6.44c0-1.54-.03-3.52-2.15-3.52-2.16 0-2.49 1.68-2.49 3.41V24h-5V8.98z"/></svg>
           </a>
           <a href="https://github.com/herman888" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
