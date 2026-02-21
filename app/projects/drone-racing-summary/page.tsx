@@ -6,8 +6,8 @@ export default function DroneRacingSummary() {
     <div className="max-w-3xl mx-auto py-16 px-4 bg-[#f5f5dc] rounded-xl shadow border border-[#d6c9a5]">
       {/* Team photo at the top */}
       <div className="flex flex-col items-center mb-10">
-        <a href="/team.jpg" target="_blank" rel="noopener noreferrer" className="block w-full max-w-xl h-56 md:h-64 rounded-xl overflow-hidden border-4 border-[#bfa94c] mb-2 relative flex items-center justify-center">
-          <Image src="/team.jpg" alt="Drone Racing Team" width={600} height={250} style={{objectFit: 'cover', objectPosition: 'center'}} />
+        <a href="/portrait.jpg" target="_blank" rel="noopener noreferrer" className="block w-full max-w-xl h-56 md:h-64 rounded-xl overflow-hidden border-4 border-[#bfa94c] mb-2 relative flex items-center justify-center">
+          <Image src="/portrait.jpg" alt="Drone Racing Team" width={600} height={250} style={{objectFit: 'cover', objectPosition: 'center'}} />
         </a>
       </div>
       {/* UTIAS association and logo */}
