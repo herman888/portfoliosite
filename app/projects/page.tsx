@@ -67,14 +67,6 @@ const projects = [
 		code: 'https://github.com/itzsxhan/Food_Detection', // updated repo link
 		devpost: 'https://devpost.com/software/mealtogo', // updated devpost link
 	},
-	{
-		title: 'Drone Racing',
-		description:
-			'Developed @UTIAS Flight System and Contol Labratory',
-		tags: ['Drones', 'Gazebo', 'Python', 'ROS', 'Simulink'],
-		image: '/droneracing.jpg',
-		code: 'https://github.com/herman888/drone-racing',
-	},
 	// Add more projects as needed
 ];
 
@@ -110,7 +102,6 @@ export default function ProjectsPage() {
 					<div className="flex gap-2">
 						<Link href="/projects/drone-racing-summary" className="btn-primary px-4 py-2 font-semibold">Project Summary</Link>
 						<a href="/droneracing.mp4" target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-2 font-semibold">Demo</a>
-						<a href="https://github.com/herman888/drone-racing" target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-2 font-semibold">Code</a>
 					</div>
 				</div>
 			</div>
@@ -119,65 +110,7 @@ export default function ProjectsPage() {
 				<h2 className="text-2xl font-bold mb-6">All Projects</h2>
 				<div className="grid md:grid-cols-2 gap-8">
 					{projects.map((project) => (
-						project.title === 'Arduino/Hardware Projects' ? (
-							<Link
-								key={project.title}
-								href={project.link || '#'}
-								className="bg-[#f5f5dc] rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col cursor-pointer transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#bfa94c]"
-								style={{ textDecoration: 'none' }}
-							>
-								<div className="w-full aspect-square bg-gray-200 flex items-center justify-center relative">
-									<img
-										src={arduinoImages[arduinoIndex]}
-										alt={project.title + ' ' + (arduinoIndex + 1)}
-										width={400}
-										height={400}
-										style={{ objectFit: 'contain', width: '100%', height: '100%', objectPosition: 'center 100%', transform: arduinoIndex === 0 ? 'scale(1)' : 'none' }}
-										className="rounded"
-										onError={(e) => {
-											if (e.currentTarget.src.indexOf('/fallback.png') === -1) {
-												e.currentTarget.src = '/fallback.png';
-											}
-										}}
-									/>
-								</div>
-								<div className="p-4 flex-1 flex flex-col">
-									<h3 className="text-lg font-bold text-[#bfa94c] mb-1">
-										{project.title}
-									</h3>
-									<p className="text-gray-700 mb-2 flex-1">
-										{project.description}
-									</p>
-									<div className="flex flex-wrap gap-2 mb-2">
-										{project.tags.map((tag) => (
-											<span key={tag} className="tag">{tag}</span>
-										))}
-									</div>
-									<button
-										type="button"
-										onClick={(e) => {
-											e.stopPropagation();
-											window.location.href = project.link || '/projects/arduino';
-										}}
-										className="inline-flex items-center px-3 py-1 border border-yellow-600 rounded shadow text-yellow-800 bg-white hover:bg-yellow-100 transition text-sm mt-2"
-									>
-										<svg
-											className="mr-1"
-											width="16"
-											height="16"
-											fill="none"
-											viewBox="0 0 24 24"
-										>
-											<path
-												fill="currentColor"
-												d="M3 6h18M3 12h18M3 18h18"
-											/>
-										</svg>
-										View All Projects
-									</button>
-								</div>
-							</Link>
-						) : (
+						project.title === 'Arduino/Hardware Projects' ? null : (
 							<div
 								key={project.title}
 								className="bg-card rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col"
@@ -329,6 +262,31 @@ export default function ProjectsPage() {
 							</div>
 						)
 					))}
+				</div>
+
+				{/* Arduino Featured Card at the Bottom */}
+				<div className="max-w-3xl mx-auto mt-16 rounded-2xl overflow-hidden shadow bg-[#222] border border-[#d6c9a5]">
+					<div className="w-full h-64 md:h-80 relative">
+						<img
+							src={arduinoImages[arduinoIndex]}
+							alt={arduinoProject?.title}
+							className="object-contain w-full h-full"
+							style={{ borderTopLeftRadius: '1.25rem', borderTopRightRadius: '1.25rem' }}
+						/>
+					</div>
+					<div className="bg-[#f5f5dc] p-8 border-t border-[#e5e5c0]">
+						<h2 className="text-2xl font-bold mb-2 text-[#bfa94c]">Arduino/Hardware Projects</h2>
+						<p className="text-gray-700 mb-4">A collection of Arduino and hardware-based projects.</p>
+						<div className="flex flex-wrap gap-2 mb-4">
+							{arduinoProject?.tags.map(tag => (
+								<span key={tag} className="tag">{tag}</span>
+							))}
+						</div>
+						<div className="flex gap-2">
+							<Link href={arduinoProject?.link || '/projects/arduino'} className="btn-primary px-4 py-2 font-semibold">View All Projects</Link>
+							<a href={arduinoProject?.code} target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-2 font-semibold">Code</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</>
