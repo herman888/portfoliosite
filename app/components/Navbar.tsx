@@ -7,11 +7,11 @@ const navItems = [
 ];
 
 const Navbar = () => (
-  <nav className="w-full flex justify-center py-4 bg-[#f5f5dc] backdrop-blur sticky top-0 z-50 border-b border-[#d6c9a5]">
+  <nav className="navbar w-full flex justify-center py-4 sticky top-0 z-50">
     <ul className="flex space-x-8">
       {navItems.map((item) => (
         <li key={item.href}>
-          <Link href={item.href} className="text-gray-700 hover:text-indigo-600 font-medium transition-colors">
+          <Link href={item.href} className="text-gray-700 hover:text-accent font-medium transition-colors">
             {item.label}
           </Link>
         </li>

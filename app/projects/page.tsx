@@ -8,7 +8,7 @@ const projects = [
 	{
 		title: 'CityPath AI (Shopify Hackathon Winner)',
 		description:
-			'CityPath AI automates the entire analysis and redesign workflow. It parses historical data, identifies hazardous patterns, and simulates alternative street layouts to estimate safety impacts all within minutes. This significantly shortens the time between identifying an issue and determining a safer, more effective street configuration.',
+			'CityPath AI quickly analyzes past data, spots dangerous patterns, and tests safer street layout options in minutes, cutting down the time it takes to move from identifying a problem to finding a practical solution.',
 		tags: ['AI', 'Shopify', 'Hackathon', 'Winner', 'Python'],
 		image: '/shopify.png',
 		code: 'https://github.com/herman888/citypathai',
@@ -16,7 +16,7 @@ const projects = [
 	{
 		title: 'RedLamp (UofTHacks Winner)',
 		description:
-			'RedLamp is a study companion lamp that detects student emotions and offers encouragement or guidance when stress is detected, making studying less isolating. Built from scratch with both hardware and software, it continues to evolve to provide more personalized, real-time support.',
+			'RedLamp is a study companion lamp, that detects student stress and responds with encouragement or guidance in real time, making studying feel less isolating while continuing to evolve with more personalized support.',
 		tags: ['Hackathon', 'Winner', 'UofTHacks', 'React', 'Node.js'],
 		image: '/uofthacks.png',
 		code: 'https://github.com/Hackm0/lelampv3', // updated repo link
@@ -25,7 +25,7 @@ const projects = [
 	{
 		title: 'GrowthSync (CTRLHACKDEL)',
 		description:
-			'GrowthSync (City Sync) empowers urban planners and citizens to visualize and experiment with city layouts in real time, bridging complex urban data with engaging, interactive interfaces. Built with Next.js, React, TypeScript, and Framer Motion, we learned advanced UI state management and animation while overcoming challenges in real-time updates and team collaboration.',
+			'GrowthSync helps city planners visualize how new subdivisions would affect existing infrastructure, traffic flow, and community resources, making it easier to understand the real impact of development before it happens.',
 		tags: ['CTRLHACKDEL', 'Growth', 'React', 'Node.js'],
 		image: '/ctrlhackdel.png',
 		code: 'https://github.com/EVAnunit1307/City_Sync', // updated repo link
@@ -34,7 +34,7 @@ const projects = [
 	{
 		title: 'Finding N.E.M.O (ConUHacks)',
 		description:
-			'Finding N.E.M.O reimagines the classic pirate treasure hunt for the modern era—users track and recover lost shipping containers in a tech-powered, interactive simulation. It’s both a fun digital adventure and a practical tool for shipping, logistics, and environmental professionals to visualize container drift and simulate recovery missions.',
+			'Finding N.E.M.O turns the idea of a pirate treasure hunt into an interactive simulation where users track and recover lost shipping containers, blending a fun digital experience with a practical way to model container drift and plan recovery efforts.',
 		tags: ['ConUHacks', 'NLP', 'Python', 'Hackathon'],
 		image: '/project-nemo.jpg',
 		code: 'https://github.com/herman888/container-search', // updated repo link
@@ -43,7 +43,7 @@ const projects = [
 	{
 		title: 'Arduino/Hardware Projects',
 		description:
-			'A collection of Arduino and hardware-based projects. [Add your description here about your hardware projects, tech stack, and your role.]',
+			'A collection of Arduino and hardware-based projects.',
 		tags: ['Arduino', 'Hardware', 'Electronics', 'IoT'],
 		images: ['/arduino.png'], // Use arduino.png as the project image
 		code: 'https://github.com/herman888/arduino-hardware-projects',
@@ -52,7 +52,7 @@ const projects = [
 	{
 		title: 'Giveway (HackThe6ix)',
 		description:
-			'Giveway project. [Add your description here about what Giveway does, tech stack, and your role.]',
+			'Students or community members request a meal, Drivers sign in, see the closest requests, and follow one optimized route.',
 		tags: ['HackThe6ix', 'Web', 'React', 'Node.js'], // added HackThe6ix tag
 		image: '/giveway.png',
 		code: 'https://github.com/herman888/route-optimizer', // updated repo link
@@ -61,8 +61,8 @@ const projects = [
 	{
 		title: 'Meal2Go (EurekaHacks)', // updated title
 		description:
-			'Meal2Go project. [Add your description here about what Meal2Go does, tech stack, and your role.]',
-		tags: ['EurekaHacks', 'Mobile', 'React Native', 'Food'], // added EurekaHacks tag
+			'A platform that offers quick and nutritious meal options tailored to the users health profile.',
+		tags: ['EurekaHacks', 'OpenAI', 'Computer Vision'], // added EurekaHacks tag
 		image: '/meal2go.png',
 		code: 'https://github.com/itzsxhan/Food_Detection', // updated repo link
 		devpost: 'https://devpost.com/software/mealtogo', // updated devpost link
@@ -70,8 +70,8 @@ const projects = [
 	{
 		title: 'Drone Racing',
 		description:
-			'Drone Racing project. [Add your description here about what Drone Racing does, tech stack, and your role.]',
-		tags: ['Drones', 'Racing', 'Python'],
+			'Developed @UTIAS Flight System and Contol Labratory',
+		tags: ['Drones', 'Gazebo', 'Python', 'ROS', 'Simulink'],
 		image: '/droneracing.jpg',
 		code: 'https://github.com/herman888/drone-racing',
 	},
@@ -88,6 +88,33 @@ export default function ProjectsPage() {
 	return (
 		<>
 			<FlyingDrone />
+
+			{/* Featured Drone Racing Project */}
+			<div className="max-w-3xl mx-auto mb-16 rounded-2xl overflow-hidden shadow bg-[#222] border border-[#d6c9a5]">
+				<div className="w-full h-64 md:h-80 relative">
+					<img
+						src="/droneracing.jpg"
+						alt="Drone Racing Project"
+						className="object-cover w-full h-full"
+						style={{ borderTopLeftRadius: '1.25rem', borderTopRightRadius: '1.25rem' }}
+					/>
+				</div>
+				<div className="bg-[#f5f5dc] p-8 border-t border-[#e5e5c0]">
+					<h2 className="text-2xl font-bold mb-2 text-[#bfa94c]">Drone Racing</h2>
+					<p className="text-gray-700 mb-4">Developed @UTIAS Flight System and Control Laboratory. Built and tested drone racing systems, ran real and simulated flights, and contributed to research on autonomous flight and trajectory analysis.</p>
+					<div className="flex flex-wrap gap-2 mb-4">
+						{['Drones', 'Gazebo', 'Python', 'ROS', 'Simulink'].map(tag => (
+							<span key={tag} className="tag">{tag}</span>
+						))}
+					</div>
+					<div className="flex gap-2">
+						<Link href="/projects/drone-racing-summary" className="btn-primary px-4 py-2 font-semibold">Project Summary</Link>
+						<a href="/droneracing.mp4" target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-2 font-semibold">Demo</a>
+						<a href="https://github.com/herman888/drone-racing" target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-2 font-semibold">Code</a>
+					</div>
+				</div>
+			</div>
+
 			<div className="max-w-5xl mx-auto py-16 px-4">
 				<h2 className="text-2xl font-bold mb-6">All Projects</h2>
 				<div className="grid md:grid-cols-2 gap-8">
@@ -123,12 +150,7 @@ export default function ProjectsPage() {
 									</p>
 									<div className="flex flex-wrap gap-2 mb-2">
 										{project.tags.map((tag) => (
-											<span
-												key={tag}
-												className="bg-[#f5e9c6] text-[#bfa94c] px-2 py-1 rounded-full text-xs font-semibold"
-											>
-												{tag}
-											</span>
+											<span key={tag} className="tag">{tag}</span>
 										))}
 									</div>
 									<button
@@ -158,7 +180,7 @@ export default function ProjectsPage() {
 						) : (
 							<div
 								key={project.title}
-								className="bg-[#f5f5dc] rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col"
+								className="bg-card rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col"
 							>
 								{project.title === 'Finding N.E.M.O (ConUHacks)' ? (
 									<div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
@@ -196,35 +218,51 @@ export default function ProjectsPage() {
 									</p>
 									<div className="flex flex-wrap gap-2 mb-2">
 										{project.tags.map((tag) => (
-											<span
-												key={tag}
-												className="bg-[#f5e9c6] text-[#bfa94c] px-2 py-1 rounded-full text-xs font-semibold"
-											>
-												{tag}
-											</span>
+											<span key={tag} className="tag">{tag}</span>
 										))}
 									</div>
 									<div className="flex gap-2 mt-2">
 										{project.title === 'Drone Racing' ? (
-											<button
-												type="button"
-												onClick={() => window.open('/droneracing.mp4', '_blank', 'noopener,noreferrer')}
-												className="inline-flex items-center px-3 py-1 border border-green-600 rounded shadow text-green-800 bg-white hover:bg-green-100 transition text-sm"
-											>
-												<svg
-													className="mr-1"
-													width="16"
-													height="16"
-													fill="none"
-													viewBox="0 0 24 24"
+											<>
+												<button
+													type="button"
+													onClick={() => window.open('/droneracing.mp4', '_blank', 'noopener,noreferrer')}
+													className="inline-flex items-center px-3 py-1 border border-green-600 rounded shadow text-green-800 bg-white hover:bg-green-100 transition text-sm"
 												>
-													<path
-														fill="currentColor"
-														d="M8 5v14l11-7z"
-													/>
-												</svg>
-												Demo
-											</button>
+													<svg
+														className="mr-1"
+														width="16"
+														height="16"
+														fill="none"
+														viewBox="0 0 24 24"
+													>
+														<path
+															fill="currentColor"
+															d="M8 5v14l11-7z"
+														/>
+													</svg>
+													Demo
+												</button>
+												<Link
+													href="/projects/drone-racing-summary"
+													className="inline-flex items-center px-3 py-1 border border-yellow-600 rounded shadow text-yellow-800 bg-white hover:bg-yellow-100 transition text-sm"
+													style={{ textDecoration: 'none' }}
+												>
+													<svg
+														className="mr-1"
+														width="16"
+														height="16"
+														fill="none"
+														viewBox="0 0 24 24"
+													>
+														<path
+															fill="currentColor"
+															d="M3 6h18M3 12h18M3 18h18"
+														/>
+													</svg>
+													Project Summary
+												</Link>
+											</>
 										) : project.title === 'Arduino/Hardware Projects' ? (
 											<button
 												type="button"

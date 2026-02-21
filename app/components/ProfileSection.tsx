@@ -24,7 +24,7 @@ const ProfileSection = () => {
 			{/* Info on the right */}
 			<div className="flex-1 flex flex-col items-start max-w-xl">
 				<h1 className="text-3xl font-bold text-gray-800 mb-2">Herman Isayenka</h1>
-				<h2 className="text-lg text-gray-700 mb-4">Electrical Engineering @ YorkU</h2>
+				<h2 className="text-lg text-gray-700 mb-4">Electrical Engineering @ YorkU, Schulich Leader</h2>
 				<div className="border-l-2 border-[#d6c9a5] pl-4 mb-4">
 					<p className="mb-2 text-gray-700">
 						Interested in <b>software</b> (especially <b>big data</b>), <b>robotics</b>, and <b>autonomous systems</b>—but also in <b>hardware</b>: building things with my hands, soldering, and working with circuits. I love projects that combine both software and hardware, letting me bridge the digital and physical worlds.<br />

@@ -84,11 +84,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f5f5dc]`}>
+		<html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+			<body>
 				<AnimatedCursor />
 				<Navbar />
-				{children}
+				<div className="container mx-auto px-4 py-8 bg-card shadow-lg min-h-screen flex flex-col items-center">
+					{children}
+				</div>
 			</body>
 		</html>
 	);

@@ -3,5 +3,72 @@
 @tailwind utilities;
 
 body {
-	background-color: #f5f5dc;
+  background: linear-gradient(135deg, #f5f5dc 0%, #f7e9c6 100%);
+  min-height: 100vh;
+  font-family: 'Geist', 'Geist_Mono', sans-serif;
+  color: #5a4a1b;
+}
+
+/* Card styles */
+.bg-card {
+  background: #f5f5dc;
+  box-shadow: 0 4px 24px 0 rgba(214,201,165,0.12), 0 1.5px 4px 0 rgba(214,201,165,0.08);
+  border-radius: 1.25rem;
+  border: 1px solid #e5e5c0;
+}
+
+/* Accent colors */
+.text-accent {
+  color: #bfa94c;
+}
+.bg-accent {
+  background: #f5e9c6;
+}
+
+/* Button styles */
+.btn-primary {
+  background: #f5e9c6;
+  color: #bfa94c;
+  border: 1px solid #d6c9a5;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px 0 rgba(214,201,165,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.btn-primary:hover {
+  background: #e5e5c0;
+  color: #5a4a1b;
+}
+
+/* Navbar styles */
+.navbar {
+  background: #f5f5dc;
+  border-bottom: 1px solid #d6c9a5;
+  box-shadow: 0 2px 8px 0 rgba(214,201,165,0.08);
+}
+
+/* Section headers */
+h2, h3 {
+  color: #bfa94c;
+  font-weight: 700;
+}
+
+/* Tag styles */
+.tag {
+  background: #f5e9c6;
+  color: #bfa94c;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .bg-card {
+    border-radius: 0.75rem;
+  }
+  .btn-primary {
+    border-radius: 0.5rem;
+  }
 }
