@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import FlyingDrone from "../components/FlyingDrone";
 
 const projects = [
 	{
@@ -79,8 +78,6 @@ export default function ProjectsPage() {
 
 	return (
 		<>
-			<FlyingDrone />
-
 			{/* Featured Drone Racing Project */}
 			<div className="max-w-3xl mx-auto mb-16 rounded-2xl overflow-hidden shadow bg-[#222] border border-[#d6c9a5]">
 				<div className="w-full h-64 md:h-80 relative">
