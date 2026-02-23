@@ -52,6 +52,13 @@ export default function FlyingDrone() {
         zIndex: 1000,
         pointerEvents: "none",
         transition: "transform 2.5s cubic-bezier(0.4,0.7,0.2,1)",
+        boxShadow: "0 8px 32px 0 rgba(99,102,241,0.15)",
+        borderRadius: "50%",
+        background: "rgba(245,245,220,0.15)",
+        border: "2px solid #bfa94c",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <DroneSVG />
