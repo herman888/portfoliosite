@@ -30,8 +30,9 @@ const arduinoProjects = [
 	{
 		title: "Digital Timer",
 		description:
-			"A digital timer built with Arduino for precise timing applications.",
+			"A digital timer built with Arduino for precise timing applications. I used a 555 timer IC for this project, and designed the schematic in EASY EDA. Click below to view the schematic diagram.",
 		video: "/timer.mp4",
+		schematic: "/schematic.png",
 	},
 	{
 		title: "Digital Clock",
@@ -108,6 +109,16 @@ export default function ArduinoProjectsPage() {
 							<p className="text-gray-700 mb-2 flex-1">
 								{project.description}
 							</p>
+							{project.title === "Digital Timer" && (
+								<button
+									className="bg-[#bfa94c] text-white rounded px-4 py-2 mt-2 hover:bg-[#a88c3c] transition font-semibold border border-[#d6c9a5]"
+									onClick={() =>
+										window.open(project.schematic, "_blank")
+									}
+								>
+									View Schematic Diagram
+								</button>
+							)}
 						</div>
 					</div>
 				))}
