@@ -45,13 +45,14 @@ const AsciiAvatar: React.FC = () => {
       );
       const data = ctx.getImageData(0, 0, targetWidth, targetHeight).data;
 
-      const newLines: string[] = [];
-      const centerX = targetWidth / 2;
       const outputWidth = Math.floor(targetWidth * 0.82);
+      const xOffset = Math.floor((targetWidth - outputWidth) / 2);
+      const centerX = outputWidth / 2;
+      const newLines: string[] = [];
       for (let y = 0; y < targetHeight; y++) {
         let row = "";
         for (let x = 0; x < outputWidth; x++) {
-          const i = (y * targetWidth + x) * 4;
+          const i = (y * targetWidth + (x + xOffset)) * 4;
           const r = data[i] / 255;
           const g = data[i + 1] / 255;
           const b = data[i + 2] / 255;

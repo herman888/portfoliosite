@@ -113,11 +113,16 @@ export default function Home() {
   const { ref: currentlyRef, inView: currentlyInView } = useInViewOnce();
   const { ref: projectsRef, inView: projectsInView } = useInViewOnce();
   const chatSectionRef = useRef<HTMLDivElement>(null);
-  const [activeAnswerKey, setActiveAnswerKey] = useState<SectionKey | null>(null);
   const [inputValue, setInputValue] = useState("");
+  const [answer, setAnswer] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const jumpToChat = (topic: SectionKey) => {
     setActiveSection(topic);
+    setInputValue(questionPrompts[topic]);
+    setAnswer("");
+    setError(null);
     setTimeout(() => {
       chatSectionRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -130,7 +135,33 @@ export default function Home() {
 
   const handleSubmit = async () => {
     if (!inputValue.trim()) return;
-    setActiveAnswerKey(activeSection);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: inputValue,
+          topic: activeSection,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Chat request failed");
+      }
+
+      const data = (await res.json()) as { answer?: string };
+      setAnswer(data.answer ?? "");
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong answering that. Try again.");
+      setAnswer("");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -169,7 +200,12 @@ export default function Home() {
                 <button
                   key={option.key}
                   type="button"
-                  onClick={() => setActiveSection(option.key)}
+                  onClick={() => {
+                    setActiveSection(option.key);
+                    setInputValue(questionPrompts[option.key]);
+                    setAnswer("");
+                    setError(null);
+                  }}
                   className={`chat-prompt px-3 py-2 flex items-center gap-2 ${
                     isActive ? "chat-prompt-active" : ""
                   }`}
@@ -188,11 +224,14 @@ export default function Home() {
               </span>
             </div>
             <div className="chat-input w-full mt-2 px-3 py-2 text-gray-200 min-h-[3.5rem]">
-              {activeAnswerKey && (
-                <TypewriterText
-                  key={activeAnswerKey}
-                  text={messages[activeAnswerKey]}
-                />
+              {isLoading && (
+                <p className="chat-text text-gray-500">Thinking...</p>
+              )}
+              {!isLoading && error && (
+                <p className="chat-text text-red-400">{error}</p>
+              )}
+              {!isLoading && !error && answer && (
+                <TypewriterText key={answer} text={answer} />
               )}
             </div>
             <div className="flex items-center gap-2 mt-2">

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 const arduinoProjects = [
 	{
@@ -44,28 +45,29 @@ const arduinoProjects = [
 
 export default function ArduinoProjectsPage() {
 	return (
-		<div className="max-w-5xl mx-auto py-16 px-4">
+		<div className="max-w-5xl mx-auto py-16 px-4 text-gray-100">
 			<Link
-				href="/projects"
-				className="text-[#bfa94c] underline mb-4 inline-block"
+				href="/"
+				className="mb-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-white"
 			>
-				&larr; Back to Projects
+				<span>&larr;</span>
+				<span>Back to Home</span>
 			</Link>
-			<h2 className="text-2xl font-bold mb-6 text-center">
+			<h2 className="about-me-line mb-10 text-center text-base md:text-lg">
 				Arduino/Hardware Projects
 			</h2>
-			<div className="grid md:grid-cols-2 gap-8">
+			<div className="grid gap-8 md:grid-cols-2">
 				{arduinoProjects.map((project) => (
 					<div
 						key={project.title}
-						className="bg-[#f5f5dc] rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col"
+						className="flex flex-col overflow-hidden border border-[#2a2a2a] bg-black/40"
 					>
-						<div className="w-full aspect-square bg-gray-200 flex items-center justify-center overflow-hidden">
+						<div className="flex aspect-square w-full items-center justify-center overflow-hidden bg-black">
 							{project.video ? (
 								<video
 									src={project.video}
 									controls
-									className="rounded object-cover w-full h-full block p-0 m-0"
+									className="block h-full w-full object-cover p-0 m-0"
 									style={{
 										objectFit: "cover",
 										width: "100%",
@@ -79,7 +81,7 @@ export default function ArduinoProjectsPage() {
 								<img
 									src={project.image}
 									alt={project.title}
-									className="rounded object-cover w-full h-full block p-0 m-0"
+									className="block h-full w-full object-cover p-0 m-0"
 									style={
 										(project.style || {
 											objectFit: "cover",
@@ -88,7 +90,7 @@ export default function ArduinoProjectsPage() {
 											display: "block",
 											padding: 0,
 											margin: 0,
-										}) as React.CSSProperties
+										}) as CSSProperties
 									}
 									onError={(e) => {
 										if (
@@ -102,16 +104,16 @@ export default function ArduinoProjectsPage() {
 								/>
 							)}
 						</div>
-						<div className="p-4 flex-1 flex flex-col">
-							<h3 className="text-lg font-bold text-[#bfa94c] mb-1">
+						<div className="flex flex-1 flex-col bg-[#050505] p-4">
+							<h3 className="about-me-line mb-2 text-[0.8rem] uppercase tracking-[0.18em] text-[#f5f5f5]">
 								{project.title}
 							</h3>
-							<p className="text-gray-700 mb-2 flex-1">
+							<p className="chat-text mb-2 flex-1 text-[0.7rem] text-gray-300">
 								{project.description}
 							</p>
 							{project.title === "Digital Timer" && (
 								<button
-									className="bg-[#bfa94c] text-white rounded px-4 py-2 mt-2 hover:bg-[#a88c3c] transition font-semibold border border-[#d6c9a5]"
+									className="mt-3 inline-flex items-center justify-center border border-[#2a2a2a] bg-black/40 px-4 py-2 text-[0.7rem] uppercase tracking-[0.18em] text-gray-100 transition hover:bg-black/80"
 									onClick={() =>
 										window.open(project.schematic, "_blank")
 									}
