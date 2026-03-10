@@ -117,14 +117,11 @@ export default function Home() {
   const chatSectionRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [answer, setAnswer] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const jumpToChat = (topic: SectionKey) => {
     setActiveSection(topic);
     setInputValue(questionPrompts[topic]);
     setAnswer("");
-    setError(null);
     setTimeout(() => {
       chatSectionRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -135,42 +132,58 @@ export default function Home() {
 
   // Audio playback removed for now; chat answers are text-only.
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!inputValue.trim()) return;
-    setIsLoading(true);
-    setError(null);
+    const normalized = inputValue.toLowerCase();
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          question: inputValue,
-          topic: activeSection,
-        }),
-      });
+    let inferredKey: SectionKey = activeSection;
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Chat request failed");
-      }
-
-      const data = (await res.json()) as { answer?: string };
-      setAnswer(data.answer ?? "");
-    } catch (err) {
-      console.error(err);
-      // Fallback to a canned answer so the chat still works
-      const fallback = fallbackAnswers[activeSection];
-      if (fallback) {
-        setError(null);
-        setAnswer(fallback);
-      } else {
-        setError("Something went wrong answering that. Try again.");
-        setAnswer("");
-      }
-    } finally {
-      setIsLoading(false);
+    if (
+      normalized.includes("how old") ||
+      normalized.includes("age") ||
+      normalized.includes("year were you born") ||
+      normalized.includes("born")
+    ) {
+      inferredKey = "age";
+    } else if (
+      normalized.includes("project") ||
+      normalized.includes("build") ||
+      normalized.includes("work on")
+    ) {
+      inferredKey = "projects";
+    } else if (
+      normalized.includes("role") ||
+      normalized.includes("job") ||
+      normalized.includes("position")
+    ) {
+      inferredKey = "roles";
+    } else if (
+      normalized.includes("intern") ||
+      normalized.includes("internship")
+    ) {
+      inferredKey = "internships";
+    } else if (
+      normalized.includes("drone") ||
+      normalized.includes("racing") ||
+      normalized.includes("utias")
+    ) {
+      inferredKey = "drone";
+    } else if (normalized.includes("york")) {
+      inferredKey = "york";
+    } else if (normalized.includes("schulich")) {
+      inferredKey = "schulich";
+    } else if (normalized.includes("sellstatic")) {
+      inferredKey = "sellstatic";
+    } else if (
+      normalized.includes("uoft") ||
+      normalized.includes("u of t") ||
+      normalized.includes("university of toronto")
+    ) {
+      inferredKey = "uoft";
     }
+
+    setActiveSection(inferredKey);
+    setAnswer(fallbackAnswers[inferredKey]);
   };
 
   return (
@@ -233,15 +246,7 @@ export default function Home() {
               </span>
             </div>
             <div className="chat-input w-full mt-2 px-3 py-2 text-gray-200 min-h-[3.5rem]">
-              {isLoading && (
-                <p className="chat-text text-gray-500">Thinking...</p>
-              )}
-              {!isLoading && error && (
-                <p className="chat-text text-red-400">{error}</p>
-              )}
-              {!isLoading && !error && answer && (
-                <TypewriterText key={answer} text={answer} />
-              )}
+              {answer && <TypewriterText key={answer} text={answer} />}
             </div>
             <div className="flex items-center gap-2 mt-2">
               <input
@@ -276,18 +281,6 @@ export default function Home() {
           currentlyInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <div className="flex items-center justify-between text-[0.7rem] text-gray-400 mb-4">
-          <span className="tracking-[0.25em] uppercase">
-            Conversation mode
-          </span>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-4 rounded-full bg-[#111] border border-[#2a2a2a] flex items-center justify-start px-[2px]">
-              <div className="w-3 h-3 rounded-full bg-[#555]" />
-            </div>
-            <span className="text-gray-500">OFF</span>
-          </div>
-        </div>
-
         <div className="border-t border-[#2a2a2a] pt-4">
           <div className="about-me-terminal">
             <div className="tracking-[0.2em] uppercase text-[0.65rem] text-gray-500 mb-3 font-medium">
