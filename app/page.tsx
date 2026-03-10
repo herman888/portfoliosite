@@ -28,26 +28,6 @@ const pixelFont = Press_Start_2P({
   subsets: ["latin"],
 });
 
-const messages: Record<SectionKey, string> = {
-  age: "I'm a Schulich Leader studying Electrical Engineering at York University, born in the early 2000s. Old enough to have shipped real projects and research, young enough to still be obsessed with learning new stacks and building hardware/software hybrids.",
-  projects:
-    "I build things at the intersection of AI, robotics, and cities: CityPath AI (Shopify hackathon winner for city planning), RedLamp (UofTHacks winner, a stress-aware study lamp), GrowthSync (visualizes how new developments hit infrastructure), Finding N.E.M.O (interactive container-drift simulation), plus a bunch of Arduino and hardware builds tying sensors, motors, and code together.",
-  roles:
-    "I'm looking for roles close to real systems: software and data work with an infrastructure, simulation, or robotics flavor—backend and platform engineering, ML or data-heavy systems, and anything that touches autonomy, drones, or city-scale problems.",
-  drone:
-    "The drone racing work I did at UTIAS was all about high-speed autonomy: building and tuning flight stacks, running both simulated races and real flights through gates, and analyzing trajectories to understand how close we could get to the physical limits. If you want to go deeper, you can read the project summary at /projects/drone-racing-summary or watch a short demo at /droneracing.mp4.",
-  york:
-    "I'm doing Electrical Engineering at York University, which means a mix of circuits, control, embedded systems, and a lot of math-heavy courses that pair nicely with the robotics and infrastructure projects I build outside class.",
-  schulich:
-    "The Schulich Leader Scholarship is a $120,000 award for students in STEM. It gives me the freedom to take on ambitious research, hackathons, and hardware-heavy projects without worrying as much about finances or part-time work.",
-  sellstatic:
-    "I was previously a SWE intern at SellStatic, working on systems that make it easier for teams to ship and monitor web experiences. I spent a lot of time on backend logic, data plumbing, and making the developer experience smoother.",
-  uoft:
-    "At the University of Toronto / UTIAS I work on drone racing and autonomy—building and testing flight systems, running both real and simulated races, and helping with research on how we can make high-speed flight safer and more reliable.",
-  internships:
-    "I'm actively looking for fall 2026 internships where I can work on real systems—backend, data-heavy products, robotics, or infrastructure—ideally somewhere that touches autonomy, simulation, or large-scale city problems.",
-};
-
 const questionPrompts: Record<SectionKey, string> = {
   age: "What year were you born?",
   projects: "Can you walk me through your projects?",
