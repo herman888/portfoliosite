@@ -5,6 +5,15 @@ import Link from "next/link";
 
 export const projects = [
 	{
+		title: 'Drone Racing',
+		description:
+			'Developed @UTIAS Flight System and Control Laboratory. Built and tested drone racing systems, ran real and simulated flights, and contributed to research on autonomous flight and trajectory analysis.',
+		caption: 'High-speed autonomous drone racing research @ UTIAS.',
+		tags: ['Drones', 'Gazebo', 'Python', 'ROS', 'Simulink'],
+		image: '/droneracing.jpg',
+		link: '/projects/drone-racing-summary',
+	},
+	{
 		title: 'CityPath AI (Shopify Hackathon Winner)',
 		description:
 			'CityPath AI quickly analyzes past data, spots dangerous patterns, and tests safer street layout options in minutes, cutting down the time it takes to move from identifying a problem to finding a practical solution.',

@@ -6,8 +6,8 @@ body {
   background: #050505;
   min-height: 100vh;
   overflow-x: hidden;
-  font-family: 'Geist', 'Geist_Mono', system-ui, -apple-system, BlinkMacSystemFont,
-    'SF Pro Text', sans-serif;
+  font-family: var(--font-pixel), var(--font-geist-sans), var(--font-geist-mono),
+    system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   color: #f5f5f5;
   cursor: none;
 }
@@ -183,6 +183,14 @@ body {
   font-size: 0.8rem;
 }
 
+.chat-text {
+  font-family: var(--font-pixel), system-ui, -apple-system, BlinkMacSystemFont,
+    "SF Pro Text", sans-serif;
+  font-size: 0.7rem;
+  line-height: 1.8;
+  letter-spacing: 0.08em;
+}
+
 .ascii-avatar-wrapper {
   display: inline-block;
   padding: 0.75rem 0.5rem;
@@ -238,11 +246,12 @@ body {
   mix-blend-mode: overlay;
 }
 .about-me-line {
-  font-family: 'Menlo', 'Monaco', 'SF Mono', 'Consolas', ui-monospace, monospace;
-  font-size: 0.95rem;
+  font-family: var(--font-pixel), system-ui, -apple-system, BlinkMacSystemFont,
+    "SF Pro Text", sans-serif;
+  font-size: 0.76rem;
   line-height: 1.7;
-  color: #d4d4d4;
-  letter-spacing: 0.02em;
+  color: #e5e5e5;
+  letter-spacing: 0.05em;
 }
 
 /* Projects section — dark theme, heading + line, scanline background */
@@ -295,7 +304,7 @@ body {
 }
 .projects-card-subtitle {
   font-family: 'Menlo', 'Monaco', 'SF Mono', 'Consolas', ui-monospace, monospace;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #b3b3b3;
 }
 

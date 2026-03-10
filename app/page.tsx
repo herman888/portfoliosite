@@ -10,6 +10,7 @@ type SectionKey =
   | "age"
   | "projects"
   | "roles"
+  | "drone"
   | "york"
   | "schulich"
   | "sellstatic"
@@ -33,6 +34,8 @@ const messages: Record<SectionKey, string> = {
     "I build things at the intersection of AI, robotics, and cities: CityPath AI (Shopify hackathon winner for city planning), RedLamp (UofTHacks winner, a stress-aware study lamp), GrowthSync (visualizes how new developments hit infrastructure), Finding N.E.M.O (interactive container-drift simulation), plus a bunch of Arduino and hardware builds tying sensors, motors, and code together.",
   roles:
     "I'm looking for roles close to real systems: software and data work with an infrastructure, simulation, or robotics flavor—backend and platform engineering, ML or data-heavy systems, and anything that touches autonomy, drones, or city-scale problems.",
+  drone:
+    "The drone racing work I did at UTIAS was all about high-speed autonomy: building and tuning flight stacks, running both simulated races and real flights through gates, and analyzing trajectories to understand how close we could get to the physical limits. If you want to go deeper, you can read the project summary at /projects/drone-racing-summary or watch a short demo at /droneracing.mp4.",
   york:
     "I'm doing Electrical Engineering at York University, which means a mix of circuits, control, embedded systems, and a lot of math-heavy courses that pair nicely with the robotics and infrastructure projects I build outside class.",
   schulich:
@@ -49,6 +52,7 @@ const questionPrompts: Record<SectionKey, string> = {
   age: "What year were you born?",
   projects: "Can you walk me through your projects?",
   roles: "What roles are you looking for right now?",
+  drone: "Can you tell me more about your drone racing work?",
   york: "What do you study at York University?",
   schulich: "What is the Schulich Leader Scholarship?",
   sellstatic: "What did you do as a SWE intern at SellStatic?",
@@ -101,7 +105,7 @@ function TypewriterText({ text }: { text: string }) {
     return () => clearInterval(interval);
   }, [text]);
 
-  return <p>{text.slice(0, visibleChars)}</p>;
+  return <p className="chat-text">{text.slice(0, visibleChars)}</p>;
 }
 
 export default function Home() {
@@ -114,6 +118,7 @@ export default function Home() {
   const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [responseMode, setResponseMode] = useState<"text" | "audio">("text");
+  const [inputValue, setInputValue] = useState("");
 
   const jumpToChat = (topic: SectionKey) => {
     setActiveSection(topic);
@@ -170,12 +175,8 @@ export default function Home() {
   };
 
   const handleSubmit = async () => {
-    if (responseMode === "text") {
-      setActiveAnswerKey(activeSection);
-    } else {
-      setActiveAnswerKey(activeSection);
-      await playAnswerAudio(activeSection);
-    }
+    if (!inputValue.trim()) return;
+    setActiveAnswerKey(activeSection);
   };
 
   return (
@@ -227,48 +228,32 @@ export default function Home() {
           </div>
 
           <div className="border-t border-[#2a2a2a] pt-3 flex flex-col gap-2 text-xs md:text-sm text-gray-200">
-            {activeAnswerKey && (
-              <TypewriterText
-                key={activeAnswerKey}
-                text={messages[activeAnswerKey]}
-              />
-            )}
-
-            <div className="flex items-center justify-between gap-2 text-[0.7rem] text-gray-500 pt-1">
+            <div className="flex items-center justify-between gap-2 text-[0.7rem] text-gray-500">
               <span className="uppercase tracking-[0.2em]">
                 Ask about Herman
               </span>
-              <div className="inline-flex items-center gap-1 rounded border border-[#2a2a2a] px-1.5 py-0.5">
-                <button
-                  type="button"
-                  onClick={() => setResponseMode("text")}
-                  className={`flex items-center gap-1 px-1.5 py-0.5 text-[0.65rem] ${
-                    responseMode === "text"
-                      ? "bg-[#111111] text-gray-100"
-                      : "text-gray-400"
-                  }`}
-                >
-                  <span>✎</span>
-                  <span>Text</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setResponseMode("audio")}
-                  className={`flex items-center gap-1 px-1.5 py-0.5 text-[0.65rem] ${
-                    responseMode === "audio"
-                      ? "bg-[#111111] text-gray-100"
-                      : "text-gray-400"
-                  }`}
-                >
-                  <span>🔊</span>
-                  <span>Audio</span>
-                </button>
-              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="chat-input flex-1 px-3 py-2 text-gray-500">
-                {questionPrompts[activeSection]}
-              </div>
+            <div className="chat-input w-full mt-2 px-3 py-2 text-gray-200 min-h-[3.5rem]">
+              {activeAnswerKey && (
+                <TypewriterText
+                  key={activeAnswerKey}
+                  text={messages[activeAnswerKey]}
+                />
+              )}
+            </div>
+            <div className="flex items-center gap-2 mt-2">
+              <input
+                className="chat-input flex-1 px-3 py-2 bg-black text-gray-100 placeholder-gray-500"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
+                placeholder={questionPrompts[activeSection]}
+              />
               <button
                 type="button"
                 className="chat-input w-8 h-8 flex items-center justify-center"
@@ -277,17 +262,6 @@ export default function Home() {
               >
                 ⌲
               </button>
-              {responseMode === "audio" && (
-                <button
-                  type="button"
-                  className="chat-input w-8 h-8 flex items-center justify-center"
-                  onClick={() => playAnswerAudio(activeAnswerKey)}
-                  aria-label="Replay audio"
-                  disabled={!activeAnswerKey || isGeneratingAudio}
-                >
-                  {isSpeaking ? "■" : "▶"}
-                </button>
-              )}
             </div>
           </div>
         </div>
@@ -296,7 +270,7 @@ export default function Home() {
       {/* Conversation mode + currently */}
       <section
         ref={currentlyRef}
-        className={`w-full max-w-4xl mt-12 px-4 text-xs md:text-sm transition-all duration-700 ${
+        className={`w-full max-w-4xl mt-12 pl-4 pr-2 md:pl-8 md:pr-2 text-xs md:text-sm transition-all duration-700 self-start ${
           currentlyInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
@@ -321,12 +295,12 @@ export default function Home() {
               <li className="flex items-center gap-2">
                 <span className="text-gray-500 select-none">▸</span>
                 <span>engineering @</span>
-                <span className="inline-flex shrink-0 w-5 h-5 rounded-sm overflow-hidden align-middle">
+                <span className="inline-flex shrink-0 w-6 h-6 rounded-sm overflow-hidden align-middle">
                   <Image
                     src="/york.png"
                     alt=""
-                    width={20}
-                    height={20}
+                    width={24}
+                    height={24}
                     className="object-contain"
                   />
                 </span>
@@ -341,12 +315,12 @@ export default function Home() {
               <li className="flex items-center gap-2">
                 <span className="text-gray-500 select-none">▸</span>
                 <span>recipient of $120,000</span>
-                <span className="inline-flex shrink-0 w-5 h-5 rounded-sm overflow-hidden align-middle">
+                <span className="inline-flex shrink-0 w-6 h-6 rounded-sm overflow-hidden align-middle">
                   <Image
                     src="/schulich.jpeg"
                     alt=""
-                    width={20}
-                    height={20}
+                    width={24}
+                    height={24}
                     className="object-contain"
                   />
                 </span>
@@ -361,12 +335,12 @@ export default function Home() {
               <li className="flex items-center gap-2">
                 <span className="text-gray-500 select-none">▸</span>
                 <span>prev swe intern @</span>
-                <span className="inline-flex shrink-0 w-5 h-5 rounded-sm overflow-hidden align-middle">
+                <span className="inline-flex shrink-0 w-6 h-6 rounded-sm overflow-hidden align-middle">
                   <Image
                     src="/sellstatic.jpeg"
                     alt=""
-                    width={20}
-                    height={20}
+                    width={24}
+                    height={24}
                     className="object-contain"
                   />
                 </span>
@@ -381,12 +355,12 @@ export default function Home() {
               <li className="flex items-center gap-2">
                 <span className="text-gray-500 select-none">▸</span>
                 <span>research @</span>
-                <span className="inline-flex shrink-0 w-5 h-5 rounded-sm overflow-hidden align-middle">
+                <span className="inline-flex shrink-0 w-6 h-6 rounded-sm overflow-hidden align-middle">
                   <Image
                     src="/utias.jpeg"
                     alt=""
-                    width={20}
-                    height={20}
+                    width={24}
+                    height={24}
                     className="object-contain"
                   />
                 </span>
@@ -430,6 +404,15 @@ export default function Home() {
           {projects.map((project) => (
             <ProjectCard key={project.title} project={project} />
           ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <button
+            type="button"
+            onClick={() => jumpToChat("drone")}
+            className="px-5 py-2 border border-[#2a2a2a] bg-black/40 hover:bg-black/70 text-[0.7rem] md:text-xs uppercase tracking-[0.25em]"
+          >
+            Learn more
+          </button>
         </div>
       </section>
 
