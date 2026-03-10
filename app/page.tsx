@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Press_Start_2P } from "next/font/google";
 import AsciiAvatar from "./components/AsciiAvatar";
-import { projects } from "./projects/page";
+import { projects, Project } from "./projects/projects-data";
 
 type SectionKey =
   | "age"
@@ -60,7 +60,7 @@ const questionPrompts: Record<SectionKey, string> = {
   internships: "What kind of internships are you looking for?",
 };
 
-type InViewResult = { ref: React.RefObject<HTMLDivElement>; inView: boolean };
+type InViewResult = { ref: React.RefObject<HTMLDivElement | null>; inView: boolean };
 
 function useInViewOnce(threshold = 0.2): InViewResult {
   const ref = useRef<HTMLDivElement>(null);
@@ -114,10 +114,6 @@ export default function Home() {
   const { ref: projectsRef, inView: projectsInView } = useInViewOnce();
   const chatSectionRef = useRef<HTMLDivElement>(null);
   const [activeAnswerKey, setActiveAnswerKey] = useState<SectionKey | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [responseMode, setResponseMode] = useState<"text" | "audio">("text");
   const [inputValue, setInputValue] = useState("");
 
   const jumpToChat = (topic: SectionKey) => {
@@ -130,49 +126,7 @@ export default function Home() {
     }, 10);
   };
 
-  const playAnswerAudio = async (key: SectionKey | null) => {
-    if (!key) return;
-    const text = messages[key];
-    if (!text) return;
-
-    setIsGeneratingAudio(true);
-    try {
-      const res = await fetch("/api/tts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text }),
-      });
-
-      if (!res.ok) {
-        console.error("Failed to fetch TTS audio");
-        return;
-      }
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-
-      if (audioRef.current) {
-        audioRef.current.pause();
-        URL.revokeObjectURL(audioRef.current.src);
-      }
-
-      const audio = new Audio(url);
-      audioRef.current = audio;
-      setIsSpeaking(true);
-      audio.onended = () => {
-        setIsSpeaking(false);
-        URL.revokeObjectURL(url);
-      };
-
-      await audio.play();
-    } catch (err) {
-      console.error("Error playing TTS audio", err);
-    } finally {
-      setIsGeneratingAudio(false);
-    }
-  };
+  // Audio playback removed for now; chat answers are text-only.
 
   const handleSubmit = async () => {
     if (!inputValue.trim()) return;
@@ -452,13 +406,10 @@ export default function Home() {
   );
 }
 
-type Project = (typeof projects)[number];
-
 function ProjectCard({ project }: { project: Project }) {
-  const p = project as Project & { image?: string; images?: string[]; caption?: string; link?: string; code?: string; devpost?: string };
-  const imageSrc = p.image ?? p.images?.[0];
-  const caption = p.caption ?? project.description;
-  const href = p.link ?? p.code ?? p.devpost;
+  const imageSrc = project.image ?? project.images?.[0];
+  const caption = project.caption ?? project.description;
+  const href = project.link ?? project.code ?? project.devpost;
 
   const cardContent = (
     <>

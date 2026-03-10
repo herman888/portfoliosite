@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, ThreeEvent } from "@react-three/fiber";
 import * as THREE from "three";
 
 type PointCloudData = {
@@ -121,10 +121,9 @@ function PixelAvatarPoints() {
     return geo;
   }, [data]);
 
-  const handlePointerDown = (event: THREE.Event) => {
+  const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
     isDragging.current = true;
-    const e = event as any;
-    lastPos.current = { x: e.pointer.x, y: e.pointer.y };
+    lastPos.current = { x: event.clientX, y: event.clientY };
   };
 
   const handlePointerUp = () => {
@@ -132,12 +131,11 @@ function PixelAvatarPoints() {
     lastPos.current = null;
   };
 
-  const handlePointerMove = (event: THREE.Event) => {
+  const handlePointerMove = (event: ThreeEvent<PointerEvent>) => {
     if (!isDragging.current || !lastPos.current) return;
-    const e = event as any;
-    const dx = (e.pointer.x - lastPos.current.x) / window.innerWidth;
-    const dy = (e.pointer.y - lastPos.current.y) / window.innerHeight;
-    lastPos.current = { x: e.pointer.x, y: e.pointer.y };
+    const dx = (event.clientX - lastPos.current.x) / window.innerWidth;
+    const dy = (event.clientY - lastPos.current.y) / window.innerHeight;
+    lastPos.current = { x: event.clientX, y: event.clientY };
 
     targetRotation.current.y = THREE.MathUtils.clamp(
       targetRotation.current.y + dx * 3,
