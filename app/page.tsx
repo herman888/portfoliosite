@@ -1,10 +1,529 @@
 "use client";
-import ProfileSection from './components/ProfileSection';
 
-export default function AboutMe() {
-	return (
-		<main className="min-h-screen flex flex-col items-center justify-center bg-[#f5f5dc]" style={{backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(214,201,165,0.3) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(214,201,165,0.3) 40px)'}}>
-			<ProfileSection />
-		</main>
-	);
+import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { Press_Start_2P } from "next/font/google";
+import AsciiAvatar from "./components/AsciiAvatar";
+import { projects } from "./projects/page";
+
+type SectionKey =
+  | "age"
+  | "projects"
+  | "roles"
+  | "york"
+  | "schulich"
+  | "sellstatic"
+  | "uoft"
+  | "internships";
+
+const promptOptions: { key: SectionKey; label: string }[] = [
+  { key: "age", label: "How old are you?" },
+  { key: "projects", label: "Tell me about projects" },
+  { key: "roles", label: "Looking for what roles?" },
+];
+
+const pixelFont = Press_Start_2P({
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const messages: Record<SectionKey, string> = {
+  age: "I'm a Schulich Leader studying Electrical Engineering at York University, born in the early 2000s. Old enough to have shipped real projects and research, young enough to still be obsessed with learning new stacks and building hardware/software hybrids.",
+  projects:
+    "I build things at the intersection of AI, robotics, and cities: CityPath AI (Shopify hackathon winner for city planning), RedLamp (UofTHacks winner, a stress-aware study lamp), GrowthSync (visualizes how new developments hit infrastructure), Finding N.E.M.O (interactive container-drift simulation), plus a bunch of Arduino and hardware builds tying sensors, motors, and code together.",
+  roles:
+    "I'm looking for roles close to real systems: software and data work with an infrastructure, simulation, or robotics flavor—backend and platform engineering, ML or data-heavy systems, and anything that touches autonomy, drones, or city-scale problems.",
+  york:
+    "I'm doing Electrical Engineering at York University, which means a mix of circuits, control, embedded systems, and a lot of math-heavy courses that pair nicely with the robotics and infrastructure projects I build outside class.",
+  schulich:
+    "The Schulich Leader Scholarship is a $120,000 award for students in STEM. It gives me the freedom to take on ambitious research, hackathons, and hardware-heavy projects without worrying as much about finances or part-time work.",
+  sellstatic:
+    "I was previously a SWE intern at SellStatic, working on systems that make it easier for teams to ship and monitor web experiences. I spent a lot of time on backend logic, data plumbing, and making the developer experience smoother.",
+  uoft:
+    "At the University of Toronto / UTIAS I work on drone racing and autonomy—building and testing flight systems, running both real and simulated races, and helping with research on how we can make high-speed flight safer and more reliable.",
+  internships:
+    "I'm actively looking for fall 2026 internships where I can work on real systems—backend, data-heavy products, robotics, or infrastructure—ideally somewhere that touches autonomy, simulation, or large-scale city problems.",
+};
+
+const questionPrompts: Record<SectionKey, string> = {
+  age: "What year were you born?",
+  projects: "Can you walk me through your projects?",
+  roles: "What roles are you looking for right now?",
+  york: "What do you study at York University?",
+  schulich: "What is the Schulich Leader Scholarship?",
+  sellstatic: "What did you do as a SWE intern at SellStatic?",
+  uoft: "What kind of research are you doing at U of T / UTIAS?",
+  internships: "What kind of internships are you looking for?",
+};
+
+type InViewResult = { ref: React.RefObject<HTMLDivElement>; inView: boolean };
+
+function useInViewOnce(threshold = 0.2): InViewResult {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || inView) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [inView, threshold]);
+
+  return { ref, inView };
+}
+
+function TypewriterText({ text }: { text: string }) {
+  const [visibleChars, setVisibleChars] = useState(0);
+
+  useEffect(() => {
+    setVisibleChars(0);
+    const interval = setInterval(() => {
+      setVisibleChars((prev) => {
+        if (prev >= text.length) {
+          clearInterval(interval);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 18);
+
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <p>{text.slice(0, visibleChars)}</p>;
+}
+
+export default function Home() {
+  const [activeSection, setActiveSection] = useState<SectionKey>("projects");
+  const { ref: currentlyRef, inView: currentlyInView } = useInViewOnce();
+  const { ref: projectsRef, inView: projectsInView } = useInViewOnce();
+  const chatSectionRef = useRef<HTMLDivElement>(null);
+  const [activeAnswerKey, setActiveAnswerKey] = useState<SectionKey | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [responseMode, setResponseMode] = useState<"text" | "audio">("text");
+
+  const jumpToChat = (topic: SectionKey) => {
+    setActiveSection(topic);
+    setTimeout(() => {
+      chatSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 10);
+  };
+
+  const playAnswerAudio = async (key: SectionKey | null) => {
+    if (!key) return;
+    const text = messages[key];
+    if (!text) return;
+
+    setIsGeneratingAudio(true);
+    try {
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!res.ok) {
+        console.error("Failed to fetch TTS audio");
+        return;
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+
+      if (audioRef.current) {
+        audioRef.current.pause();
+        URL.revokeObjectURL(audioRef.current.src);
+      }
+
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      setIsSpeaking(true);
+      audio.onended = () => {
+        setIsSpeaking(false);
+        URL.revokeObjectURL(url);
+      };
+
+      await audio.play();
+    } catch (err) {
+      console.error("Error playing TTS audio", err);
+    } finally {
+      setIsGeneratingAudio(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (responseMode === "text") {
+      setActiveAnswerKey(activeSection);
+    } else {
+      setActiveAnswerKey(activeSection);
+      await playAnswerAudio(activeSection);
+    }
+  };
+
+  return (
+    <main className="hero-root min-h-screen w-full flex flex-col items-center justify-between py-0">
+      {/* Name in its own top bar — drops down, then portrait sits clearly below */}
+      <header className="hero-name-drop hero-name-block shrink-0 text-center relative z-10">
+        <div
+          className={`${pixelFont.className} pixel-hero-title text-[10px] md:text-xs`}
+        >
+          HERMAN
+        </div>
+        <div
+          className={`${pixelFont.className} pixel-hero-subtitle mt-2 text-xl md:text-3xl`}
+        >
+          ISAYENKA
+        </div>
+      </header>
+
+      {/* Portrait — well below the name, no overlap */}
+      <section className="hero-content-reveal flex-1 flex items-center justify-center w-full min-h-0 max-h-[40vh] pt-48 md:pt-64">
+        <div className="pixel-portrait hero-portrait-animate ascii-portrait-large">
+          <AsciiAvatar />
+        </div>
+      </section>
+
+      {/* Chat panel — below the image, aligned left */}
+      <section
+        ref={chatSectionRef}
+        className="w-full max-w-4xl px-4 pt-10 md:pt-16 pb-2 md:pb-4 shrink-0 hero-content-reveal self-start ml-4 md:ml-8"
+      >
+        <div className="chat-panel chat-panel-animate px-4 py-3 md:px-6 md:py-4 space-y-3">
+          <div className="flex flex-wrap gap-2">
+            {promptOptions.map((option) => {
+              const isActive = activeSection === option.key;
+              return (
+                <button
+                  key={option.key}
+                  type="button"
+                  onClick={() => setActiveSection(option.key)}
+                  className={`chat-prompt px-3 py-2 flex items-center gap-2 ${
+                    isActive ? "chat-prompt-active" : ""
+                  }`}
+                >
+                  <span className="text-sm leading-none">↳</span>
+                  <span>{option.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="border-t border-[#2a2a2a] pt-3 flex flex-col gap-2 text-xs md:text-sm text-gray-200">
+            {activeAnswerKey && (
+              <TypewriterText
+                key={activeAnswerKey}
+                text={messages[activeAnswerKey]}
+              />
+            )}
+
+            <div className="flex items-center justify-between gap-2 text-[0.7rem] text-gray-500 pt-1">
+              <span className="uppercase tracking-[0.2em]">
+                Ask about Herman
+              </span>
+              <div className="inline-flex items-center gap-1 rounded border border-[#2a2a2a] px-1.5 py-0.5">
+                <button
+                  type="button"
+                  onClick={() => setResponseMode("text")}
+                  className={`flex items-center gap-1 px-1.5 py-0.5 text-[0.65rem] ${
+                    responseMode === "text"
+                      ? "bg-[#111111] text-gray-100"
+                      : "text-gray-400"
+                  }`}
+                >
+                  <span>✎</span>
+                  <span>Text</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setResponseMode("audio")}
+                  className={`flex items-center gap-1 px-1.5 py-0.5 text-[0.65rem] ${
+                    responseMode === "audio"
+                      ? "bg-[#111111] text-gray-100"
+                      : "text-gray-400"
+                  }`}
+                >
+                  <span>🔊</span>
+                  <span>Audio</span>
+                </button>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="chat-input flex-1 px-3 py-2 text-gray-500">
+                {questionPrompts[activeSection]}
+              </div>
+              <button
+                type="button"
+                className="chat-input w-8 h-8 flex items-center justify-center"
+                onClick={handleSubmit}
+                aria-label="Send"
+              >
+                ⌲
+              </button>
+              {responseMode === "audio" && (
+                <button
+                  type="button"
+                  className="chat-input w-8 h-8 flex items-center justify-center"
+                  onClick={() => playAnswerAudio(activeAnswerKey)}
+                  aria-label="Replay audio"
+                  disabled={!activeAnswerKey || isGeneratingAudio}
+                >
+                  {isSpeaking ? "■" : "▶"}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Conversation mode + currently */}
+      <section
+        ref={currentlyRef}
+        className={`w-full max-w-4xl mt-12 px-4 text-xs md:text-sm transition-all duration-700 ${
+          currentlyInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+        }`}
+      >
+        <div className="flex items-center justify-between text-[0.7rem] text-gray-400 mb-4">
+          <span className="tracking-[0.25em] uppercase">
+            Conversation mode
+          </span>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-4 rounded-full bg-[#111] border border-[#2a2a2a] flex items-center justify-start px-[2px]">
+              <div className="w-3 h-3 rounded-full bg-[#555]" />
+            </div>
+            <span className="text-gray-500">OFF</span>
+          </div>
+        </div>
+
+        <div className="border-t border-[#2a2a2a] pt-4">
+          <div className="about-me-terminal">
+            <div className="tracking-[0.2em] uppercase text-[0.65rem] text-gray-500 mb-3 font-medium">
+              Currently
+            </div>
+            <ul className="space-y-1.5 about-me-line">
+              <li className="flex items-center gap-2">
+                <span className="text-gray-500 select-none">▸</span>
+                <span>engineering @</span>
+                <span className="inline-flex shrink-0 w-5 h-5 rounded-sm overflow-hidden align-middle">
+                  <Image
+                    src="/york.png"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
+                </span>
+                <button
+                  type="button"
+                  onClick={() => jumpToChat("york")}
+                  className="underline decoration-gray-500 underline-offset-1 hover:decoration-gray-300"
+                >
+                  York University
+                </button>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gray-500 select-none">▸</span>
+                <span>recipient of $120,000</span>
+                <span className="inline-flex shrink-0 w-5 h-5 rounded-sm overflow-hidden align-middle">
+                  <Image
+                    src="/schulich.jpeg"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
+                </span>
+                <button
+                  type="button"
+                  onClick={() => jumpToChat("schulich")}
+                  className="underline decoration-gray-500 underline-offset-1 hover:decoration-gray-300"
+                >
+                  Schulich Leader Scholarship
+                </button>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gray-500 select-none">▸</span>
+                <span>prev swe intern @</span>
+                <span className="inline-flex shrink-0 w-5 h-5 rounded-sm overflow-hidden align-middle">
+                  <Image
+                    src="/sellstatic.jpeg"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
+                </span>
+                <button
+                  type="button"
+                  onClick={() => jumpToChat("sellstatic")}
+                  className="underline decoration-gray-500 underline-offset-1 hover:decoration-gray-300"
+                >
+                  SellStatic
+                </button>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gray-500 select-none">▸</span>
+                <span>research @</span>
+                <span className="inline-flex shrink-0 w-5 h-5 rounded-sm overflow-hidden align-middle">
+                  <Image
+                    src="/utias.jpeg"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
+                </span>
+                <button
+                  type="button"
+                  onClick={() => jumpToChat("uoft")}
+                  className="underline decoration-gray-500 underline-offset-1 hover:decoration-gray-300"
+                >
+                  University of Toronto
+                </button>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-gray-500 select-none">▸</span>
+                <button
+                  type="button"
+                  onClick={() => jumpToChat("internships")}
+                  className="underline decoration-gray-500 underline-offset-1 hover:decoration-gray-300"
+                >
+                  seeking internships
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects section */}
+      <section
+        ref={projectsRef}
+        className={`projects-section w-full max-w-5xl mt-16 px-4 py-12 md:py-16 relative transition-all duration-700 ${
+          projectsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+        }`}
+      >
+        <div className="projects-heading mb-8">
+          <h2 className="uppercase text-gray-200 font-semibold text-sm tracking-widest shrink-0">
+            Projects
+          </h2>
+          <div className="projects-heading-line" />
+        </div>
+        <div className="grid md:grid-cols-2 gap-x-8 gap-y-10 relative">
+          {projects.map((project) => (
+            <ProjectCard key={project.title} project={project} />
+          ))}
+        </div>
+      </section>
+
+      {/* Footer — connect */}
+      <footer className="footer-connect">
+        <div className="footer-connect-inner">
+          <div className="footer-connect-heading">
+            <div className="footer-connect-heading-line" />
+            <span>Connect</span>
+            <div className="footer-connect-heading-line" />
+          </div>
+          <div className="footer-connect-links">
+            <a href="mailto:herman.isayenka@gmail.com">Email</a>
+            <span className="footer-connect-separator">/</span>
+            <a
+              href="https://www.linkedin.com/in/hermanisayenka/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
+            <span className="footer-connect-separator">/</span>
+            <a
+              href="https://github.com/herman888"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          </div>
+          <div className="footer-connect-meta">
+            DESIGNED &amp; BUILT BY HERMAN ISAYENKA
+          </div>
+        </div>
+      </footer>
+    </main>
+  );
+}
+
+type Project = (typeof projects)[number];
+
+function ProjectCard({ project }: { project: Project }) {
+  const p = project as Project & { image?: string; images?: string[]; caption?: string; link?: string; code?: string; devpost?: string };
+  const imageSrc = p.image ?? p.images?.[0];
+  const caption = p.caption ?? project.description;
+  const href = p.link ?? p.code ?? p.devpost;
+
+  const cardContent = (
+    <>
+      <div className="relative w-full aspect-[4/3] bg-black overflow-hidden">
+        {project.title === "Finding N.E.M.O (ConUHacks)" ? (
+          <iframe
+            title="Finding N.E.M.O Demo"
+            src="https://www.youtube.com/embed/PQBeq-7WKRE"
+            className="absolute inset-0 w-full h-full object-cover"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : imageSrc ? (
+          <Image
+            src={imageSrc}
+            alt={project.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        ) : null}
+      </div>
+      <div className="p-4 md:p-5">
+        <h3 className="projects-card-title mb-1 leading-tight">
+          {project.title}
+        </h3>
+        <p className="projects-card-subtitle leading-snug">
+          {caption}
+        </p>
+      </div>
+    </>
+  );
+
+  return (
+    <article className="projects-card group rounded-lg flex flex-col">
+      {href ? (
+        <a
+          href={href}
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+          className="flex flex-col h-full"
+        >
+          {cardContent}
+        </a>
+      ) : (
+        cardContent
+      )}
+    </article>
+  );
 }
