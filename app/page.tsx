@@ -40,6 +40,28 @@ const questionPrompts: Record<SectionKey, string> = {
   internships: "What kind of internships are you looking for?",
 };
 
+// Fallback answers used if the external chat API fails,
+// so the chatbot always returns something reasonable.
+const fallbackAnswers: Record<SectionKey, string> = {
+  age: "I'm 18 years old, originally from Belarus, and studying Electrical Engineering at York University as a Schulich Leader. Old enough to have shipped real projects and research, young enough to still be obsessed with learning new stacks and building hardware–software hybrids.",
+  projects:
+    "I build things at the intersection of AI, robotics, and cities: CityPath AI (Shopify hackathon winner for city planning), RedLamp (UofTHacks winner, a stress-aware study lamp), GrowthSync (visualizes how new developments hit infrastructure), Finding N.E.M.O (interactive container-drift simulation), plus a bunch of Arduino and hardware builds tying sensors, motors, and code together.",
+  roles:
+    "I'm looking for roles close to real systems: backend and platform engineering, data or ML-heavy systems, and anything that touches autonomy, drones, or city-scale infrastructure problems.",
+  drone:
+    "The drone racing work I do at UTIAS is all about high-speed autonomy: building and tuning flight stacks, running both simulated races and real flights through gates, and analyzing trajectories to understand how close we can get to the physical limits.",
+  york:
+    "I study Electrical Engineering at York University, which means a mix of circuits, control, embedded systems, and math-heavy courses that pair nicely with the robotics and infrastructure projects I build outside class.",
+  schulich:
+    "The Schulich Leader Scholarship is a major STEM scholarship in Canada. It gives me the freedom to take on ambitious research, hackathons, and hardware-heavy projects without worrying as much about finances or part-time work.",
+  sellstatic:
+    "I was previously a SWE intern at SellStatic, working on systems that make it easier for teams to ship and monitor web experiences. I spent a lot of time on backend logic, data plumbing, and smoothing out the developer experience.",
+  uoft:
+    "At the University of Toronto / UTIAS I work on drone racing and autonomy—building and testing flight systems, running both real and simulated races, and helping with research on how we can make high-speed flight safer and more reliable.",
+  internships:
+    "I'm actively looking for internships where I can work on real systems—backend, data-heavy products, robotics, or infrastructure—ideally somewhere that touches autonomy, simulation, or large-scale city problems.",
+};
+
 type InViewResult = { ref: React.RefObject<HTMLDivElement | null>; inView: boolean };
 
 function useInViewOnce(threshold = 0.2): InViewResult {
@@ -137,8 +159,15 @@ export default function Home() {
       setAnswer(data.answer ?? "");
     } catch (err) {
       console.error(err);
-      setError("Something went wrong answering that. Try again.");
-      setAnswer("");
+      // Fallback to a canned answer so the chat still works
+      const fallback = fallbackAnswers[activeSection];
+      if (fallback) {
+        setError(null);
+        setAnswer(fallback);
+      } else {
+        setError("Something went wrong answering that. Try again.");
+        setAnswer("");
+      }
     } finally {
       setIsLoading(false);
     }
