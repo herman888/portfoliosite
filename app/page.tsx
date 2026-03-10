@@ -110,6 +110,64 @@ function TypewriterText({ text }: { text: string }) {
   return <p className="chat-text">{text.slice(0, visibleChars)}</p>;
 }
 
+function inferSectionFromQuestion(
+  question: string,
+  fallback: SectionKey
+): SectionKey {
+  const normalized = question.toLowerCase();
+
+  if (
+    normalized.includes("how old") ||
+    normalized.includes("age") ||
+    normalized.includes("year were you born") ||
+    normalized.includes("born")
+  ) {
+    return "age";
+  }
+  if (
+    normalized.includes("project") ||
+    normalized.includes("build") ||
+    normalized.includes("work on")
+  ) {
+    return "projects";
+  }
+  if (
+    normalized.includes("role") ||
+    normalized.includes("job") ||
+    normalized.includes("position")
+  ) {
+    return "roles";
+  }
+  if (normalized.includes("intern") || normalized.includes("internship")) {
+    return "internships";
+  }
+  if (
+    normalized.includes("drone") ||
+    normalized.includes("racing") ||
+    normalized.includes("utias")
+  ) {
+    return "drone";
+  }
+  if (normalized.includes("york")) {
+    return "york";
+  }
+  if (normalized.includes("schulich")) {
+    return "schulich";
+  }
+  if (normalized.includes("sellstatic")) {
+    return "sellstatic";
+  }
+  if (
+    normalized.includes("uoft") ||
+    normalized.includes("u of t") ||
+    normalized.includes("university of toronto")
+  ) {
+    return "uoft";
+  }
+
+  return fallback;
+}
+
 export default function Home() {
   const [activeSection, setActiveSection] = useState<SectionKey>("projects");
   const { ref: currentlyRef, inView: currentlyInView } = useInViewOnce();
@@ -117,11 +175,14 @@ export default function Home() {
   const chatSectionRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [answer, setAnswer] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const jumpToChat = (topic: SectionKey) => {
     setActiveSection(topic);
     setInputValue(questionPrompts[topic]);
     setAnswer("");
+    setError(null);
     setTimeout(() => {
       chatSectionRef.current?.scrollIntoView({
         behavior: "smooth",
@@ -132,58 +193,41 @@ export default function Home() {
 
   // Audio playback removed for now; chat answers are text-only.
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!inputValue.trim()) return;
-    const normalized = inputValue.toLowerCase();
-
-    let inferredKey: SectionKey = activeSection;
-
-    if (
-      normalized.includes("how old") ||
-      normalized.includes("age") ||
-      normalized.includes("year were you born") ||
-      normalized.includes("born")
-    ) {
-      inferredKey = "age";
-    } else if (
-      normalized.includes("project") ||
-      normalized.includes("build") ||
-      normalized.includes("work on")
-    ) {
-      inferredKey = "projects";
-    } else if (
-      normalized.includes("role") ||
-      normalized.includes("job") ||
-      normalized.includes("position")
-    ) {
-      inferredKey = "roles";
-    } else if (
-      normalized.includes("intern") ||
-      normalized.includes("internship")
-    ) {
-      inferredKey = "internships";
-    } else if (
-      normalized.includes("drone") ||
-      normalized.includes("racing") ||
-      normalized.includes("utias")
-    ) {
-      inferredKey = "drone";
-    } else if (normalized.includes("york")) {
-      inferredKey = "york";
-    } else if (normalized.includes("schulich")) {
-      inferredKey = "schulich";
-    } else if (normalized.includes("sellstatic")) {
-      inferredKey = "sellstatic";
-    } else if (
-      normalized.includes("uoft") ||
-      normalized.includes("u of t") ||
-      normalized.includes("university of toronto")
-    ) {
-      inferredKey = "uoft";
-    }
-
+    const inferredKey = inferSectionFromQuestion(inputValue, activeSection);
     setActiveSection(inferredKey);
-    setAnswer(fallbackAnswers[inferredKey]);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: inputValue,
+          topic: inferredKey,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Chat request failed");
+      }
+
+      const data = (await res.json()) as { answer?: string };
+      if (data.answer && data.answer.trim().length > 0) {
+        setAnswer(data.answer);
+      } else {
+        setAnswer(fallbackAnswers[inferredKey]);
+      }
+    } catch (err) {
+      console.error(err);
+      // Fall back to deterministic canned answer for Herman-related topics
+      setAnswer(fallbackAnswers[inferredKey]);
+      setError(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -246,7 +290,15 @@ export default function Home() {
               </span>
             </div>
             <div className="chat-input w-full mt-2 px-3 py-2 text-gray-200 min-h-[3.5rem]">
-              {answer && <TypewriterText key={answer} text={answer} />}
+              {isLoading && (
+                <p className="chat-text text-gray-500">Thinking...</p>
+              )}
+              {!isLoading && error && (
+                <p className="chat-text text-red-400">{error}</p>
+              )}
+              {!isLoading && !error && answer && (
+                <TypewriterText key={answer} text={answer} />
+              )}
             </div>
             <div className="flex items-center gap-2 mt-2">
               <input
