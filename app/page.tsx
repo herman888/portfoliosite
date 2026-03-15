@@ -199,7 +199,11 @@ export default function Home() {
       });
       if (!res.ok) {
         const msg = await res.text().catch(() => "TTS failed");
-        throw new Error(msg);
+        const friendly =
+          msg.toLowerCase().includes("elevenlabs") || msg.toLowerCase().includes("configuration")
+            ? "Voice isn't available yet."
+            : msg;
+        throw new Error(friendly);
       }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
