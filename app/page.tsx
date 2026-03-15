@@ -180,6 +180,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [ttsError, setTtsError] = useState<string | null>(null);
   const [isPortraitHovered, setIsPortraitHovered] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const lastTtsUrlRef = useRef<string | null>(null);
@@ -187,6 +188,7 @@ export default function Home() {
 
   const playAnswerAudio = async (text: string) => {
     if (!text.trim()) return;
+    setTtsError(null);
     setIsGeneratingAudio(true);
     setIsPlayingAudio(false);
     try {
@@ -195,12 +197,18 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: text.trim() }),
       });
-      if (!res.ok) throw new Error("TTS failed");
+      if (!res.ok) {
+        const msg = await res.text().catch(() => "TTS failed");
+        throw new Error(msg);
+      }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       lastTtsUrlRef.current = url;
       const audio = audioRef.current;
-      if (!audio) return;
+      if (!audio) {
+        URL.revokeObjectURL(url);
+        return;
+      }
       audio.src = url;
       audio.onended = () => {
         setIsPlayingAudio(false);
@@ -210,9 +218,36 @@ export default function Home() {
         }
       };
       audio.onplay = () => setIsPlayingAudio(true);
+      // Wait for enough data before play() so it actually plays
+      await new Promise<void>((resolve, reject) => {
+        const onCanPlay = () => {
+          cleanup();
+          resolve();
+        };
+        const onError = () => {
+          cleanup();
+          reject(new Error("Audio load failed"));
+        };
+        const cleanup = () => {
+          audio.removeEventListener("canplaythrough", onCanPlay);
+          audio.removeEventListener("error", onError);
+        };
+        if (audio.readyState >= 3) {
+          resolve();
+          return;
+        }
+        audio.addEventListener("canplaythrough", onCanPlay, { once: true });
+        audio.addEventListener("error", onError, { once: true });
+        audio.load();
+      });
       await audio.play();
     } catch (err) {
-      console.error("TTS playback error", err);
+      const isAutoplayBlocked =
+        typeof err === "object" && err !== null && "name" in err && (err as { name: string }).name === "NotAllowedError";
+      if (!isAutoplayBlocked) {
+        console.error("TTS playback error", err);
+        setTtsError(err instanceof Error ? err.message : "Voice unavailable");
+      }
       setIsPlayingAudio(false);
       if (lastTtsUrlRef.current) {
         URL.revokeObjectURL(lastTtsUrlRef.current);
@@ -384,19 +419,26 @@ export default function Home() {
                 <>
                   <TypewriterText key={answer} text={answer} />
                   <div className="mt-2 flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => playAnswerAudio(answer)}
-                      disabled={isGeneratingAudio}
-                      className="chat-input flex items-center gap-1.5 px-2 py-1 text-[0.65rem] uppercase tracking-wider text-gray-400 hover:text-gray-200 disabled:opacity-50"
-                      aria-label={isPlayingAudio ? "Playing" : "Play answer with voice"}
-                    >
-                      {isGeneratingAudio
-                        ? "Generating..."
-                        : isPlayingAudio
-                          ? "🔊 Playing"
-                          : "🔊 Play voice"}
-                    </button>
+                    <div className="flex flex-col gap-1">
+                      <button
+                        type="button"
+                        onClick={() => playAnswerAudio(answer)}
+                        disabled={isGeneratingAudio}
+                        className="chat-input flex items-center gap-1.5 px-2 py-1 text-[0.65rem] uppercase tracking-wider text-gray-400 hover:text-gray-200 disabled:opacity-50 w-fit"
+                        aria-label={isPlayingAudio ? "Playing" : "Play answer with voice"}
+                      >
+                        {isGeneratingAudio
+                          ? "Generating..."
+                          : isPlayingAudio
+                            ? "🔊 Playing"
+                            : "🔊 Play voice"}
+                      </button>
+                      {ttsError && (
+                        <p className="chat-text text-red-400 text-[0.6rem]">
+                          {ttsError}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </>
               )}
