@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const CHARSET = "@%#WMNX0x+:-. ";
 
@@ -9,9 +9,20 @@ function brightnessToChar(b: number) {
   return CHARSET[idx];
 }
 
-const AsciiAvatar: React.FC = () => {
+export type PortraitHitTestRef = {
+  isOverPerson(clientX: number, clientY: number): boolean;
+} | null;
+
+type AsciiAvatarProps = {
+  hitTestRef?: React.MutableRefObject<PortraitHitTestRef>;
+};
+
+const AsciiAvatar: React.FC<AsciiAvatarProps> = ({ hitTestRef }) => {
   const [lines, setLines] = useState<string[]>([]);
   const [noiseSeed, setNoiseSeed] = useState(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const personMaskRef = useRef<boolean[][] | null>(null);
+  const dimensionsRef = useRef({ w: 0, h: 0 });
 
   useEffect(() => {
     const img = new Image();
@@ -49,8 +60,10 @@ const AsciiAvatar: React.FC = () => {
       const xOffset = Math.floor((targetWidth - outputWidth) / 2);
       const centerX = outputWidth / 2;
       const newLines: string[] = [];
+      const personMask: boolean[][] = [];
       for (let y = 0; y < targetHeight; y++) {
         let row = "";
+        personMask.push([]);
         for (let x = 0; x < outputWidth; x++) {
           const i = (y * targetWidth + (x + xOffset)) * 4;
           const r = data[i] / 255;
@@ -59,6 +72,7 @@ const AsciiAvatar: React.FC = () => {
           const a = data[i + 3] / 255;
           if (a < 0.22) {
             row += " ";
+            personMask[y].push(false);
             continue;
           }
           const raw = (r + g + b) / 3;
@@ -72,6 +86,8 @@ const AsciiAvatar: React.FC = () => {
           const isFaceOrBody =
             (brightness < 0.78 && distFromCenter < 0.92) ||
             distFromCenter < 0.55;
+
+          personMask[y].push(isFaceOrBody);
 
           if (isFaceOrBody) {
             row += baseChar;
@@ -96,9 +112,31 @@ const AsciiAvatar: React.FC = () => {
         }
         newLines.push(row);
       }
+      personMaskRef.current = personMask;
+      dimensionsRef.current = { w: outputWidth, h: targetHeight };
       setLines(newLines);
     };
   }, [noiseSeed]);
+
+  useEffect(() => {
+    if (lines.length === 0 || !hitTestRef) return;
+    const mask = personMaskRef.current;
+    const dim = dimensionsRef.current;
+    const el = wrapperRef.current;
+    if (!mask || !el || dim.w === 0 || dim.h === 0) return;
+    hitTestRef.current = {
+      isOverPerson(clientX: number, clientY: number) {
+        const rect = el.getBoundingClientRect();
+        const col = Math.floor(((clientX - rect.left) / rect.width) * dim.w);
+        const row = Math.floor(((clientY - rect.top) / rect.height) * dim.h);
+        if (col < 0 || col >= dim.w || row < 0 || row >= dim.h) return false;
+        return !!mask[row][col];
+      },
+    };
+    return () => {
+      hitTestRef.current = null;
+    };
+  }, [lines, hitTestRef]);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -118,7 +156,7 @@ const AsciiAvatar: React.FC = () => {
   );
 
   return (
-    <div className="ascii-avatar-wrapper">
+    <div ref={wrapperRef} className="ascii-avatar-wrapper">
       <pre className="ascii-avatar">{content}</pre>
     </div>
   );

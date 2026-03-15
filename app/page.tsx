@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Press_Start_2P } from "next/font/google";
-import AsciiAvatar from "./components/AsciiAvatar";
+import AsciiAvatar, { type PortraitHitTestRef } from "./components/AsciiAvatar";
+import ThemeToggle from "./components/ThemeToggle";
 import { projects, Project } from "./projects/projects-data";
 
 type SectionKey =
@@ -177,6 +178,59 @@ export default function Home() {
   const [answer, setAnswer] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isPortraitHovered, setIsPortraitHovered] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const lastTtsUrlRef = useRef<string | null>(null);
+  const portraitHitTestRef = useRef<PortraitHitTestRef>(null);
+
+  const playAnswerAudio = async (text: string) => {
+    if (!text.trim()) return;
+    setIsGeneratingAudio(true);
+    setIsPlayingAudio(false);
+    try {
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text.trim() }),
+      });
+      if (!res.ok) throw new Error("TTS failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      lastTtsUrlRef.current = url;
+      const audio = audioRef.current;
+      if (!audio) return;
+      audio.src = url;
+      audio.onended = () => {
+        setIsPlayingAudio(false);
+        if (lastTtsUrlRef.current) {
+          URL.revokeObjectURL(lastTtsUrlRef.current);
+          lastTtsUrlRef.current = null;
+        }
+      };
+      audio.onplay = () => setIsPlayingAudio(true);
+      await audio.play();
+    } catch (err) {
+      console.error("TTS playback error", err);
+      setIsPlayingAudio(false);
+      if (lastTtsUrlRef.current) {
+        URL.revokeObjectURL(lastTtsUrlRef.current);
+        lastTtsUrlRef.current = null;
+      }
+    } finally {
+      setIsGeneratingAudio(false);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (lastTtsUrlRef.current) {
+        URL.revokeObjectURL(lastTtsUrlRef.current);
+        lastTtsUrlRef.current = null;
+      }
+    };
+  }, []);
 
   const jumpToChat = (topic: SectionKey) => {
     setActiveSection(topic);
@@ -190,8 +244,6 @@ export default function Home() {
       });
     }, 10);
   };
-
-  // Audio playback removed for now; chat answers are text-only.
 
   const handleSubmit = async () => {
     if (!inputValue.trim()) return;
@@ -215,16 +267,18 @@ export default function Home() {
       }
 
       const data = (await res.json()) as { answer?: string };
-      if (data.answer && data.answer.trim().length > 0) {
-        setAnswer(data.answer);
-      } else {
-        setAnswer(fallbackAnswers[inferredKey]);
-      }
+      const finalAnswer =
+        data.answer && data.answer.trim().length > 0
+          ? data.answer
+          : fallbackAnswers[inferredKey];
+      setAnswer(finalAnswer);
+      playAnswerAudio(finalAnswer);
     } catch (err) {
       console.error(err);
-      // Fall back to deterministic canned answer for Herman-related topics
-      setAnswer(fallbackAnswers[inferredKey]);
+      const finalAnswer = fallbackAnswers[inferredKey];
+      setAnswer(finalAnswer);
       setError(null);
+      playAnswerAudio(finalAnswer);
     } finally {
       setIsLoading(false);
     }
@@ -233,32 +287,62 @@ export default function Home() {
   return (
     <main className="hero-root min-h-screen w-full flex flex-col items-center justify-between py-0">
       {/* Name in its own top bar — drops down, then portrait sits clearly below */}
-      <header className="hero-name-drop hero-name-block shrink-0 text-center relative z-10">
+      <header className="hero-name-drop hero-name-block shrink-0 text-center relative z-10 px-3 sm:px-4">
+        <ThemeToggle />
         <div
-          className={`${pixelFont.className} pixel-hero-title text-[10px] md:text-xs`}
+          className={`${pixelFont.className} pixel-hero-title text-[11px] sm:text-[10px] md:text-xs`}
         >
           HERMAN
         </div>
         <div
-          className={`${pixelFont.className} pixel-hero-subtitle mt-2 text-xl md:text-3xl`}
+          className={`${pixelFont.className} pixel-hero-subtitle mt-1.5 sm:mt-2 text-lg sm:text-xl md:text-2xl lg:text-3xl`}
         >
           ISAYENKA
         </div>
       </header>
 
-      {/* Portrait — well below the name, no overlap */}
-      <section className="hero-content-reveal flex-1 flex items-center justify-center w-full min-h-0 max-h-[40vh] pt-48 md:pt-64">
-        <div className="pixel-portrait hero-portrait-animate ascii-portrait-large">
-          <AsciiAvatar />
+      {/* Portrait — well below the name, no overlap; hover over person only shows original photo */}
+      <section className="hero-content-reveal flex-1 flex items-center justify-center w-full min-h-0 max-h-[35vh] sm:max-h-[40vh] pt-20 sm:pt-28 md:pt-48 lg:pt-64">
+        <div
+          className="pixel-portrait hero-portrait-animate ascii-portrait-large cursor-pointer"
+          onMouseMove={(e) =>
+            setIsPortraitHovered(
+              portraitHitTestRef.current?.isOverPerson(e.clientX, e.clientY) ??
+                false
+            )
+          }
+          onMouseLeave={() => setIsPortraitHovered(false)}
+          role="img"
+          aria-label="Herman Isayenka portrait"
+        >
+          <div
+            className={`transition-opacity duration-200 ${isPortraitHovered ? "opacity-0" : "opacity-100"}`}
+            style={{ pointerEvents: isPortraitHovered ? "none" : undefined }}
+          >
+            <AsciiAvatar hitTestRef={portraitHitTestRef} />
+          </div>
+          <div
+            className={`absolute inset-0 transition-opacity duration-200 ${isPortraitHovered ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          >
+            <div className="relative w-full h-full">
+              <Image
+                src="/portrait.jpg"
+                alt=""
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 640px) 200px, 280px"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Chat panel — below the image, aligned left */}
+      {/* Chat panel — below the image, full width on mobile */}
       <section
         ref={chatSectionRef}
-        className="w-full max-w-4xl px-4 pt-10 md:pt-16 pb-2 md:pb-4 shrink-0 hero-content-reveal self-start ml-4 md:ml-8"
+        className="w-full max-w-4xl mx-auto px-3 sm:px-4 pt-6 sm:pt-10 md:pt-16 pb-4 md:pb-4 shrink-0 hero-content-reveal self-start sm:ml-4 md:ml-8"
       >
-        <div className="chat-panel chat-panel-animate px-4 py-3 md:px-6 md:py-4 space-y-3">
+        <div className="chat-panel chat-panel-animate px-3 py-3 sm:px-4 md:px-6 md:py-4 space-y-3">
           <div className="flex flex-wrap gap-2">
             {promptOptions.map((option) => {
               const isActive = activeSection === option.key;
@@ -297,12 +381,30 @@ export default function Home() {
                 <p className="chat-text text-red-400">{error}</p>
               )}
               {!isLoading && !error && answer && (
-                <TypewriterText key={answer} text={answer} />
+                <>
+                  <TypewriterText key={answer} text={answer} />
+                  <div className="mt-2 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => playAnswerAudio(answer)}
+                      disabled={isGeneratingAudio}
+                      className="chat-input flex items-center gap-1.5 px-2 py-1 text-[0.65rem] uppercase tracking-wider text-gray-400 hover:text-gray-200 disabled:opacity-50"
+                      aria-label={isPlayingAudio ? "Playing" : "Play answer with voice"}
+                    >
+                      {isGeneratingAudio
+                        ? "Generating..."
+                        : isPlayingAudio
+                          ? "🔊 Playing"
+                          : "🔊 Play voice"}
+                    </button>
+                  </div>
+                </>
               )}
             </div>
-            <div className="flex items-center gap-2 mt-2">
+            <audio ref={audioRef} className="hidden" />
+            <div className="flex items-center gap-2 mt-2 min-h-[44px] sm:min-h-0">
               <input
-                className="chat-input flex-1 px-3 py-2 bg-black text-gray-100 placeholder-gray-500"
+                className="chat-input flex-1 min-h-[44px] sm:min-h-[2.25rem] px-3 py-2 bg-black text-gray-100 placeholder-gray-500"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => {
@@ -315,7 +417,7 @@ export default function Home() {
               />
               <button
                 type="button"
-                className="chat-input w-8 h-8 flex items-center justify-center"
+                className="chat-input w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center shrink-0"
                 onClick={handleSubmit}
                 aria-label="Send"
               >
@@ -326,10 +428,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Conversation mode + currently */}
+      {/* Currently */}
       <section
         ref={currentlyRef}
-        className={`w-full max-w-4xl mt-12 pl-4 pr-2 md:pl-8 md:pr-2 text-xs md:text-sm transition-all duration-700 self-start ${
+        className={`w-full max-w-4xl mx-auto mt-8 sm:mt-12 px-3 sm:pl-4 sm:pr-2 md:pl-8 md:pr-2 text-xs md:text-sm transition-all duration-700 self-start ${
           currentlyInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
@@ -437,26 +539,26 @@ export default function Home() {
       {/* Projects section */}
       <section
         ref={projectsRef}
-        className={`projects-section w-full max-w-5xl mt-16 px-4 py-12 md:py-16 relative transition-all duration-700 ${
+        className={`projects-section w-full max-w-5xl mx-auto mt-10 sm:mt-16 px-3 sm:px-4 py-8 sm:py-12 md:py-16 relative transition-all duration-700 ${
           projectsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <div className="projects-heading mb-8">
-          <h2 className="uppercase text-gray-200 font-semibold text-sm tracking-widest shrink-0">
+        <div className="projects-heading mb-6 sm:mb-8">
+          <h2 className="uppercase text-gray-200 font-semibold text-xs sm:text-sm tracking-widest shrink-0">
             Projects
           </h2>
           <div className="projects-heading-line" />
         </div>
-        <div className="grid md:grid-cols-2 gap-x-8 gap-y-10 relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-x-8 sm:gap-y-10 relative">
           {projects.map((project) => (
             <ProjectCard key={project.title} project={project} />
           ))}
         </div>
-        <div className="mt-10 flex justify-center">
+        <div className="mt-8 sm:mt-10 flex justify-center">
           <button
             type="button"
             onClick={() => jumpToChat("drone")}
-            className="px-5 py-2 border border-[#2a2a2a] bg-black/40 hover:bg-black/70 text-[0.7rem] md:text-xs uppercase tracking-[0.25em]"
+            className="min-h-[44px] px-5 py-2.5 sm:py-2 border border-[#2a2a2a] bg-black/40 hover:bg-black/70 text-[0.7rem] md:text-xs uppercase tracking-[0.25em]"
           >
             Learn more
           </button>
@@ -526,7 +628,7 @@ function ProjectCard({ project }: { project: Project }) {
           />
         ) : null}
       </div>
-      <div className="p-4 md:p-5">
+      <div className="p-3 sm:p-4 md:p-5">
         <h3 className="projects-card-title mb-1 leading-tight">
           {project.title}
         </h3>
