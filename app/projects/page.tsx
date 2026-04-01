@@ -1,226 +1,67 @@
- "use client";
+"use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useMemo, useState } from "react";
+import ProjectsSection from "../components/ProjectsSection";
 import { projects } from "./projects-data";
 
 export default function ProjectsPage() {
-	const [arduinoIndex] = useState(0);
-	const arduinoProject = projects.find(
-		(p) => p.title === "Arduino/Hardware Projects"
-	);
-	const arduinoImages = arduinoProject?.images || [];
+  const [selectedTag, setSelectedTag] = useState<string>("");
 
-	return (
-		<>
-			{/* Featured Drone Racing Project */}
-			<div className="max-w-3xl mx-auto mb-16 rounded-2xl overflow-hidden shadow bg-[#222] border border-[#d6c9a5]">
-				<div className="w-full h-64 md:h-80 relative">
-					<img
-						src="/droneracing.jpg"
-						alt="Drone Racing Project"
-						className="object-cover w-full h-full"
-						style={{ borderTopLeftRadius: '1.25rem', borderTopRightRadius: '1.25rem' }}
-					/>
-				</div>
-				<div className="bg-[#f5f5dc] p-8 border-t border-[#e5e5c0]">
-					<h2 className="text-2xl font-bold mb-2 text-[#bfa94c]">Drone Racing</h2>
-					<p className="text-gray-700 mb-4">Developed @UTIAS Flight System and Control Laboratory. Built and tested drone racing systems, ran real and simulated flights, and contributed to research on autonomous flight and trajectory analysis.</p>
-					<div className="flex flex-wrap gap-2 mb-4">
-						{['Drones', 'Gazebo', 'Python', 'ROS', 'Simulink'].map(tag => (
-							<span key={tag} className="tag">{tag}</span>
-						))}
-					</div>
-					<div className="flex gap-2">
-						<Link href="/projects/drone-racing-summary" className="btn-primary px-4 py-2 font-semibold">Project Summary</Link>
-						<a href="/droneracing.mp4" target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-2 font-semibold">Demo</a>
-					</div>
-				</div>
-			</div>
+  const allTags = useMemo(() => {
+    const s = new Set<string>();
+    for (const p of projects) {
+      for (const t of p.tags) s.add(t);
+    }
+    return Array.from(s).sort((a, b) => a.localeCompare(b));
+  }, []);
 
-			<div className="max-w-5xl mx-auto py-16 px-4">
-				<h2 className="text-2xl font-bold mb-6">All Projects</h2>
-				<div className="grid md:grid-cols-2 gap-8">
-					{projects.map((project) => (
-						project.title === 'Arduino/Hardware Projects' ? null : (
-							<div
-								key={project.title}
-								className="bg-card rounded-xl shadow border border-[#d6c9a5] overflow-hidden flex flex-col"
-							>
-								{project.title === 'Finding N.E.M.O (ConUHacks)' ? (
-									<div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
-										<iframe
-											title="Finding N.E.M.O Demo"
-											src="https://www.youtube.com/embed/PQBeq-7WKRE"
-											frameBorder="0"
-											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-											allowFullScreen
-											className="object-cover w-full h-full rounded"
-										></iframe>
-									</div>
-								) : (
-									<div className="w-full aspect-square bg-gray-200 flex items-center justify-center">
-										<img
-											src={project.image}
-											alt={project.title}
-											width={400}
-											height={400}
-											className="object-cover w-full h-full"
-											onError={(e) => {
-												if (e.currentTarget.src.indexOf('/fallback.png') === -1) {
-													e.currentTarget.src = '/fallback.png';
-												}
-											}}
-										/>
-									</div>
-								)}
-								<div className="p-4 flex-1 flex flex-col">
-									<h3 className="text-lg font-bold text-[#bfa94c] mb-1">
-										{project.title}
-									</h3>
-									<p className="text-gray-700 mb-2 flex-1">
-										{project.description}
-									</p>
-									<div className="flex flex-wrap gap-2 mb-2">
-										{project.tags.map((tag) => (
-											<span key={tag} className="tag">{tag}</span>
-										))}
-									</div>
-									<div className="flex gap-2 mt-2">
-										{project.title === 'Drone Racing' ? (
-											<>
-												<button
-													type="button"
-													onClick={() => window.open('/droneracing.mp4', '_blank', 'noopener,noreferrer')}
-													className="inline-flex items-center px-3 py-1 border border-green-600 rounded shadow text-green-800 bg-white hover:bg-green-100 transition text-sm"
-												>
-													<svg
-														className="mr-1"
-														width="16"
-														height="16"
-														fill="none"
-														viewBox="0 0 24 24"
-													>
-														<path
-															fill="currentColor"
-															d="M8 5v14l11-7z"
-														/>
-													</svg>
-													Demo
-												</button>
-												<Link
-													href="/projects/drone-racing-summary"
-													className="inline-flex items-center px-3 py-1 border border-yellow-600 rounded shadow text-yellow-800 bg-white hover:bg-yellow-100 transition text-sm"
-													style={{ textDecoration: 'none' }}
-												>
-													<svg
-														className="mr-1"
-														width="16"
-														height="16"
-														fill="none"
-														viewBox="0 0 24 24"
-													>
-														<path
-															fill="currentColor"
-															d="M3 6h18M3 12h18M3 18h18"
-														/>
-													</svg>
-													Project Summary
-												</Link>
-											</>
-										) : project.title === 'Arduino/Hardware Projects' ? (
-											<button
-												type="button"
-												onClick={() => window.location.href = project.link || '/projects/arduino'}
-												className="inline-flex items-center px-3 py-1 border border-yellow-600 rounded shadow text-yellow-800 bg-white hover:bg-yellow-100 transition text-sm"
-											>
-												<svg
-													className="mr-1"
-													width="16"
-													height="16"
-													fill="none"
-													viewBox="0 0 24 24"
-												>
-													<path
-														fill="currentColor"
-														d="M3 6h18M3 12h18M3 18h18"
-													/>
-												</svg>
-												View All Projects
-											</button>
-										) : (
-											project.code && (
-												<a
-													href={project.code}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="inline-flex items-center px-3 py-1 border border-gray-400 rounded shadow text-gray-700 bg-white hover:bg-[#f5e5c0] transition text-sm"
-												>
-													<svg
-														className="mr-1"
-														width="16"
-														height="16"
-														fill="currentColor"
-														viewBox="0 0 16 16"
-													>
-														<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-													</svg>
-													Code
-												</a>
-											)
-										)}
-										{project.devpost && project.title !== 'CityPath AI (Shopify Hackathon Winner)' && (
-											<a
-												href={project.devpost}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="inline-flex items-center px-3 py-1 border border-blue-400 rounded shadow text-blue-700 bg-white hover:bg-blue-100 transition text-sm"
-											>
-												<svg
-													className="mr-1"
-													width="16"
-													height="16"
-													fill="none"
-													viewBox="0 0 24 24"
-												>
-													<circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-													<text x="12" y="16" textAnchor="middle" fontSize="10" fill="currentColor">D</text>
-												</svg>
-												Devpost
-											</a>
-										)}
-									</div>
-								</div>
-							</div>
-						)
-					))}
-				</div>
+  const filteredProjects = useMemo(() => {
+    if (!selectedTag) return projects;
+    return projects.filter((p) => p.tags.includes(selectedTag));
+  }, [selectedTag]);
 
-				{/* Arduino Featured Card at the Bottom */}
-				<div className="max-w-3xl mx-auto mt-16 rounded-2xl overflow-hidden shadow bg-[#222] border border-[#d6c9a5]">
-					<div className="w-full h-64 md:h-80 relative">
-						<img
-							src={arduinoImages[arduinoIndex]}
-							alt={arduinoProject?.title}
-							className="object-contain w-full h-full"
-							style={{ borderTopLeftRadius: '1.25rem', borderTopRightRadius: '1.25rem' }}
-						/>
-					</div>
-					<div className="bg-[#f5f5dc] p-8 border-t border-[#e5e5c0]">
-						<h2 className="text-2xl font-bold mb-2 text-[#bfa94c]">Arduino/Hardware Projects</h2>
-						<p className="text-gray-700 mb-4">A collection of Arduino and hardware-based projects.</p>
-						<div className="flex flex-wrap gap-2 mb-4">
-							{arduinoProject?.tags.map(tag => (
-								<span key={tag} className="tag">{tag}</span>
-							))}
-						</div>
-						<div className="flex gap-2">
-							<Link href={arduinoProject?.link || '/projects/arduino'} className="btn-primary px-4 py-2 font-semibold">View All Projects</Link>
-							<a href={arduinoProject?.code} target="_blank" rel="noopener noreferrer" className="btn-primary px-4 py-2 font-semibold">Code</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+  return (
+    <main className="min-h-screen bg-background text-foreground w-full max-w-5xl mx-auto px-3 sm:px-4 py-16 sm:py-20">
+      <section className="w-full px-3 sm:px-4 py-10 sm:py-12 rounded-lg border border-border bg-card">
+        <div className="flex flex-col gap-3 mb-8">
+          <div className="text-[0.65rem] uppercase tracking-[0.25em] text-muted-foreground">
+            Projects / filter by tag
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedTag("")}
+              className={`px-3 py-1 text-[0.7rem] uppercase tracking-wider border rounded-sm ${
+                selectedTag === ""
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border text-muted-foreground hover:text-foreground bg-muted/50"
+              }`}
+            >
+              ALL
+            </button>
+            {allTags.map((t) => {
+              const active = selectedTag === t;
+              return (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setSelectedTag(t)}
+                  className={`px-3 py-1 text-[0.7rem] uppercase tracking-wider border rounded-sm ${
+                    active
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border text-muted-foreground hover:text-foreground bg-muted/50"
+                  }`}
+                >
+                  {t}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <ProjectsSection projects={filteredProjects} />
+      </section>
+    </main>
+  );
 }

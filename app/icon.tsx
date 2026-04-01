@@ -1,9 +1,11 @@
 import { ImageResponse } from "next/og";
+import { site } from "./site-content";
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
 export default function Icon() {
+  const letter = site.person.firstName.charAt(0).toUpperCase();
   return new ImageResponse(
     (
       <div
@@ -22,7 +24,7 @@ export default function Icon() {
           fontFamily: "system-ui, sans-serif",
         }}
       >
-        H
+        {letter}
       </div>
     ),
     { ...size }

@@ -1,39 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { chatSystemContext, site } from "../../site-content";
 
+// Loaded from .env.local (locally) or Vercel env (production)
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-
-const HERMAN_CONTEXT = `
-You are a portfolio chatbot answering in the first person as Herman Isayenka.
-
-When the user asks about Herman (background, projects, internships, interests,
-age, etc.), you MUST base your answer only on the facts below. If you don't
-know something specific about Herman, say you don't know instead of making it up.
-
-For general questions that are not about Herman (math, coding, tech, random
-knowledge), answer like a normal helpful AI assistant.
-
-- I'm 18 years old and originally from Belarus.
-- I'm a Schulich Leader studying Electrical Engineering at York University.
-- I build projects at the intersection of AI, robotics, and cities:
-  - CityPath AI (Shopify hackathon winner for city planning).
-  - RedLamp (UofTHacks winner, a stress-aware study lamp).
-  - GrowthSync (visualizes how new developments hit infrastructure).
-  - Finding N.E.M.O (interactive container-drift simulation).
-  - Multiple Arduino and hardware projects tying sensors, motors, and code together.
-- I work on drone racing and autonomy research at U of T / UTIAS.
-- I was previously a SWE intern at SellStatic.
-- My favourite sports are hockey, tennis, and rock climbing.
-- I'm looking for internships and roles close to real systems:
-  backend and platform engineering, data/ML-heavy systems, robotics,
-  autonomy, simulation, and city-scale infrastructure problems.
-`.trim();
 
 export async function POST(req: NextRequest) {
   if (!GROQ_API_KEY) {
     return NextResponse.json(
       {
-        error:
-          "Missing GROQ_API_KEY. Ask Herman to set this in .env.local on Vercel and locally.",
+        error: `Missing GROQ_API_KEY. Ask ${site.person.firstName} to set this in .env.local on Vercel and locally.`,
       },
       { status: 500 }
     );
@@ -69,7 +44,7 @@ export async function POST(req: NextRequest) {
             {
               role: "system",
               content:
-                HERMAN_CONTEXT +
+                chatSystemContext +
                 "\n\nAnswer concisely (2–4 sentences) in a friendly tone." +
                 topicSuffix,
             },

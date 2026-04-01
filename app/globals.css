@@ -2,22 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+/* v0-style design tokens (light, minimal) */
+:root {
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.15 0 0);
+  --card: oklch(0.97 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  --popover: oklch(0.99 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+  --primary: oklch(0.15 0 0);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0 0);
+  --secondary-foreground: oklch(0.15 0 0);
+  --muted: oklch(0.95 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  --accent: oklch(0.95 0 0);
+  --accent-foreground: oklch(0.15 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.95 0 0);
+  --ring: oklch(0.15 0 0);
+  --radius: 0.25rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
-  background: #050505;
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
-  font-family: var(--font-pixel), var(--font-geist-sans), var(--font-geist-mono),
-    system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  color: #f5f5f5;
-  cursor: none;
   padding-left: env(safe-area-inset-left, 0);
   padding-right: env(safe-area-inset-right, 0);
 }
-@media (pointer: coarse) {
-  body {
-    cursor: auto;
-  }
+
+::selection {
+  background: oklch(0.15 0 0 / 0.1);
 }
 
 .hero-root {
@@ -466,6 +493,148 @@ body {
   }
 }
 
+/* Terminal mini-game */
+.terminal-window {
+  overflow: hidden;
+  position: relative;
+}
+.terminal-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.03) 2px,
+    rgba(255, 255, 255, 0.03) 3px
+  );
+  pointer-events: none;
+  opacity: 0.7;
+}
+.terminal-lines {
+  position: relative;
+  max-height: 260px;
+  overflow: auto;
+  padding-right: 0.35rem;
+}
+.terminal-line {
+  margin: 0;
+  font-family: var(--font-pixel), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.65rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+/* Flight/radar hero scanlines */
+.flight-radar-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.03) 2px,
+    rgba(255, 255, 255, 0.03) 3px
+  );
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+}
+.flight-radar-hero::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 40%,
+    rgba(99, 102, 241, 0.22),
+    rgba(99, 102, 241, 0.06) 35%,
+    transparent 65%
+  );
+  opacity: 0.9;
+}
+
+/* Command palette overlay */
+.command-palette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10vh;
+}
+.command-palette {
+  width: min(720px, calc(100vw - 2rem));
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(5, 5, 5, 0.85);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+  padding: 1rem 1rem 0.9rem;
+}
+.command-palette-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.command-palette-input {
+  width: 100%;
+  padding: 0.7rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  color: #e5e5e5;
+  outline: none;
+  font-family: var(--font-pixel), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: 0.02em;
+}
+.command-palette-input:focus {
+  border-color: rgba(148, 163, 184, 0.7);
+  box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.2);
+}
+.command-palette-list {
+  margin-top: 0.75rem;
+  max-height: 320px;
+  overflow: auto;
+}
+.command-palette-item {
+  width: 100%;
+  text-align: left;
+  display: block;
+  padding: 0.55rem 0.65rem;
+  border-radius: 0.35rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #e5e5e5;
+  cursor: pointer;
+  font-family: var(--font-pixel), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.command-palette-item:hover {
+  background: rgba(148, 163, 184, 0.08);
+  border-color: rgba(148, 163, 184, 0.25);
+}
+.command-palette-item-active {
+  background: rgba(245, 245, 220, 0.12);
+  border-color: rgba(245, 245, 220, 0.45);
+  color: #f5f5f5;
+}
+.command-palette-empty {
+  color: #9ca3af;
+  padding: 0.65rem 0.65rem;
+  font-size: 0.7rem;
+  font-family: var(--font-pixel), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 /* Light theme — stronger contrast and definition */
 .theme-light body {
   background: #e8e8e8;
@@ -621,4 +790,16 @@ body {
 }
 .theme-light .text-red-400 {
   color: #b91c1c;
+}
+
+/* v0 light portfolio: project cards read on oklch tokens */
+.projects-card-title {
+  color: var(--foreground);
+}
+.projects-card-subtitle {
+  color: var(--muted-foreground);
+}
+.projects-card {
+  background: var(--card);
+  border-color: var(--border);
 }

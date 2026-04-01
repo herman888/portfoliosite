@@ -1,7 +1,13 @@
 import { NextRequest } from "next/server";
 
+// Loaded from .env.local (locally) or Vercel env (production)
 const ELEVEN_API_KEY = process.env.ELEVENLABS_API_KEY?.trim();
 const ELEVEN_VOICE_ID = process.env.ELEVENLABS_VOICE_ID?.trim();
+
+export async function GET() {
+  const available = !!(ELEVEN_API_KEY && ELEVEN_VOICE_ID);
+  return Response.json({ available });
+}
 
 export async function POST(req: NextRequest) {
   if (!ELEVEN_API_KEY || !ELEVEN_VOICE_ID) {

@@ -1,3 +1,8 @@
+import { site } from "../site-content";
+
+const gh = (repo: string) =>
+  `https://github.com/${site.links.githubProfile}/${repo}`;
+
 export type Project = {
   title: string;
   description: string;
@@ -27,7 +32,7 @@ export const projects: Project[] = [
     caption: "AI for safer street layouts and city planning.",
     tags: ["AI", "Shopify", "Hackathon", "Winner", "Python"],
     image: "/shopify.png",
-    code: "https://github.com/herman888/citypathai",
+    code: gh("citypathai"),
   },
   {
     title: "RedLamp (UofTHacks Winner)",
@@ -56,7 +61,7 @@ export const projects: Project[] = [
     caption: "Interactive simulation for container drift and recovery.",
     tags: ["ConUHacks", "NLP", "Python", "Hackathon"],
     image: "/project-nemo.jpg",
-    code: "https://github.com/herman888/container-search",
+    code: gh("container-search"),
     devpost: "https://devpost.com/software/finding-n-e-m-o",
   },
   {
@@ -65,7 +70,7 @@ export const projects: Project[] = [
     caption: "Arduino and hardware builds.",
     tags: ["Arduino", "Hardware", "Electronics", "IoT"],
     images: ["/arduino.png"],
-    code: "https://github.com/herman888/arduino-hardware-projects",
+    code: gh("arduino-hardware-projects"),
     link: "/projects/arduino",
   },
   {
@@ -75,7 +80,7 @@ export const projects: Project[] = [
     caption: "Meal requests and optimized driver routes.",
     tags: ["HackThe6ix", "Web", "React", "Node.js"],
     image: "/giveway.png",
-    code: "https://github.com/herman888/route-optimizer",
+    code: gh("route-optimizer"),
     devpost: "https://devpost.com/software/placeholder-pomuiy",
   },
   {
