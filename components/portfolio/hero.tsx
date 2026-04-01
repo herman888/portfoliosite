@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { fullName, site } from "@/app/site-content";
+import { fullName } from "@/app/site-content";
 import { fadeUp, springSnappy, staggerContainer } from "./portfolio-motion";
 
 export function PortfolioHero() {
@@ -32,23 +32,7 @@ export function PortfolioHero() {
           variants={fadeUp}
           className="text-muted-foreground text-base md:text-lg max-w-lg leading-relaxed mb-10"
         >
-          Schulich Leader building software and hardware solutions. Previously at{" "}
-          <a
-            href={site.links.linkedIn}
-            className="text-foreground underline underline-offset-[5px] decoration-foreground/25 hover:decoration-foreground/60 transition-colors"
-          >
-            SellStatic
-          </a>{" "}
-          and{" "}
-          <a
-            href="https://utias.utoronto.ca"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-foreground underline underline-offset-[5px] decoration-foreground/25 hover:decoration-foreground/60 transition-colors"
-          >
-            University of Toronto
-          </a>
-          .
+          Building hardware and software solutions.
         </motion.p>
 
         <motion.div variants={fadeUp} className="flex flex-wrap gap-3">

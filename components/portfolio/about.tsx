@@ -2,12 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import {
-  portfolioAboutBody,
-  portfolioAboutLead,
-  portfolioSkills,
-  site,
-} from "@/app/site-content";
+import { portfolioAbout, portfolioSkills, site } from "@/app/site-content";
 import { easeOut, fadeUpSmall } from "./portfolio-motion";
 
 const interests = site.person.interests.sports.map(
@@ -46,18 +41,9 @@ export function PortfolioAbout() {
           initial={{ opacity: 0, y: 14 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ ...easeOut, delay: 0.05 }}
-          className="mb-6 text-xl font-medium leading-snug text-foreground md:text-2xl"
+          className="mb-12 max-w-xl text-lg leading-relaxed text-foreground md:text-xl"
         >
-          {portfolioAboutLead}
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ ...easeOut, delay: 0.1 }}
-          className="mb-12 text-base leading-relaxed text-muted-foreground"
-        >
-          {portfolioAboutBody}
+          {portfolioAbout}
         </motion.p>
 
         <div className="mb-10">

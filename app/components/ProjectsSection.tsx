@@ -1,97 +1,56 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { type Project } from "../projects/projects-data";
+import { ProjectGridCard } from "./ProjectGridCard";
 
 type Props = {
   projects: Project[];
   onLearnMore?: () => void;
+  /** Default: 3 columns on large screens (1 → 2 → 3). */
+  columns?: "2" | "3";
+  showHeading?: boolean;
 };
 
-function ProjectCard({ project }: { project: Project }) {
-  const imageSrc = project.image ?? project.images?.[0];
-  const caption = project.caption ?? project.description;
-  const href = project.link ?? project.code ?? project.devpost;
-
-  const cardContent = (
-    <>
-      <div className="relative w-full aspect-[4/3] bg-muted overflow-hidden">
-        {project.title === "Finding N.E.M.O (ConUHacks)" ? (
-          <iframe
-            title="Finding N.E.M.O Demo"
-            src="https://www.youtube.com/embed/PQBeq-7WKRE"
-            className="absolute inset-0 w-full h-full object-cover"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        ) : imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={project.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-          />
-        ) : null}
-      </div>
-
-      <div className="p-3 sm:p-4 md:p-5">
-        <h3 className="projects-card-title mb-1 leading-tight">
-          {project.title}
-        </h3>
-        <p className="projects-card-subtitle leading-snug">{caption}</p>
-      </div>
-    </>
-  );
+export default function ProjectsSection({
+  projects,
+  onLearnMore,
+  columns = "3",
+  showHeading = true,
+}: Props) {
+  const gridClass =
+    columns === "3"
+      ? "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+      : "grid grid-cols-1 gap-6 md:grid-cols-2";
 
   return (
-    <article className="projects-card group rounded-lg flex flex-col">
-      {href ? (
-        <a
-          href={href}
-          target={href.startsWith("http") ? "_blank" : undefined}
-          rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-          className="flex flex-col h-full"
-        >
-          {cardContent}
-        </a>
-      ) : (
-        cardContent
-      )}
-    </article>
-  );
-}
-
-export default function ProjectsSection({ projects, onLearnMore }: Props) {
-  return (
     <>
-      <div className="projects-heading mb-6 sm:mb-8">
-        <h2 className="uppercase text-foreground font-semibold text-xs sm:text-sm tracking-widest shrink-0">
-          Projects
-        </h2>
-        <div className="projects-heading-line" />
-      </div>
+      {showHeading ? (
+        <div className="projects-heading mb-8 sm:mb-10">
+          <h2 className="shrink-0 text-xs font-semibold uppercase tracking-widest text-foreground sm:text-sm">
+            Projects
+          </h2>
+          <div className="projects-heading-line" />
+        </div>
+      ) : null}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-x-8 sm:gap-y-10 relative">
+      <div className={`${gridClass} relative`}>
         {projects.map((project) => (
-          <ProjectCard key={project.title} project={project} />
+          <ProjectGridCard key={project.title} project={project} />
         ))}
       </div>
 
-      {onLearnMore && (
-        <div className="mt-8 sm:mt-10 flex justify-center">
+      {onLearnMore ? (
+        <div className="mt-10 flex justify-center sm:mt-12">
           <button
             type="button"
             onClick={onLearnMore}
-            className="min-h-[44px] px-5 py-2.5 sm:py-2 border border-border bg-muted hover:bg-muted/80 text-[0.7rem] md:text-xs uppercase tracking-[0.25em] text-foreground"
+            className="min-h-[44px] border border-border bg-muted px-5 py-2.5 text-xs font-medium uppercase tracking-wider text-foreground transition-colors hover:bg-muted/80 sm:py-2 md:text-xs"
           >
             Learn more
           </button>
         </div>
-      )}
+      ) : null}
     </>
   );
 }
-

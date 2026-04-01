@@ -178,11 +178,9 @@ export const portfolioSkills = [
   "TypeScript",
 ] as const;
 
-export const portfolioAboutLead =
-  "I'm a Schulich Leader and electrical engineering student passionate about building things that matter.";
-
-export const portfolioAboutBody =
-  "From autonomous drones to AI-powered city planning, I love working at the intersection of hardware and software. When I'm not coding or soldering, you'll find me rock climbing, playing hockey, or on the tennis court.";
+/** Two-sentence blurb for the portfolio About section on the home page. */
+export const portfolioAbout =
+  "I'm genuinely interested in software and robotics, and I like going deep on both. I spend most of my time building and learning where code meets hardware, control, and real-world problems.";
 
 export type PortfolioExperience = {
   company: string;
@@ -201,16 +199,16 @@ export const portfolioExperience: PortfolioExperience[] = [
     highlight: `Schulich Leader (${site.person.scholarshipAmount})`,
   },
   {
-    company: "University of Toronto (UTIAS)",
-    role: "Research — Autonomous Drone Racing",
-    period: "2024",
-    url: "https://utias.utoronto.ca",
-  },
-  {
     company: "SellStatic",
     role: "Software Engineering Intern",
-    period: "2023",
+    period: "Sep 2025 — Jan 2026",
     url: site.links.linkedIn,
+  },
+  {
+    company: "UTIAS Flight Systems and Control Lab",
+    role: "Research — Autonomous Drone Racing",
+    period: "Apr 2023 — Aug 2025",
+    url: "https://utias.utoronto.ca",
   },
 ];
 
