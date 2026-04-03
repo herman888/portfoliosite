@@ -96,6 +96,7 @@ knowledge), answer like a normal helpful AI assistant.
   - Finding N.E.M.O (interactive container-drift simulation).
   - Multiple Arduino and hardware projects tying sensors, motors, and code together.
 - I work on drone racing and autonomy research at U of T / UTIAS.
+- I was an undergraduate research assistant at SDCN Lab (York) from Sep 2025 to Dec 2025.
 - I was previously a SWE intern at SellStatic.
 - My favourite sports are ${site.person.interests.sports.join(", ")}.
 - I'm looking for internships and roles close to real systems:
@@ -190,7 +191,8 @@ export type PortfolioExperience = {
   highlight?: string;
 };
 
-export const portfolioExperience: PortfolioExperience[] = [
+/** Shown under About — kept separate from work experience. */
+export const portfolioEducation: PortfolioExperience[] = [
   {
     company: "York University",
     role: "Electrical Engineering Student",
@@ -198,11 +200,20 @@ export const portfolioExperience: PortfolioExperience[] = [
     url: "https://yorku.ca",
     highlight: `Schulich Leader (${site.person.scholarshipAmount})`,
   },
+];
+
+export const portfolioExperience: PortfolioExperience[] = [
   {
     company: "SellStatic",
     role: "Software Engineering Intern",
     period: "Sep 2025 — Jan 2026",
     url: site.links.linkedIn,
+  },
+  {
+    company: "SDCN Lab",
+    role: "Undergraduate Research Assistant",
+    period: "Sep 2025 — Dec 2025",
+    url: "https://www.yorku.ca/jjshan/SDCNLab.html",
   },
   {
     company: "UTIAS Flight Systems and Control Lab",

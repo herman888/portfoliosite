@@ -28,7 +28,7 @@ export default function ProjectsSection({
       {showHeading ? (
         <div className="projects-heading mb-8 sm:mb-10">
           <h2 className="shrink-0 text-xs font-semibold uppercase tracking-widest text-foreground sm:text-sm">
-            Projects
+            {"Things I've done"}
           </h2>
           <div className="projects-heading-line" />
         </div>

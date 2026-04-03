@@ -23,7 +23,7 @@ export function PortfolioProjects() {
           transition={easeOut}
           className="mb-12 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground"
         >
-          Projects
+          {"Things I've done"}
         </motion.h2>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">

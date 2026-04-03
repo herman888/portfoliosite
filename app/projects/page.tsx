@@ -25,7 +25,7 @@ export default function ProjectsPage() {
       <section className="w-full px-3 sm:px-4 py-10 sm:py-12 rounded-lg border border-border bg-card">
         <div className="flex flex-col gap-3 mb-8">
           <div className="text-[0.65rem] uppercase tracking-[0.25em] text-muted-foreground">
-            Projects / filter by tag
+            {"Things I've done"} / filter by tag
           </div>
 
           <div className="flex flex-wrap gap-2">
