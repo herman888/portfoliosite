@@ -7,6 +7,7 @@ import {
   portfolioAbout,
   portfolioEducation,
   portfolioSkills,
+  portfolioTangent,
   site,
 } from "@/app/site-content";
 import { easeOut, fadeUpSmall } from "./portfolio-motion";
@@ -51,6 +52,20 @@ export function PortfolioAbout() {
         >
           {portfolioAbout}
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ ...easeOut, delay: 0.065 }}
+          className="mb-12 rounded-lg border border-dashed border-border/80 bg-muted/20 px-5 py-6"
+        >
+          <h3 className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            {portfolioTangent.title}
+          </h3>
+          <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
+            {portfolioTangent.body}
+          </p>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
