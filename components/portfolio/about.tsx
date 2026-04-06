@@ -24,7 +24,12 @@ const chipWrap: typeof fadeUpSmall = {
   },
 };
 
-export function PortfolioAbout() {
+type AboutProps = {
+  /** Hide intro paragraph + Random link when the hero already shows them. */
+  omitHeaderContent?: boolean;
+};
+
+export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
@@ -44,29 +49,33 @@ export function PortfolioAbout() {
           About
         </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ ...easeOut, delay: 0.05 }}
-          className="mb-6 max-w-xl text-lg leading-relaxed text-foreground md:text-xl"
-        >
-          {portfolioAbout}
-        </motion.p>
+        {omitHeaderContent ? null : (
+          <>
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ ...easeOut, delay: 0.05 }}
+              className="mb-6 max-w-xl text-lg leading-relaxed text-foreground md:text-xl"
+            >
+              {portfolioAbout}
+            </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ ...easeOut, delay: 0.065 }}
-          className="mb-12"
-        >
-          <Link
-            href="/random"
-            className="group inline-flex items-center gap-1 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-          >
-            Random
-            <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition-opacity group-hover:opacity-100" />
-          </Link>
-        </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ ...easeOut, delay: 0.065 }}
+              className="mb-12"
+            >
+              <Link
+                href="/random"
+                className="group inline-flex items-center gap-1 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              >
+                Random
+                <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition-opacity group-hover:opacity-100" />
+              </Link>
+            </motion.p>
+          </>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}

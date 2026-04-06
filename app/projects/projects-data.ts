@@ -13,6 +13,8 @@ export type Project = {
   code?: string;
   devpost?: string;
   link?: string;
+  /** Shown on editorial grid (e.g. year or range). */
+  year?: string;
 };
 
 export const projects: Project[] = [
@@ -24,6 +26,7 @@ export const projects: Project[] = [
     tags: ["Drones", "Gazebo", "Python", "ROS", "Simulink"],
     image: "/droneracing.jpg",
     link: "/projects/drone-racing-summary",
+    year: "2023–25",
   },
   {
     title: "CityPath AI (Shopify Hackathon Winner)",
@@ -33,6 +36,7 @@ export const projects: Project[] = [
     tags: ["AI", "Shopify", "Hackathon", "Winner", "Python"],
     image: "/shopify.png",
     code: gh("citypathai"),
+    year: "2025",
   },
   {
     title: "RedLamp (UofTHacks Winner)",
@@ -43,6 +47,7 @@ export const projects: Project[] = [
     image: "/uofthacks.png",
     code: "https://github.com/Hackm0/lelampv3",
     devpost: "https://devpost.com/software/red-lamp",
+    year: "2025",
   },
   {
     title: "GrowthSync (CTRLHACKDEL)",
@@ -53,6 +58,7 @@ export const projects: Project[] = [
     image: "/ctrlhackdel.png",
     code: "https://github.com/EVAnunit1307/City_Sync",
     devpost: "https://devpost.com/software/growthsync",
+    year: "2024",
   },
   {
     title: "Finding N.E.M.O (ConUHacks)",
@@ -63,6 +69,7 @@ export const projects: Project[] = [
     image: "/project-nemo.jpg",
     code: gh("container-search"),
     devpost: "https://devpost.com/software/finding-n-e-m-o",
+    year: "2025",
   },
   {
     title: "Arduino/Hardware Projects",
@@ -72,6 +79,7 @@ export const projects: Project[] = [
     images: ["/arduino.png"],
     code: gh("arduino-hardware-projects"),
     link: "/projects/arduino",
+    year: "2024–25",
   },
   {
     title: "Giveway (HackThe6ix)",
@@ -82,6 +90,7 @@ export const projects: Project[] = [
     image: "/giveway.png",
     code: gh("route-optimizer"),
     devpost: "https://devpost.com/software/placeholder-pomuiy",
+    year: "2024",
   },
   {
     title: "Meal2Go (EurekaHacks)",
@@ -92,6 +101,7 @@ export const projects: Project[] = [
     image: "/meal2go.png",
     code: "https://github.com/itzsxhan/Food_Detection",
     devpost: "https://devpost.com/software/mealtogo",
+    year: "2024",
   },
 ];
 

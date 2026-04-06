@@ -45,7 +45,10 @@ export function PortfolioExperience() {
                     {exp.company}
                     <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-60" />
                   </span>
-                  <p className="mt-0.5 text-sm text-muted-foreground">{exp.role}</p>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    {exp.role}
+                    {exp.location ? ` · ${exp.location}` : ""}
+                  </p>
                   {exp.highlight ? (
                     <p className="mt-1 text-xs text-muted-foreground/80">
                       {exp.highlight}

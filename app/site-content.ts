@@ -32,6 +32,7 @@ export const site = {
   links: {
     email: "herman.isayenka@gmail.com",
     linkedIn: "https://www.linkedin.com/in/hermanisayenka/",
+    sellstatic: "https://www.sellstatic.com/",
     githubProfile,
     github: `https://github.com/${githubProfile}`,
     twitterCreator: "@hermanisayenka",
@@ -195,6 +196,7 @@ export type PortfolioExperience = {
   period: string;
   url: string;
   highlight?: string;
+  location?: string;
 };
 
 /** Shown under About — kept separate from work experience. */
@@ -213,19 +215,22 @@ export const portfolioExperience: PortfolioExperience[] = [
     company: "SellStatic",
     role: "Software Engineering Intern",
     period: "Sep 2025 — Jan 2026",
-    url: site.links.linkedIn,
+    url: site.links.sellstatic,
+    location: "Toronto, ON",
   },
   {
     company: "SDCN Lab",
     role: "Undergraduate Research Assistant",
     period: "Sep 2025 — Dec 2025",
     url: "https://www.yorku.ca/jjshan/SDCNLab.html",
+    location: "Toronto, ON",
   },
   {
     company: "UTIAS Flight Systems and Control Lab",
     role: "Research — Autonomous Drone Racing",
     period: "Apr 2023 — Aug 2025",
     url: "https://utias.utoronto.ca",
+    location: "Toronto, ON",
   },
 ];
 
