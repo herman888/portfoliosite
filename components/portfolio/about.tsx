@@ -1,13 +1,13 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import {
   portfolioAbout,
   portfolioEducation,
   portfolioSkills,
-  portfolioTangent,
   site,
 } from "@/app/site-content";
 import { easeOut, fadeUpSmall } from "./portfolio-motion";
@@ -48,25 +48,25 @@ export function PortfolioAbout() {
           initial={{ opacity: 0, y: 14 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ ...easeOut, delay: 0.05 }}
-          className="mb-12 max-w-xl text-lg leading-relaxed text-foreground md:text-xl"
+          className="mb-6 max-w-xl text-lg leading-relaxed text-foreground md:text-xl"
         >
           {portfolioAbout}
         </motion.p>
 
-        <motion.div
-          id="random"
+        <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ ...easeOut, delay: 0.065 }}
-          className="mb-12 scroll-mt-28 rounded-lg border border-dashed border-border/80 bg-muted/20 px-5 py-6"
+          className="mb-12"
         >
-          <h3 className="mb-3 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            {portfolioTangent.title}
-          </h3>
-          <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
-            {portfolioTangent.body}
-          </p>
-        </motion.div>
+          <Link
+            href="/random"
+            className="group inline-flex items-center gap-1 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          >
+            Random
+            <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition-opacity group-hover:opacity-100" />
+          </Link>
+        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}

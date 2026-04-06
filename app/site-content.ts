@@ -183,7 +183,7 @@ export const portfolioSkills = [
 export const portfolioAbout =
   "I'm genuinely interested in software and robotics, and I like going deep on both. I spend most of my time building and learning where code meets hardware, control, and real-world problems.";
 
-/** Extra aside in About — short, off-script note (nav: Random → #random). */
+/** Short off-script note — shown on `/random`. */
 export const portfolioTangent = {
   title: "Random",
   body: "Offline you'll usually find me on skates, a climbing wall, or a trail — anything that isn't waiting on a build.",

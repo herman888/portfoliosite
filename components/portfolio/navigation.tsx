@@ -6,11 +6,11 @@ import { useState } from "react";
 import { navInitials } from "@/app/site-content";
 
 const navItems = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Random", href: "#random" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Random", href: "/random" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export function PortfolioNavigation() {
