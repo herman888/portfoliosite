@@ -158,9 +158,9 @@ export function PortfolioEditorialHome() {
             <Link href="/projects" className="transition-colors hover:text-black">
               all projects
             </Link>
-            <a href="/#contact" className="transition-colors hover:text-black">
+            <Link href="/#contact" className="transition-colors hover:text-black">
               contact
-            </a>
+            </Link>
             <a
               href="/resume.pdf"
               className="font-medium text-black transition-opacity hover:opacity-70"
@@ -239,12 +239,12 @@ export function PortfolioEditorialHome() {
                   </div>
                 </div>
               </div>
-              <a
+              <Link
                 href="/#about"
                 className="mt-6 text-sm text-neutral-600 underline decoration-neutral-400 underline-offset-4 transition-colors hover:text-black hover:decoration-black"
               >
                 who am i?
-              </a>
+              </Link>
             </div>
           </div>
         </header>
