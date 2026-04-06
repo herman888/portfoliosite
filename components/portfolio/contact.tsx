@@ -1,25 +1,23 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { site } from "@/app/site-content";
 import { easeOut, springSnappy } from "./portfolio-motion";
 
-export function PortfolioContact() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+const inView = { once: true as const, margin: "-60px" as const };
 
+export function PortfolioContact() {
   return (
     <section
       id="contact"
       className="border-t border-border/80 py-24 px-6 md:px-10 lg:px-24"
-      ref={ref}
     >
       <div className="mx-auto max-w-2xl">
         <motion.h2
           initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={inView}
           transition={easeOut}
           className="mb-8 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground"
         >
@@ -28,7 +26,8 @@ export function PortfolioContact() {
 
         <motion.p
           initial={{ opacity: 0, y: 14 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={inView}
           transition={{ ...easeOut, delay: 0.05 }}
           className="mb-8 text-xl font-medium leading-snug text-foreground md:text-2xl"
         >
@@ -38,7 +37,8 @@ export function PortfolioContact() {
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={inView}
           transition={{ ...easeOut, delay: 0.1 }}
         >
           <motion.a

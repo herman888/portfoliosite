@@ -1,8 +1,7 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import {
   portfolioAbout,
@@ -24,25 +23,24 @@ const chipWrap: typeof fadeUpSmall = {
   },
 };
 
+const inView = { once: true as const, margin: "-60px" as const };
+
 type AboutProps = {
   /** Hide intro paragraph + Random link when the hero already shows them. */
   omitHeaderContent?: boolean;
 };
 
 export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-
   return (
     <section
       id="about"
       className="border-t border-border/80 py-24 px-6 md:px-10 lg:px-24"
-      ref={ref}
     >
       <div className="mx-auto max-w-2xl">
         <motion.h2
           initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={inView}
           transition={easeOut}
           className="mb-10 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground"
         >
@@ -53,7 +51,8 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
           <>
             <motion.p
               initial={{ opacity: 0, y: 14 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={inView}
               transition={{ ...easeOut, delay: 0.05 }}
               className="mb-6 max-w-xl text-lg leading-relaxed text-foreground md:text-xl"
             >
@@ -62,7 +61,8 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
 
             <motion.p
               initial={{ opacity: 0, y: 12 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={inView}
               transition={{ ...easeOut, delay: 0.065 }}
               className="mb-12"
             >
@@ -79,7 +79,8 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={inView}
           transition={{ ...easeOut, delay: 0.08 }}
           className="mb-12"
         >
@@ -126,7 +127,8 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
             className="flex flex-wrap gap-2"
             variants={chipWrap}
             initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            whileInView="visible"
+            viewport={inView}
           >
             {portfolioSkills.map((skill) => (
               <motion.span
@@ -148,7 +150,8 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
             className="flex flex-wrap gap-2"
             variants={chipWrap}
             initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            whileInView="visible"
+            viewport={inView}
           >
             {interests.map((interest) => (
               <motion.span
