@@ -25,8 +25,8 @@ const socialLinks = [
 
 export function PortfolioFooter() {
   return (
-    <footer className="border-t border-border/80 py-10 px-6 md:px-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+    <footer className="border-t border-border/80 py-10 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16">
+      <div className="mx-auto flex w-full max-w-screen-2xl flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
         <p className="text-sm text-muted-foreground">{fullName}</p>
         <div className="flex items-center gap-5">
           {socialLinks.map(({ Icon, href, label }) => (

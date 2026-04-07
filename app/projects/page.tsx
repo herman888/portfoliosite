@@ -21,7 +21,7 @@ export default function ProjectsPage() {
   }, [selectedTag]);
 
   return (
-    <main className="min-h-screen bg-background text-foreground mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+    <main className="min-h-screen bg-background text-foreground mx-auto w-full max-w-screen-2xl px-4 py-16 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16 sm:py-20">
       <section className="w-full px-3 sm:px-4 py-10 sm:py-12 rounded-lg border border-border bg-card">
         <div className="flex flex-col gap-3 mb-8">
           <div className="text-[0.65rem] uppercase tracking-[0.25em] text-muted-foreground">
@@ -60,7 +60,7 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        <ProjectsSection projects={filteredProjects} columns="3" />
+        <ProjectsSection projects={filteredProjects} columns="4" />
       </section>
     </main>
   );

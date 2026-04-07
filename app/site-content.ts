@@ -186,7 +186,7 @@ export const portfolioAbout =
 
 /** Short off-script note — shown on `/random`. */
 export const portfolioTangent = {
-  title: "Random",
+  title: "eats",
   body: "Offline you'll usually find me on skates, a climbing wall, or a trail — anything that isn't waiting on a build.",
 } as const;
 

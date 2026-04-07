@@ -11,7 +11,7 @@ export function PortfolioContact() {
   return (
     <section
       id="contact"
-      className="border-t border-border/80 py-24 px-6 md:px-10 lg:px-24"
+      className="border-t border-border/80 py-24 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16"
     >
       <div className="mx-auto max-w-2xl">
         <motion.h2

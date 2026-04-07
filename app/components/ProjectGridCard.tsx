@@ -36,7 +36,7 @@ export function ProjectGridCard({ project }: Props) {
           src={imageSrc}
           alt={project.title}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
       ) : (

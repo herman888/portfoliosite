@@ -26,7 +26,7 @@ const chipWrap: typeof fadeUpSmall = {
 const inView = { once: true as const, margin: "-60px" as const };
 
 type AboutProps = {
-  /** Hide intro paragraph + Random link when the hero already shows them. */
+  /** Hide intro paragraph + eats link when the hero already shows them. */
   omitHeaderContent?: boolean;
 };
 
@@ -34,7 +34,7 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
   return (
     <section
       id="about"
-      className="border-t border-border/80 py-24 px-6 md:px-10 lg:px-24"
+      className="border-t border-border/80 py-24 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16"
     >
       <div className="mx-auto max-w-2xl">
         <motion.h2
@@ -70,7 +70,7 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
                 href="/random"
                 className="group inline-flex items-center gap-1 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
               >
-                Random
+                eats
                 <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition-opacity group-hover:opacity-100" />
               </Link>
             </motion.p>

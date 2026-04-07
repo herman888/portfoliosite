@@ -9,7 +9,7 @@ const navItems = [
   { label: "About", href: "/#about" },
   { label: "Experience", href: "/#experience" },
   { label: "Projects", href: "/#projects" },
-  { label: "Random", href: "/random" },
+  { label: "eats", href: "/random" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -29,7 +29,7 @@ export function PortfolioNavigation() {
           : "border-b border-transparent bg-background/70 backdrop-blur-sm"
       }`}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10">
+      <nav className="mx-auto flex w-full max-w-screen-2xl items-center justify-between px-4 py-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16">
         <Link
           href="/"
           className="text-sm font-semibold tracking-tight text-foreground"

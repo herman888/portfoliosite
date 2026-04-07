@@ -7,21 +7,23 @@ import { ProjectGridCard } from "./ProjectGridCard";
 type Props = {
   projects: Project[];
   onLearnMore?: () => void;
-  /** Default: 3 columns on large screens (1 → 2 → 3). */
-  columns?: "2" | "3";
+  /** Default: 4 columns on large screens (1 → 2 → 4). Use "3" for a 3-col layout. */
+  columns?: "2" | "3" | "4";
   showHeading?: boolean;
 };
 
 export default function ProjectsSection({
   projects,
   onLearnMore,
-  columns = "3",
+  columns = "4",
   showHeading = true,
 }: Props) {
   const gridClass =
-    columns === "3"
-      ? "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
-      : "grid grid-cols-1 gap-6 md:grid-cols-2";
+    columns === "4"
+      ? "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-8"
+      : columns === "3"
+        ? "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8"
+        : "grid grid-cols-1 gap-6 md:grid-cols-2";
 
   return (
     <>

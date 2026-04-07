@@ -2,14 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { projects } from "@/app/projects/projects-data";
-import { fullName, portfolioAbout, portfolioTangent, site } from "@/app/site-content";
+import { fullName, portfolioAbout, site } from "@/app/site-content";
 import { PortfolioAbout } from "./about";
 import { PortfolioContact } from "./contact";
 import { PortfolioFooter } from "./footer";
-
-type FilterKey = "projects" | "random";
 
 type EditorialItem = {
   id: string;
@@ -25,10 +23,70 @@ function hrefForProject(p: (typeof projects)[number]): string | undefined {
   return p.link ?? p.code ?? p.devpost;
 }
 
-const FILTERS: { key: FilterKey; label: string }[] = [
-  { key: "projects", label: "projects" },
-  { key: "random", label: "random" },
-];
+/** Hero polaroids — only `background.JPG`, `background1.jpg`, `background2.jpg` (no separate “top” photo). */
+const HERO_POLAROID_SRCS = ["/background.JPG", "/background2.jpg", "/background1.jpg"] as const;
+
+const polaroidEase =
+  "duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:duration-0";
+
+function PolaroidStack() {
+  const frame =
+    "overflow-hidden rounded-sm border border-neutral-200 bg-white p-1.5 transition-transform will-change-transform";
+
+  return (
+    <div
+      className="group/polaroids relative mx-auto h-[248px] w-full max-w-[300px] cursor-default sm:h-[268px] sm:max-w-[320px]"
+      role="group"
+      aria-label="Campus and city photos"
+    >
+      {/* z1 — back (anchored to bottom so nothing floats to the top alone) */}
+      <div
+        className={`absolute bottom-2 left-[6%] z-[1] w-[56%] rotate-[-6deg] shadow-[0_10px_28px_rgba(0,0,0,0.12)] ${frame} ${polaroidEase} group-hover/polaroids:-translate-x-2 group-hover/polaroids:-translate-y-7 group-hover/polaroids:-rotate-[12deg] group-hover/polaroids:scale-[1.07] group-hover/polaroids:shadow-[0_22px_50px_rgba(0,0,0,0.18)] motion-reduce:group-hover/polaroids:translate-x-0 motion-reduce:group-hover/polaroids:translate-y-0 motion-reduce:group-hover/polaroids:rotate-[-6deg] motion-reduce:group-hover/polaroids:scale-100`}
+        style={{ transitionDelay: "0ms" }}
+      >
+        <div className="relative aspect-[4/3] w-full">
+          <Image
+            src={HERO_POLAROID_SRCS[2]}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="200px"
+          />
+        </div>
+      </div>
+      {/* z2 — middle */}
+      <div
+        className={`absolute bottom-1 left-[20%] z-[2] w-[58%] rotate-[2deg] shadow-[0_12px_36px_rgba(0,0,0,0.14)] ${frame} ${polaroidEase} group-hover/polaroids:-translate-y-12 group-hover/polaroids:translate-x-2 group-hover/polaroids:rotate-0 group-hover/polaroids:scale-[1.08] group-hover/polaroids:shadow-[0_26px_56px_rgba(0,0,0,0.2)] motion-reduce:group-hover/polaroids:translate-x-0 motion-reduce:group-hover/polaroids:translate-y-0 motion-reduce:group-hover/polaroids:rotate-[2deg] motion-reduce:group-hover/polaroids:scale-100`}
+        style={{ transitionDelay: "45ms" }}
+      >
+        <div className="relative aspect-[4/3] w-full">
+          <Image
+            src={HERO_POLAROID_SRCS[1]}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="200px"
+          />
+        </div>
+      </div>
+      {/* z3 — front (still bottom-anchored, not `top-*`) */}
+      <div
+        className={`absolute bottom-3 right-[2%] z-[3] w-[58%] rotate-[7deg] shadow-[0_14px_40px_rgba(0,0,0,0.15)] ${frame} ${polaroidEase} group-hover/polaroids:translate-x-3 group-hover/polaroids:-translate-y-9 group-hover/polaroids:rotate-[14deg] group-hover/polaroids:scale-[1.09] group-hover/polaroids:shadow-[0_28px_60px_rgba(0,0,0,0.22)] motion-reduce:group-hover/polaroids:translate-x-0 motion-reduce:group-hover/polaroids:translate-y-0 motion-reduce:group-hover/polaroids:rotate-[7deg] motion-reduce:group-hover/polaroids:scale-100`}
+        style={{ transitionDelay: "90ms" }}
+      >
+        <div className="relative aspect-[4/3] w-full">
+          <Image
+            src={HERO_POLAROID_SRCS[0]}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="200px"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function GitHubIcon({ className }: { className?: string }) {
   return (
@@ -65,7 +123,7 @@ function EditorialCard({ item }: { item: EditorialItem }) {
           src={imageSrc}
           alt=""
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
         />
       ) : (
@@ -116,8 +174,6 @@ function EditorialCard({ item }: { item: EditorialItem }) {
 }
 
 export function PortfolioEditorialHome() {
-  const [filter, setFilter] = useState<FilterKey>("projects");
-
   const projectItems: EditorialItem[] = useMemo(
     () =>
       projects.map((p) => ({
@@ -132,31 +188,18 @@ export function PortfolioEditorialHome() {
     []
   );
 
-  const randomItems: EditorialItem[] = useMemo(
-    () => [
-      {
-        id: "random-page",
-        title: portfolioTangent.title.toUpperCase(),
-        subtitle: portfolioTangent.body,
-        year: "",
-        image: "/shopify.png",
-        href: "/random",
-      },
-    ],
-    []
-  );
-
-  const visibleItems = filter === "random" ? randomItems : projectItems;
-
   const xUrl = `https://twitter.com/${site.links.twitterCreator.replace(/^@/, "")}`;
 
   return (
     <div className="min-h-screen bg-white text-black antialiased">
-      <div className="mx-auto max-w-6xl px-5 pb-20 pt-10 sm:px-8 md:px-10 lg:px-12">
+      <div className="mx-auto w-full max-w-screen-2xl px-4 pb-20 pt-10 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16">
         <header className="mb-14 md:mb-20">
           <div className="mb-10 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm text-neutral-600">
             <Link href="/projects" className="transition-colors hover:text-black">
               all projects
+            </Link>
+            <Link href="/random" className="transition-colors hover:text-black">
+              eats
             </Link>
             <Link href="/#contact" className="transition-colors hover:text-black">
               contact
@@ -209,36 +252,7 @@ export function PortfolioEditorialHome() {
             </div>
 
             <div className="flex flex-col items-center md:items-end">
-              <div className="relative h-[200px] w-full max-w-[280px] sm:h-[220px] sm:max-w-[300px]">
-                <div
-                  className="absolute right-4 top-2 w-[58%] rotate-[6deg] overflow-hidden rounded-sm border border-neutral-200 bg-white p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.12)]"
-                  style={{ zIndex: 2 }}
-                >
-                  <div className="relative aspect-[4/3] w-full">
-                    <Image
-                      src="/shopify.png"
-                      alt=""
-                      fill
-                      className="object-cover"
-                      sizes="200px"
-                    />
-                  </div>
-                </div>
-                <div
-                  className="absolute left-4 top-8 w-[58%] rotate-[-7deg] overflow-hidden rounded-sm border border-neutral-200 bg-white p-1.5 shadow-[0_10px_32px_rgba(0,0,0,0.1)]"
-                  style={{ zIndex: 1 }}
-                >
-                  <div className="relative aspect-[4/3] w-full">
-                    <Image
-                      src="/droneracing.jpg"
-                      alt=""
-                      fill
-                      className="object-cover"
-                      sizes="200px"
-                    />
-                  </div>
-                </div>
-              </div>
+              <PolaroidStack />
               <Link
                 href="/#about"
                 className="mt-6 text-sm text-neutral-600 underline decoration-neutral-400 underline-offset-4 transition-colors hover:text-black hover:decoration-black"
@@ -249,47 +263,41 @@ export function PortfolioEditorialHome() {
           </div>
         </header>
 
-        <nav className="flex flex-wrap gap-2" aria-label="Projects and random">
-          {FILTERS.map(({ key, label }) => {
-            const active = filter === key;
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setFilter(key)}
-                className={`rounded-full px-4 py-2 text-sm font-medium capitalize transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
-                  active
-                    ? "bg-black text-white"
-                    : "border border-neutral-300 bg-white text-black hover:border-neutral-500"
-                }`}
+        <div
+          className="mt-10 border-b border-neutral-200 pb-12"
+          aria-label="Reserved slots"
+        >
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
+            {[0, 1, 2, 3].map((i) => (
+              <article
+                key={`project-slot-${i}`}
+                className="pointer-events-none select-none"
+                aria-hidden="true"
               >
-                {label}
-              </button>
-            );
-          })}
-        </nav>
+                <div className="relative aspect-[16/11] w-full rounded-xl border border-dashed border-neutral-300 bg-neutral-50 shadow-sm" />
+                <div className="mt-4 min-h-[4.75rem]" />
+              </article>
+            ))}
+          </div>
+        </div>
 
         <div
           id="projects"
-          className={`mt-10 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 ${
-            filter === "random" ? "sm:grid-cols-1 lg:grid-cols-1 lg:max-w-md" : ""
-          }`}
+          className="mt-12 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12"
         >
-          {visibleItems.map((item) => (
+          {projectItems.map((item) => (
             <EditorialCard key={item.id} item={item} />
           ))}
         </div>
 
-        {filter === "projects" ? (
-          <p className="mt-12 text-sm text-neutral-600">
-            <Link
-              href="/projects"
-              className="underline decoration-neutral-300 underline-offset-4 hover:text-black"
-            >
-              Filter by tag on the full projects page →
-            </Link>
-          </p>
-        ) : null}
+        <p className="mt-12 text-sm text-neutral-600">
+          <Link
+            href="/projects"
+            className="underline decoration-neutral-300 underline-offset-4 hover:text-black"
+          >
+            Filter by tag on the full projects page →
+          </Link>
+        </p>
       </div>
 
       <PortfolioAbout omitHeaderContent />
