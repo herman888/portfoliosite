@@ -23,6 +23,42 @@ function hrefForProject(p: (typeof projects)[number]): string | undefined {
   return p.link ?? p.code ?? p.devpost;
 }
 
+/** Top row — experience / roles (matches project card layout). */
+const experienceStripItems: EditorialItem[] = [
+  {
+    id: "human-computer-lab",
+    title: "HUMAN–COMPUTER LAB",
+    subtitle: "Technical intern",
+    year: "2025",
+    image: "/humancomputerlab.jpeg",
+    href: "https://www.yorku.ca/lassonde/",
+  },
+  {
+    id: "sellstatic-strip",
+    title: "SELLSTATIC",
+    subtitle: "Software engineering intern",
+    year: "2025–26",
+    image: "/sellstatic.jpeg",
+    href: site.links.sellstatic,
+  },
+  {
+    id: "utias-strip",
+    title: "UTIAS",
+    subtitle: "Undergraduate researcher",
+    year: "2023–25",
+    image: "/utias.jpeg",
+    href: "https://utias.utoronto.ca",
+  },
+  {
+    id: "sdcn-strip",
+    title: "SDCNLAB",
+    subtitle: "UTIAS research assistant",
+    year: "2025",
+    image: "/SDCNLAB.jpeg",
+    href: "https://www.yorku.ca/jjshan/SDCNLab.html",
+  },
+];
+
 /** Hero polaroids — only `background.JPG`, `background1.jpg`, `background2.jpg` (no separate “top” photo). */
 const HERO_POLAROID_SRCS = ["/background.JPG", "/background2.jpg", "/background1.jpg"] as const;
 
@@ -265,18 +301,11 @@ export function PortfolioEditorialHome() {
 
         <div
           className="mt-10 border-b border-neutral-200 pb-12"
-          aria-label="Reserved slots"
+          aria-label="Experience"
         >
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
-            {[0, 1, 2, 3].map((i) => (
-              <article
-                key={`project-slot-${i}`}
-                className="pointer-events-none select-none"
-                aria-hidden="true"
-              >
-                <div className="relative aspect-[16/11] w-full rounded-xl border border-dashed border-neutral-300 bg-neutral-50 shadow-sm" />
-                <div className="mt-4 min-h-[4.75rem]" />
-              </article>
+            {experienceStripItems.map((item) => (
+              <EditorialCard key={item.id} item={item} />
             ))}
           </div>
         </div>
