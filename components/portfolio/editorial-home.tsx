@@ -28,7 +28,7 @@ const experienceStripItems: EditorialItem[] = [
   {
     id: "human-computer-lab",
     title: "HUMAN–COMPUTER LAB",
-    subtitle: "Technical intern",
+    subtitle: "Technical Intern",
     year: "2025",
     image: "/humancomputerlab.jpeg",
     href: "https://www.yorku.ca/lassonde/",
@@ -36,7 +36,7 @@ const experienceStripItems: EditorialItem[] = [
   {
     id: "sellstatic-strip",
     title: "SELLSTATIC",
-    subtitle: "Software engineering intern",
+    subtitle: "Software Engineering Intern",
     year: "2025–26",
     image: "/sellstatic.jpeg",
     href: site.links.sellstatic,
@@ -44,7 +44,7 @@ const experienceStripItems: EditorialItem[] = [
   {
     id: "utias-strip",
     title: "UTIAS",
-    subtitle: "Undergraduate researcher",
+    subtitle: "Research Assistant",
     year: "2023–25",
     image: "/utias.jpeg",
     href: "https://utias.utoronto.ca",
@@ -52,7 +52,7 @@ const experienceStripItems: EditorialItem[] = [
   {
     id: "sdcn-strip",
     title: "SDCNLAB",
-    subtitle: "UTIAS research assistant",
+    subtitle: "Undergraduate Researcher",
     year: "2025",
     image: "/SDCNLAB.jpeg",
     href: "https://www.yorku.ca/jjshan/SDCNLab.html",
@@ -224,8 +224,6 @@ export function PortfolioEditorialHome() {
     []
   );
 
-  const xUrl = `https://twitter.com/${site.links.twitterCreator.replace(/^@/, "")}`;
-
   return (
     <div className="min-h-screen bg-white text-black antialiased">
       <div className="mx-auto w-full max-w-screen-2xl px-4 pb-20 pt-10 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16">
@@ -275,15 +273,6 @@ export function PortfolioEditorialHome() {
                 >
                   <LinkedInIcon className="h-5 w-5" />
                 </a>
-                <a
-                  href={xUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium uppercase tracking-wider transition-opacity hover:opacity-60"
-                  aria-label="X"
-                >
-                  X
-                </a>
               </div>
             </div>
 
@@ -299,25 +288,41 @@ export function PortfolioEditorialHome() {
           </div>
         </header>
 
-        <div
+        <section
+          id="work"
+          aria-labelledby="work-heading"
           className="mt-10 border-b border-neutral-200 pb-12"
-          aria-label="Experience"
         >
+          <h2
+            id="work-heading"
+            className="mb-8 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600"
+          >
+            Work
+          </h2>
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
             {experienceStripItems.map((item) => (
               <EditorialCard key={item.id} item={item} />
             ))}
           </div>
-        </div>
+        </section>
 
-        <div
+        <section
           id="projects"
-          className="mt-12 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12"
+          aria-labelledby="projects-heading"
+          className="mt-12"
         >
-          {projectItems.map((item) => (
-            <EditorialCard key={item.id} item={item} />
-          ))}
-        </div>
+          <h2
+            id="projects-heading"
+            className="mb-8 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600"
+          >
+            Projects
+          </h2>
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
+            {projectItems.map((item) => (
+              <EditorialCard key={item.id} item={item} />
+            ))}
+          </div>
+        </section>
 
         <p className="mt-12 text-sm text-neutral-600">
           <Link

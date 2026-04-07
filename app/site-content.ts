@@ -33,6 +33,7 @@ export const site = {
     email: "herman.isayenka@gmail.com",
     linkedIn: "https://www.linkedin.com/in/hermanisayenka/",
     sellstatic: "https://www.sellstatic.com/",
+    schulichLeaders: "https://www.schulichleaders.ca/",
     githubProfile,
     github: `https://github.com/${githubProfile}`,
     twitterCreator: "@hermanisayenka",
@@ -203,10 +204,9 @@ export type PortfolioExperience = {
 export const portfolioEducation: PortfolioExperience[] = [
   {
     company: "York University",
-    role: "Electrical Engineering Student",
+    role: "Electrical Engineering",
     period: "2024 — Present",
     url: "https://yorku.ca",
-    highlight: `Schulich Leader (${site.person.scholarshipAmount})`,
   },
 ];
 

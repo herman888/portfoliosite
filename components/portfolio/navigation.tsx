@@ -7,7 +7,7 @@ import { navInitials } from "@/app/site-content";
 
 const navItems = [
   { label: "About", href: "/#about" },
-  { label: "Experience", href: "/#experience" },
+  { label: "Work", href: "/#work" },
   { label: "Projects", href: "/#projects" },
   { label: "eats", href: "/random" },
   { label: "Contact", href: "/#contact" },
