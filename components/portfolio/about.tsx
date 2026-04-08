@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import {
   portfolioAbout,
@@ -27,7 +26,7 @@ const chipWrap: typeof fadeUpSmall = {
 const inView = { once: true as const, margin: "-60px" as const };
 
 type AboutProps = {
-  /** Hide intro paragraph + eats link when the hero already shows them. */
+  /** Hide intro paragraph when the hero already shows it. */
   omitHeaderContent?: boolean;
 };
 
@@ -55,26 +54,11 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={inView}
               transition={{ ...easeOut, delay: 0.05 }}
-              className="mb-6 max-w-xl text-lg leading-relaxed text-foreground md:text-xl"
+              className="mb-12 max-w-xl text-lg leading-relaxed text-foreground md:text-xl"
             >
               {portfolioAbout}
             </motion.p>
 
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={inView}
-              transition={{ ...easeOut, delay: 0.065 }}
-              className="mb-12"
-            >
-              <Link
-                href="/random"
-                className="group inline-flex items-center gap-1 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-              >
-                eats
-                <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition-opacity group-hover:opacity-100" />
-              </Link>
-            </motion.p>
           </>
         )}
 

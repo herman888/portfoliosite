@@ -11,6 +11,13 @@ export default {
       fontFamily: {
         sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
+        editorial: [
+          "var(--font-editorial)",
+          "Plus Jakarta Sans",
+          "var(--font-inter)",
+          "system-ui",
+          "sans-serif",
+        ],
       },
       colors: {
         background: "var(--background)",

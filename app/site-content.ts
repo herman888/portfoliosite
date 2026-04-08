@@ -185,7 +185,7 @@ export const portfolioSkills = [
 export const portfolioAbout =
   "I'm genuinely interested in software and robotics, and I like going deep on both. I spend most of my time building and learning where code meets hardware, control, and real-world problems.";
 
-/** Short off-script note — shown on `/random`. */
+/** Short off-script note — reserved when eats page is re-enabled. */
 export const portfolioTangent = {
   title: "eats",
   body: "Offline you'll usually find me on skates, a climbing wall, or a trail — anything that isn't waiting on a build.",
@@ -205,7 +205,7 @@ export const portfolioEducation: PortfolioExperience[] = [
   {
     company: "York University",
     role: "Electrical Engineering",
-    period: "2024 — Present",
+    period: "2025 — Present",
     url: "https://yorku.ca",
   },
 ];

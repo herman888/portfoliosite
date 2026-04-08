@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 import { projects } from "@/app/projects/projects-data";
-import { fullName, portfolioAbout, site } from "@/app/site-content";
+import { portfolioAbout, site } from "@/app/site-content";
 import { PortfolioAbout } from "./about";
 import { PortfolioContact } from "./contact";
 import { PortfolioFooter } from "./footer";
@@ -232,9 +232,6 @@ export function PortfolioEditorialHome() {
             <Link href="/projects" className="transition-colors hover:text-black">
               all projects
             </Link>
-            <Link href="/random" className="transition-colors hover:text-black">
-              eats
-            </Link>
             <Link href="/#contact" className="transition-colors hover:text-black">
               contact
             </Link>
@@ -247,11 +244,11 @@ export function PortfolioEditorialHome() {
           </div>
 
           <div className="grid gap-12 md:grid-cols-2 md:items-start md:gap-10 lg:gap-16">
-            <div>
-              <h1 className="text-[clamp(2rem,5vw,3.25rem)] font-semibold leading-[1.05] tracking-tight text-black">
-                {fullName}
+            <div className="font-editorial">
+              <h1 className="text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-black">
+                {`${site.person.firstName} ${site.person.lastName}`.toLowerCase()}
               </h1>
-              <p className="mt-6 max-w-md text-base leading-relaxed text-neutral-600 md:text-lg">
+              <p className="mt-6 max-w-md text-base font-normal leading-relaxed text-neutral-600 md:text-lg">
                 {portfolioAbout}
               </p>
               <div className="mt-8 flex items-center gap-5 text-black">
