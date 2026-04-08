@@ -4,7 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 import { projects } from "@/app/projects/projects-data";
-import { portfolioAbout, site } from "@/app/site-content";
+import {
+  humanComputerLabWorkPeriod,
+  portfolioAbout,
+  portfolioExperience,
+  site,
+} from "@/app/site-content";
+
+function periodForPortfolioCompany(company: string): string {
+  const row = portfolioExperience.find((e) => e.company === company);
+  return row?.period ?? "—";
+}
 import { PortfolioAbout } from "./about";
 import { PortfolioContact } from "./contact";
 import { PortfolioFooter } from "./footer";
@@ -17,6 +27,7 @@ type EditorialItem = {
   image?: string;
   href?: string;
   isNemo?: boolean;
+  location?: string;
 };
 
 function hrefForProject(p: (typeof projects)[number]): string | undefined {
@@ -29,7 +40,8 @@ const experienceStripItems: EditorialItem[] = [
     id: "human-computer-lab",
     title: "HUMAN–COMPUTER LAB",
     subtitle: "Technical Intern",
-    year: "2025",
+    year: humanComputerLabWorkPeriod,
+    location: "San Francisco, CA",
     image: "/humancomputerlab.jpeg",
     href: "https://www.yorku.ca/lassonde/",
   },
@@ -37,7 +49,8 @@ const experienceStripItems: EditorialItem[] = [
     id: "sellstatic-strip",
     title: "SELLSTATIC",
     subtitle: "Software Engineering Intern",
-    year: "2025–26",
+    year: periodForPortfolioCompany("SellStatic"),
+    location: "Toronto, ON",
     image: "/sellstatic.jpeg",
     href: site.links.sellstatic,
   },
@@ -45,7 +58,8 @@ const experienceStripItems: EditorialItem[] = [
     id: "utias-strip",
     title: "UTIAS",
     subtitle: "Research Assistant",
-    year: "2023–25",
+    year: periodForPortfolioCompany("UTIAS Flight Systems and Control Lab"),
+    location: "Toronto, ON",
     image: "/utias.jpeg",
     href: "https://utias.utoronto.ca",
   },
@@ -53,7 +67,8 @@ const experienceStripItems: EditorialItem[] = [
     id: "sdcn-strip",
     title: "SDCNLAB",
     subtitle: "Undergraduate Researcher",
-    year: "2025",
+    year: periodForPortfolioCompany("SDCN Lab"),
+    location: "Toronto, ON",
     image: "/SDCNLAB.jpeg",
     href: "https://www.yorku.ca/jjshan/SDCNLab.html",
   },
@@ -171,16 +186,21 @@ function EditorialCard({ item }: { item: EditorialItem }) {
   );
 
   const text = (
-    <div className="mt-4">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-[0.8125rem] font-bold uppercase leading-snug tracking-wide text-black">
+    <div className="mt-4 flex flex-col gap-3">
+      <header className="space-y-1">
+        <h3 className="text-sm font-bold uppercase leading-snug tracking-[0.04em] text-black">
           {item.title}
         </h3>
         {item.year ? (
-          <span className="shrink-0 tabular-nums text-sm text-neutral-600">{item.year}</span>
+          <p className="text-xs font-medium tabular-nums leading-relaxed text-neutral-500">
+            {item.year}
+          </p>
         ) : null}
-      </div>
-      <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">{item.subtitle}</p>
+      </header>
+      <p className="text-sm leading-[1.55] text-neutral-700">{item.subtitle}</p>
+      {item.location ? (
+        <p className="text-xs leading-normal text-neutral-500">{item.location}</p>
+      ) : null}
     </div>
   );
 

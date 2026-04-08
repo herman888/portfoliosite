@@ -234,6 +234,8 @@ export const portfolioExperience: PortfolioExperience[] = [
   },
 ];
 
+export const humanComputerLabWorkPeriod = "May 2026 — Sep 2026" as const;
+
 /** Longer bio for `ProfileSection` (light-theme home variant). */
 export const profileAbout =
   "Interested in software (especially big data), robotics, and autonomous systems—but also in hardware: building things with my hands, soldering, and working with circuits. I love projects that combine both software and hardware, letting me bridge the digital and physical worlds.";
