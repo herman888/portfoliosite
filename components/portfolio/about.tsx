@@ -144,32 +144,6 @@ export function PortfolioAbout({ omitHeaderContent }: AboutProps = {}) {
                   </div>
                 </a>
               ))}
-              <a
-                href={site.links.schulichLeaders}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex gap-4 py-6 transition-colors hover:text-foreground"
-              >
-                <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md border border-border/60 bg-muted/20">
-                  <Image
-                    src="/schulich.jpeg"
-                    alt="Schulich Leader Scholarship"
-                    width={44}
-                    height={44}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <span className="flex items-center gap-1.5 text-base font-medium text-foreground">
-                    Schulich Leader Scholarship
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-60" />
-                  </span>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    {site.person.scholarshipAmount} — national STEM scholarship in
-                    Canada.
-                  </p>
-                </div>
-              </a>
             </div>
           </div>
 

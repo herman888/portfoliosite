@@ -160,14 +160,6 @@ export const currentlyItems: CurrentlyItem[] = [
     location: "San Francisco, CA",
   },
   {
-    id: "schulich",
-    topic: "schulich",
-    prefix: `recipient of ${site.person.scholarshipAmount}`,
-    image: { src: "/schulich.jpeg", alt: "Schulich Leader" },
-    linkLabel: "Schulich Leader",
-    href: site.links.schulichLeaders,
-  },
-  {
     id: "sellstatic",
     topic: "sellstatic",
     prefix: "prev swe intern @",
@@ -179,7 +171,7 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "sdcn",
     topic: "sdcn",
-    prefix: "drone research @",
+    prefix: "prev drone research @",
     image: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
     linkLabel: "Spacecraft Dynamics, Control and Navigation Laboratory",
     href: "https://www.yorku.ca/jjshan/SDCNLab.html",
@@ -188,18 +180,26 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "utias",
     topic: "uoft",
-    prefix: "drone research @",
+    prefix: "prev drone research @",
     image: { src: "/utias.jpeg", alt: "UTIAS Flight Systems and Control Laboratory" },
     linkLabel: "UTIAS Flight Systems and Control Laboratory",
     href: "https://utias.utoronto.ca",
     location: "Toronto, ON",
   },
   {
+    id: "schulich",
+    topic: "schulich",
+    prefix: `recipient of ${site.person.scholarshipAmount}`,
+    image: { src: "/schulich.jpeg", alt: "Schulich Leader" },
+    linkLabel: "Schulich Leader",
+    href: site.links.schulichLeaders,
+  },
+  {
     id: "york-eng",
     topic: "york",
-    prefix: "engineering @",
+    prefix: "electrical engineering @",
     image: { src: "/york.png", alt: "York University" },
-    linkLabel: "York University — Lassonde School of Engineering (Electrical Engineering)",
+    linkLabel: "York University",
     href: "https://yorku.ca",
   },
   {

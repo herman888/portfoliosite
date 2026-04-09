@@ -30,8 +30,6 @@ type EditorialItem = {
   location?: string;
   /** Set for project cards — icon row below the main link. */
   linkAffordance?: LinkAffordance;
-  /** Work strip: image + title only (dates/roles live under Currently). */
-  variant?: "default" | "title-only";
 };
 
 function hrefForProject(p: Project): string | undefined {
@@ -49,38 +47,6 @@ function linkAffordanceForProject(p: Project): LinkAffordance | undefined {
   }
   return { kind: "internal", href: primary };
 }
-
-/** Top row — experience / roles (matches project card layout). */
-const experienceStripItems: EditorialItem[] = [
-  {
-    id: "human-computer-lab",
-    title: "HUMAN–COMPUTER LAB",
-    image: "/humancomputerlab.jpeg",
-    href: "https://www.humancomputerlab.com/",
-    variant: "title-only",
-  },
-  {
-    id: "sellstatic-strip",
-    title: "SELLSTATIC",
-    image: "/sellstatic.jpeg",
-    href: site.links.sellstatic,
-    variant: "title-only",
-  },
-  {
-    id: "utias-strip",
-    title: "UTIAS FLIGHT SYSTEMS AND CONTROL LABORATORY",
-    image: "/utias.jpeg",
-    href: "https://utias.utoronto.ca",
-    variant: "title-only",
-  },
-  {
-    id: "sdcn-strip",
-    title: "SPACECRAFT DYNAMICS, CONTROL AND NAVIGATION LAB",
-    image: "/SDCNLAB.jpeg",
-    href: "https://www.yorku.ca/jjshan/SDCNLab.html",
-    variant: "title-only",
-  },
-];
 
 /** Hero polaroids — only `background.JPG`, `background1.jpg`, `background2.jpg` (no separate “top” photo). */
 const HERO_POLAROID_SRCS = ["/background.JPG", "/background2.jpg", "/background1.jpg"] as const;
@@ -194,7 +160,6 @@ function ProjectLinkAffordance({ item }: { item: EditorialItem }) {
 function EditorialCard({ item }: { item: EditorialItem }) {
   const imageSrc = item.image;
   const isNemo = item.isNemo;
-  const titleOnly = item.variant === "title-only";
 
   const media = (
     <div className="relative aspect-[16/11] w-full overflow-hidden rounded-xl bg-neutral-100">
@@ -228,16 +193,16 @@ function EditorialCard({ item }: { item: EditorialItem }) {
         <h3 className="text-sm font-bold uppercase leading-snug tracking-[0.04em] text-black">
           {item.title}
         </h3>
-        {!titleOnly && item.year ? (
+        {item.year ? (
           <p className="text-xs font-medium tabular-nums leading-relaxed text-neutral-500">
             {item.year}
           </p>
         ) : null}
       </header>
-      {!titleOnly && item.subtitle ? (
+      {item.subtitle ? (
         <p className="text-sm leading-[1.55] text-neutral-700">{item.subtitle}</p>
       ) : null}
-      {!titleOnly && item.location ? (
+      {item.location ? (
         <p className="text-xs leading-normal text-neutral-500">{item.location}</p>
       ) : null}
     </div>
@@ -383,27 +348,6 @@ export function PortfolioEditorialHome() {
           >
             <PortfolioCurrentlyPanel />
           </motion.div>
-        </section>
-
-        <section
-          id="work"
-          aria-labelledby="work-heading"
-          className="scroll-mt-24 rounded-2xl border border-neutral-200/90 bg-neutral-50/70 px-4 py-10 sm:px-6 sm:py-12"
-        >
-          <h2
-            id="work-heading"
-            className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-800"
-          >
-            Work
-          </h2>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-neutral-600">
-            Internships and research placements — where I was on a team or in a lab.
-          </p>
-          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
-            {experienceStripItems.map((item) => (
-              <EditorialCard key={item.id} item={item} />
-            ))}
-          </div>
         </section>
 
         <section
