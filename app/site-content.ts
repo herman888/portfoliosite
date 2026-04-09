@@ -179,6 +179,7 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "sdcn",
     topic: "sdcn",
+    prefix: "drone research @",
     image: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
     linkLabel: "Spacecraft Dynamics, Control and Navigation Laboratory",
     href: "https://www.yorku.ca/jjshan/SDCNLab.html",
@@ -187,7 +188,7 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "utias",
     topic: "uoft",
-    prefix: "research @",
+    prefix: "drone research @",
     image: { src: "/utias.jpeg", alt: "UTIAS" },
     linkLabel: "University of Toronto Institute for Aerospace Studies",
     href: "https://utias.utoronto.ca",
