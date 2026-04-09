@@ -189,8 +189,8 @@ export const currentlyItems: CurrentlyItem[] = [
     id: "utias",
     topic: "uoft",
     prefix: "drone research @",
-    image: { src: "/utias.jpeg", alt: "UTIAS" },
-    linkLabel: "University of Toronto Institute for Aerospace Studies",
+    image: { src: "/utias.jpeg", alt: "UTIAS Flight Systems and Control Laboratory" },
+    linkLabel: "UTIAS Flight Systems and Control Laboratory",
     href: "https://utias.utoronto.ca",
     location: "Toronto, ON",
   },
@@ -278,8 +278,6 @@ export const portfolioExperience: PortfolioExperience[] = [
     location: "Toronto, ON",
   },
 ];
-
-export const humanComputerLabWorkPeriod = "May 2026 — Sep 2026" as const;
 
 /** Longer bio for `ProfileSection` (light-theme home variant). */
 export const profileAbout =

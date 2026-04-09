@@ -6,23 +6,13 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { projects, type Project } from "@/app/projects/projects-data";
-import {
-  humanComputerLabWorkPeriod,
-  portfolioAbout,
-  portfolioExperience,
-  site,
-} from "@/app/site-content";
+import { portfolioAbout, site } from "@/app/site-content";
 import { PortfolioAbout } from "./about";
 import { PortfolioContact } from "./contact";
 import { PortfolioCurrentlyPanel } from "./currently-panel";
 import { PortfolioFooter } from "./footer";
 import { easeOut } from "./portfolio-motion";
 import { GitHubIcon, LinkedInIcon } from "./social-icons";
-
-function periodForPortfolioCompany(company: string): string {
-  const row = portfolioExperience.find((e) => e.company === company);
-  return row?.period ?? "—";
-}
 
 type LinkAffordance = {
   kind: "github" | "external" | "internal";
@@ -32,14 +22,16 @@ type LinkAffordance = {
 type EditorialItem = {
   id: string;
   title: string;
-  subtitle: string;
-  year: string;
+  subtitle?: string;
+  year?: string;
   image?: string;
   href?: string;
   isNemo?: boolean;
   location?: string;
   /** Set for project cards — icon row below the main link. */
   linkAffordance?: LinkAffordance;
+  /** Work strip: image + title only (dates/roles live under Currently). */
+  variant?: "default" | "title-only";
 };
 
 function hrefForProject(p: Project): string | undefined {
@@ -63,38 +55,30 @@ const experienceStripItems: EditorialItem[] = [
   {
     id: "human-computer-lab",
     title: "HUMAN–COMPUTER LAB",
-    subtitle: "Technical Intern",
-    year: humanComputerLabWorkPeriod,
-    location: "San Francisco, CA",
     image: "/humancomputerlab.jpeg",
     href: "https://www.humancomputerlab.com/",
+    variant: "title-only",
   },
   {
     id: "sellstatic-strip",
     title: "SELLSTATIC",
-    subtitle: "Software Engineering Intern",
-    year: periodForPortfolioCompany("SellStatic"),
-    location: "Toronto, ON",
     image: "/sellstatic.jpeg",
     href: site.links.sellstatic,
+    variant: "title-only",
   },
   {
     id: "utias-strip",
     title: "UTIAS FLIGHT SYSTEMS AND CONTROL LABORATORY",
-    subtitle: "Research Assistant",
-    year: periodForPortfolioCompany("UTIAS Flight Systems and Control Laboratory"),
-    location: "Toronto, ON",
     image: "/utias.jpeg",
     href: "https://utias.utoronto.ca",
+    variant: "title-only",
   },
   {
     id: "sdcn-strip",
     title: "SPACECRAFT DYNAMICS, CONTROL AND NAVIGATION LAB",
-    subtitle: "Undergraduate Researcher",
-    year: periodForPortfolioCompany("Spacecraft Dynamics, Control and Navigation Lab"),
-    location: "Toronto, ON",
     image: "/SDCNLAB.jpeg",
     href: "https://www.yorku.ca/jjshan/SDCNLab.html",
+    variant: "title-only",
   },
 ];
 
@@ -210,6 +194,7 @@ function ProjectLinkAffordance({ item }: { item: EditorialItem }) {
 function EditorialCard({ item }: { item: EditorialItem }) {
   const imageSrc = item.image;
   const isNemo = item.isNemo;
+  const titleOnly = item.variant === "title-only";
 
   const media = (
     <div className="relative aspect-[16/11] w-full overflow-hidden rounded-xl bg-neutral-100">
@@ -243,14 +228,16 @@ function EditorialCard({ item }: { item: EditorialItem }) {
         <h3 className="text-sm font-bold uppercase leading-snug tracking-[0.04em] text-black">
           {item.title}
         </h3>
-        {item.year ? (
+        {!titleOnly && item.year ? (
           <p className="text-xs font-medium tabular-nums leading-relaxed text-neutral-500">
             {item.year}
           </p>
         ) : null}
       </header>
-      <p className="text-sm leading-[1.55] text-neutral-700">{item.subtitle}</p>
-      {item.location ? (
+      {!titleOnly && item.subtitle ? (
+        <p className="text-sm leading-[1.55] text-neutral-700">{item.subtitle}</p>
+      ) : null}
+      {!titleOnly && item.location ? (
         <p className="text-xs leading-normal text-neutral-500">{item.location}</p>
       ) : null}
     </div>
