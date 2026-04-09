@@ -44,7 +44,7 @@ export default function DroneRacingSummary() {
             className="h-14 w-14 rounded-full border border-border object-cover"
           />
           <p className="text-center text-sm font-medium uppercase tracking-[0.12em] text-muted-foreground sm:text-left">
-            Associated with UTIAS Flight Systems and Control Lab
+            Associated with UTIAS Flight Systems and Control Laboratory
           </p>
         </div>
 

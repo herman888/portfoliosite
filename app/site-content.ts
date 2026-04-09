@@ -219,14 +219,14 @@ export const portfolioExperience: PortfolioExperience[] = [
     location: "Toronto, ON",
   },
   {
-    company: "SDCN Lab",
+    company: "Spacecraft Dynamics, Control and Navigation Lab",
     role: "Undergraduate Research Assistant",
     period: "Sep 2025 — Dec 2025",
     url: "https://www.yorku.ca/jjshan/SDCNLab.html",
     location: "Toronto, ON",
   },
   {
-    company: "UTIAS Flight Systems and Control Lab",
+    company: "UTIAS Flight Systems and Control Laboratory",
     role: "Research — Autonomous Drone Racing",
     period: "Apr 2023 — Aug 2025",
     url: "https://utias.utoronto.ca",

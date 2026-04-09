@@ -3,21 +3,27 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
-import { projects } from "@/app/projects/projects-data";
+import { ArrowRight, ExternalLink } from "lucide-react";
+import { projects, type Project } from "@/app/projects/projects-data";
 import {
   humanComputerLabWorkPeriod,
-  portfolioAbout,
   portfolioExperience,
   site,
 } from "@/app/site-content";
+import { PortfolioAbout } from "./about";
+import { PortfolioContact } from "./contact";
+import { PortfolioFooter } from "./footer";
+import { GitHubIcon } from "./social-icons";
 
 function periodForPortfolioCompany(company: string): string {
   const row = portfolioExperience.find((e) => e.company === company);
   return row?.period ?? "—";
 }
-import { PortfolioAbout } from "./about";
-import { PortfolioContact } from "./contact";
-import { PortfolioFooter } from "./footer";
+
+type LinkAffordance = {
+  kind: "github" | "external" | "internal";
+  href: string;
+};
 
 type EditorialItem = {
   id: string;
@@ -28,10 +34,24 @@ type EditorialItem = {
   href?: string;
   isNemo?: boolean;
   location?: string;
+  /** Set for project cards — icon row below the main link. */
+  linkAffordance?: LinkAffordance;
 };
 
-function hrefForProject(p: (typeof projects)[number]): string | undefined {
+function hrefForProject(p: Project): string | undefined {
   return p.link ?? p.code ?? p.devpost;
+}
+
+function linkAffordanceForProject(p: Project): LinkAffordance | undefined {
+  const primary = hrefForProject(p);
+  if (!primary) return undefined;
+  if (p.code?.includes("github.com")) {
+    return { kind: "github", href: p.code };
+  }
+  if (primary.startsWith("http")) {
+    return { kind: "external", href: primary };
+  }
+  return { kind: "internal", href: primary };
 }
 
 /** Top row — experience / roles (matches project card layout). */
@@ -43,7 +63,7 @@ const experienceStripItems: EditorialItem[] = [
     year: humanComputerLabWorkPeriod,
     location: "San Francisco, CA",
     image: "/humancomputerlab.jpeg",
-    href: "https://www.yorku.ca/lassonde/",
+    href: "https://www.humancomputerlab.com/",
   },
   {
     id: "sellstatic-strip",
@@ -56,18 +76,18 @@ const experienceStripItems: EditorialItem[] = [
   },
   {
     id: "utias-strip",
-    title: "UTIAS",
+    title: "UTIAS FLIGHT SYSTEMS AND CONTROL LABORATORY",
     subtitle: "Research Assistant",
-    year: periodForPortfolioCompany("UTIAS Flight Systems and Control Lab"),
+    year: periodForPortfolioCompany("UTIAS Flight Systems and Control Laboratory"),
     location: "Toronto, ON",
     image: "/utias.jpeg",
     href: "https://utias.utoronto.ca",
   },
   {
     id: "sdcn-strip",
-    title: "SDCNLAB",
+    title: "SPACECRAFT DYNAMICS, CONTROL AND NAVIGATION LAB",
     subtitle: "Undergraduate Researcher",
-    year: periodForPortfolioCompany("SDCN Lab"),
+    year: periodForPortfolioCompany("Spacecraft Dynamics, Control and Navigation Lab"),
     location: "Toronto, ON",
     image: "/SDCNLAB.jpeg",
     href: "https://www.yorku.ca/jjshan/SDCNLab.html",
@@ -139,19 +159,47 @@ function PolaroidStack() {
   );
 }
 
-function GitHubIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
-      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-    </svg>
-  );
-}
+const affordanceBtn =
+  "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-500 shadow-sm transition-colors hover:border-neutral-300 hover:text-black";
 
-function LinkedInIcon({ className }: { className?: string }) {
+function ProjectLinkAffordance({ item }: { item: EditorialItem }) {
+  const a = item.linkAffordance;
+  if (!a) return null;
+  const label =
+    a.kind === "github"
+      ? "View repository on GitHub"
+      : a.kind === "external"
+        ? "Open external link"
+        : "Open project page";
+
+  if (a.kind === "internal") {
+    return (
+      <Link
+        href={a.href}
+        className={affordanceBtn}
+        aria-label={label}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <ArrowRight className="h-4 w-4" strokeWidth={2} />
+      </Link>
+    );
+  }
+
   return (
-    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
+    <a
+      href={a.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={affordanceBtn}
+      aria-label={label}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {a.kind === "github" ? (
+        <GitHubIcon className="h-4 w-4" />
+      ) : (
+        <ExternalLink className="h-4 w-4" strokeWidth={2} />
+      )}
+    </a>
   );
 }
 
@@ -211,13 +259,33 @@ function EditorialCard({ item }: { item: EditorialItem }) {
     </>
   );
 
+  const isExternalHref = Boolean(item.href?.startsWith("http"));
+
+  if (item.href && item.linkAffordance) {
+    return (
+      <article className="group">
+        <a
+          href={item.href}
+          target={isExternalHref ? "_blank" : undefined}
+          rel={isExternalHref ? "noopener noreferrer" : undefined}
+          className="block outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+        >
+          {inner}
+        </a>
+        <div className="mt-3">
+          <ProjectLinkAffordance item={item} />
+        </div>
+      </article>
+    );
+  }
+
   if (item.href) {
     return (
       <article className="group">
         <a
           href={item.href}
-          target={item.href.startsWith("http") ? "_blank" : undefined}
-          rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+          target={isExternalHref ? "_blank" : undefined}
+          rel={isExternalHref ? "noopener noreferrer" : undefined}
           className="block outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
         >
           {inner}
@@ -240,6 +308,7 @@ export function PortfolioEditorialHome() {
         image: p.image ?? p.images?.[0],
         href: hrefForProject(p),
         isNemo: p.title === "Finding N.E.M.O (ConUHacks)",
+        linkAffordance: linkAffordanceForProject(p),
       })),
     []
   );
@@ -249,7 +318,11 @@ export function PortfolioEditorialHome() {
       <div className="mx-auto w-full max-w-screen-2xl px-4 pb-20 pt-10 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16">
         <header className="mb-14 md:mb-20">
           <div className="mb-10 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm text-neutral-600">
-            <Link href="/projects" className="transition-colors hover:text-black">
+            <Link
+              href="/#projects"
+              className="transition-colors hover:text-black"
+              scroll
+            >
               all projects
             </Link>
             <Link href="/#contact" className="transition-colors hover:text-black">
@@ -264,33 +337,16 @@ export function PortfolioEditorialHome() {
           </div>
 
           <div className="grid gap-12 md:grid-cols-2 md:items-start md:gap-10 lg:gap-16">
-            <div className="font-editorial">
-              <h1 className="text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-black">
-                {`${site.person.firstName} ${site.person.lastName}`.toLowerCase()}
-              </h1>
-              <p className="mt-6 max-w-md text-base font-normal leading-relaxed text-neutral-600 md:text-lg">
-                {portfolioAbout}
+            <div className="font-editorial flex min-h-[200px] flex-col justify-center md:min-h-[260px]">
+              <p className="text-xl font-medium leading-snug text-black md:text-2xl">
+                Software, robotics, and hardware in the real world.
               </p>
-              <div className="mt-8 flex items-center gap-5 text-black">
-                <a
-                  href={site.links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-opacity hover:opacity-60"
-                  aria-label="GitHub"
-                >
-                  <GitHubIcon className="h-5 w-5" />
-                </a>
-                <a
-                  href={site.links.linkedIn}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-opacity hover:opacity-60"
-                  aria-label="LinkedIn"
-                >
-                  <LinkedInIcon className="h-5 w-5" />
-                </a>
-              </div>
+              <Link
+                href="/#about"
+                className="mt-6 inline-flex w-fit text-sm text-neutral-600 underline decoration-neutral-400 underline-offset-4 transition-colors hover:text-black hover:decoration-black"
+              >
+                About me →
+              </Link>
             </div>
 
             <div className="flex flex-col items-center md:items-end">
@@ -308,15 +364,18 @@ export function PortfolioEditorialHome() {
         <section
           id="work"
           aria-labelledby="work-heading"
-          className="mt-10 border-b border-neutral-200 pb-12"
+          className="scroll-mt-24 mt-10 rounded-2xl border border-neutral-200/90 bg-neutral-50/70 px-4 py-10 sm:px-6 sm:py-12"
         >
           <h2
             id="work-heading"
-            className="mb-8 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600"
+            className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-800"
           >
             Work
           </h2>
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-neutral-600">
+            Internships and research placements — where I was on a team or in a lab.
+          </p>
+          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
             {experienceStripItems.map((item) => (
               <EditorialCard key={item.id} item={item} />
             ))}
@@ -326,15 +385,18 @@ export function PortfolioEditorialHome() {
         <section
           id="projects"
           aria-labelledby="projects-heading"
-          className="mt-12"
+          className="scroll-mt-24 mt-12 rounded-2xl border border-neutral-900/10 bg-white px-4 py-10 shadow-sm sm:px-6 sm:py-12"
         >
           <h2
             id="projects-heading"
-            className="mb-8 text-xs font-medium uppercase tracking-[0.2em] text-neutral-600"
+            className="text-xs font-semibold uppercase tracking-[0.2em] text-black"
           >
             Projects
           </h2>
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-neutral-600">
+            Things I&apos;ve shipped or demoed — hackathons, repos, and write-ups.
+          </p>
+          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
             {projectItems.map((item) => (
               <EditorialCard key={item.id} item={item} />
             ))}
@@ -351,7 +413,7 @@ export function PortfolioEditorialHome() {
         </p>
       </div>
 
-      <PortfolioAbout omitHeaderContent />
+      <PortfolioAbout />
       <PortfolioContact />
       <PortfolioFooter />
     </div>
