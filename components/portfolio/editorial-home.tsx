@@ -7,13 +7,14 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import { projects, type Project } from "@/app/projects/projects-data";
 import {
   humanComputerLabWorkPeriod,
+  portfolioAbout,
   portfolioExperience,
   site,
 } from "@/app/site-content";
 import { PortfolioAbout } from "./about";
 import { PortfolioContact } from "./contact";
 import { PortfolioFooter } from "./footer";
-import { GitHubIcon } from "./social-icons";
+import { GitHubIcon, LinkedInIcon } from "./social-icons";
 
 function periodForPortfolioCompany(company: string): string {
   const row = portfolioExperience.find((e) => e.company === company);
@@ -319,6 +320,13 @@ export function PortfolioEditorialHome() {
         <header className="mb-14 md:mb-20">
           <div className="mb-10 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm text-neutral-600">
             <Link
+              href="/#about"
+              className="transition-colors hover:text-black"
+              scroll
+            >
+              about
+            </Link>
+            <Link
               href="/#projects"
               className="transition-colors hover:text-black"
               scroll
@@ -337,26 +345,37 @@ export function PortfolioEditorialHome() {
           </div>
 
           <div className="grid gap-12 md:grid-cols-2 md:items-start md:gap-10 lg:gap-16">
-            <div className="font-editorial flex min-h-[200px] flex-col justify-center md:min-h-[260px]">
-              <p className="text-xl font-medium leading-snug text-black md:text-2xl">
-                Software, robotics, and hardware in the real world.
+            <div className="font-editorial">
+              <h1 className="text-[clamp(2rem,5vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-black">
+                {`${site.person.firstName} ${site.person.lastName}`.toLowerCase()}
+              </h1>
+              <p className="mt-6 max-w-md text-base font-normal leading-relaxed text-neutral-600 md:text-lg">
+                {portfolioAbout}
               </p>
-              <Link
-                href="/#about"
-                className="mt-6 inline-flex w-fit text-sm text-neutral-600 underline decoration-neutral-400 underline-offset-4 transition-colors hover:text-black hover:decoration-black"
-              >
-                About me →
-              </Link>
+              <div className="mt-8 flex items-center gap-5 text-black">
+                <a
+                  href={site.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-60"
+                  aria-label="GitHub"
+                >
+                  <GitHubIcon className="h-5 w-5" />
+                </a>
+                <a
+                  href={site.links.linkedIn}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-60"
+                  aria-label="LinkedIn"
+                >
+                  <LinkedInIcon className="h-5 w-5" />
+                </a>
+              </div>
             </div>
 
             <div className="flex flex-col items-center md:items-end">
               <PolaroidStack />
-              <Link
-                href="/#about"
-                className="mt-6 text-sm text-neutral-600 underline decoration-neutral-400 underline-offset-4 transition-colors hover:text-black hover:decoration-black"
-              >
-                who am i?
-              </Link>
             </div>
           </div>
         </header>
@@ -413,7 +432,7 @@ export function PortfolioEditorialHome() {
         </p>
       </div>
 
-      <PortfolioAbout />
+      <PortfolioAbout omitHeaderContent />
       <PortfolioContact />
       <PortfolioFooter />
     </div>
