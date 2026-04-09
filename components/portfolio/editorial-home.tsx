@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -13,7 +14,9 @@ import {
 } from "@/app/site-content";
 import { PortfolioAbout } from "./about";
 import { PortfolioContact } from "./contact";
+import { PortfolioCurrentlyPanel } from "./currently-panel";
 import { PortfolioFooter } from "./footer";
+import { easeOut } from "./portfolio-motion";
 import { GitHubIcon, LinkedInIcon } from "./social-icons";
 
 function periodForPortfolioCompany(company: string): string {
@@ -317,7 +320,7 @@ export function PortfolioEditorialHome() {
   return (
     <div className="min-h-screen bg-white text-black antialiased">
       <div className="mx-auto w-full max-w-screen-2xl px-4 pb-20 pt-10 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16">
-        <header className="mb-14 md:mb-20">
+        <header className="mb-8 md:mb-10">
           <div className="mb-10 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm text-neutral-600">
             <Link
               href="/#about"
@@ -381,9 +384,24 @@ export function PortfolioEditorialHome() {
         </header>
 
         <section
+          id="currently"
+          aria-labelledby="currently-heading"
+          className="scroll-mt-24 mb-14 md:mb-16"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={easeOut}
+          >
+            <PortfolioCurrentlyPanel />
+          </motion.div>
+        </section>
+
+        <section
           id="work"
           aria-labelledby="work-heading"
-          className="scroll-mt-24 mt-10 rounded-2xl border border-neutral-200/90 bg-neutral-50/70 px-4 py-10 sm:px-6 sm:py-12"
+          className="scroll-mt-24 rounded-2xl border border-neutral-200/90 bg-neutral-50/70 px-4 py-10 sm:px-6 sm:py-12"
         >
           <h2
             id="work-heading"

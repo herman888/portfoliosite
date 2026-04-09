@@ -17,7 +17,7 @@ export default function CurrentlyTerminal({ onJumpToChat }: Props) {
         </div>
         <ul className="space-y-1.5 about-me-line">
           {currentlyItems.map((item) => (
-            <li key={item.topic} className="flex items-center gap-2 flex-wrap">
+            <li key={item.id} className="flex items-center gap-2 flex-wrap">
               <span className="text-gray-500 select-none">▸</span>
               {item.prefix ? (
                 <span>{item.prefix}</span>
@@ -40,6 +40,9 @@ export default function CurrentlyTerminal({ onJumpToChat }: Props) {
               >
                 {item.linkLabel}
               </button>
+              {item.location ? (
+                <span className="text-gray-500">· {item.location}</span>
+              ) : null}
             </li>
           ))}
         </ul>

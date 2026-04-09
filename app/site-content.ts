@@ -8,7 +8,9 @@ export type SectionKey =
   | "schulich"
   | "sellstatic"
   | "uoft"
-  | "internships";
+  | "internships"
+  | "humancomputerlab"
+  | "sdcn";
 
 const githubProfile = "herman888";
 
@@ -56,6 +58,8 @@ export const questionPrompts: Record<SectionKey, string> = {
   sellstatic: "What did you do as a SWE intern at SellStatic?",
   uoft: "What kind of research are you doing at U of T / UTIAS?",
   internships: "What kind of internships are you looking for?",
+  humancomputerlab: "What will you do at the Human Computer Lab?",
+  sdcn: "What did you do at the Spacecraft Dynamics, Control and Navigation Lab?",
 };
 
 export const fallbackAnswers: Record<SectionKey, string> = {
@@ -75,7 +79,11 @@ export const fallbackAnswers: Record<SectionKey, string> = {
   uoft:
     "At the University of Toronto / UTIAS I work on drone racing and autonomy—building and testing flight systems, running both real and simulated races, and helping with research on how we can make high-speed flight safer and more reliable.",
   internships:
-    "I'm actively looking for internships where I can work on real systems—backend, data-heavy products, robotics, or infrastructure—ideally somewhere that touches autonomy, simulation, or large-scale city problems.",
+    "I'm looking for a winter 2027 internship where I can work on real systems—backend, data-heavy products, robotics, or infrastructure—ideally somewhere that touches autonomy, simulation, or large-scale city problems.",
+  humancomputerlab:
+    "I'm an upcoming technical intern at the Human Computer Lab, focused on human–computer interaction and related research.",
+  sdcn:
+    "I was an undergraduate researcher at York's Spacecraft Dynamics, Control and Navigation Laboratory (SDCN Lab), working on dynamics, control, and navigation problems for spacecraft.",
 };
 
 /** Groq system prompt — keep in sync with fallback facts. */
@@ -101,9 +109,10 @@ knowledge), answer like a normal helpful AI assistant.
 - I was an undergraduate research assistant at SDCN Lab (York) from Sep 2025 to Dec 2025.
 - I was previously a SWE intern at SellStatic.
 - My favourite sports are ${site.person.interests.sports.join(", ")}.
-- I'm looking for internships and roles close to real systems:
+- I'm looking for a winter 2027 internship and roles close to real systems:
   backend and platform engineering, data/ML-heavy systems, robotics,
   autonomy, simulation, and city-scale infrastructure problems.
+- I have an upcoming technical internship at the Human Computer Lab.
 `.trim();
 
 export type AboutBriefMode = "drone" | "air" | "city";
@@ -127,41 +136,76 @@ export const aboutBriefs: Record<
 };
 
 export type CurrentlyItem = {
+  /** Stable key for lists (topics may repeat for chat routing). */
+  id: string;
   topic: SectionKey;
   /** Text before the optional logo + link (omit for link-only rows). */
   prefix?: string;
   image?: { src: string; alt: string };
   linkLabel: string;
+  /** Used by the portfolio About “Currently” panel (terminal UI still uses topic). */
+  href?: string;
+  /** Shown after the link in the Currently list (e.g. city, province/state). */
+  location?: string;
 };
 
 export const currentlyItems: CurrentlyItem[] = [
   {
-    topic: "york",
-    prefix: "engineering @",
-    image: { src: "/york.png", alt: "York University" },
-    linkLabel: "York University",
+    id: "human-computer-lab",
+    topic: "humancomputerlab",
+    prefix: "upcoming technical intern @",
+    image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
+    linkLabel: "Human Computer Lab",
+    href: "https://www.humancomputerlab.com/",
+    location: "San Francisco, CA",
   },
   {
+    id: "schulich",
     topic: "schulich",
     prefix: `recipient of ${site.person.scholarshipAmount}`,
-    image: { src: "/schulich.jpeg", alt: "Schulich Leader Scholarship" },
-    linkLabel: "Schulich Leader Scholarship",
+    image: { src: "/schulich.jpeg", alt: "Schulich Leader" },
+    linkLabel: "Schulich Leader",
+    href: site.links.schulichLeaders,
   },
   {
+    id: "sellstatic",
     topic: "sellstatic",
     prefix: "prev swe intern @",
     image: { src: "/sellstatic.jpeg", alt: "SellStatic" },
     linkLabel: "SellStatic",
+    href: site.links.sellstatic,
+    location: "Toronto, ON",
   },
   {
+    id: "sdcn",
+    topic: "sdcn",
+    image: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
+    linkLabel: "Spacecraft Dynamics, Control and Navigation Laboratory",
+    href: "https://www.yorku.ca/jjshan/SDCNLab.html",
+    location: "Toronto, ON",
+  },
+  {
+    id: "utias",
     topic: "uoft",
     prefix: "research @",
-    image: { src: "/utias.jpeg", alt: "University of Toronto" },
-    linkLabel: "University of Toronto",
+    image: { src: "/utias.jpeg", alt: "UTIAS" },
+    linkLabel: "University of Toronto Institute for Aerospace Studies",
+    href: "https://utias.utoronto.ca",
+    location: "Toronto, ON",
   },
   {
+    id: "york-eng",
+    topic: "york",
+    prefix: "engineering @",
+    image: { src: "/york.png", alt: "York University" },
+    linkLabel: "York University — Lassonde School of Engineering (Electrical Engineering)",
+    href: "https://yorku.ca",
+  },
+  {
+    id: "internships",
     topic: "internships",
-    linkLabel: "seeking internships",
+    linkLabel: "looking for winter 2027 internships",
+    href: "/#contact",
   },
 ];
 
