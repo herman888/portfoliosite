@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { ArrowRight, Code2, Cpu, ExternalLink } from "lucide-react";
+import { useMemo } from "react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import {
   hardwareProjects,
   softwareProjects,
@@ -282,10 +282,6 @@ function EditorialCard({ item }: { item: EditorialItem }) {
 }
 
 export function PortfolioEditorialHome() {
-  const [projectTab, setProjectTab] = useState<"software" | "hardware">(
-    "software"
-  );
-
   const softwareItems = useMemo(
     () => softwareProjects.map(projectToEditorialItem),
     []
@@ -388,56 +384,10 @@ export function PortfolioEditorialHome() {
             Projects
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-neutral-600">
-            Two different stacks: code-first work vs. physical builds. Pick a lane
-            below — each has its own layout and palette.
+            Software and hardware are split into separate sections.
           </p>
 
-          <div
-            className="mt-8 flex rounded-2xl border border-neutral-200 bg-neutral-100 p-1.5 sm:p-2"
-            role="tablist"
-            aria-label="Project type"
-          >
-            <button
-              type="button"
-              role="tab"
-              aria-selected={projectTab === "software"}
-              id="tab-software"
-              aria-controls="panel-projects-software"
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-xs font-semibold uppercase tracking-[0.12em] transition-all sm:py-3.5 ${
-                projectTab === "software"
-                  ? "bg-white text-black shadow-md ring-1 ring-black/5"
-                  : "text-neutral-500 hover:text-neutral-800"
-              }`}
-              onClick={() => setProjectTab("software")}
-            >
-              <Code2 className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              Software
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={projectTab === "hardware"}
-              id="tab-hardware"
-              aria-controls="panel-projects-hardware"
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-xs font-semibold uppercase tracking-[0.12em] transition-all sm:py-3.5 ${
-                projectTab === "hardware"
-                  ? "bg-white text-black shadow-md ring-1 ring-black/5"
-                  : "text-neutral-500 hover:text-neutral-800"
-              }`}
-              onClick={() => setProjectTab("hardware")}
-            >
-              <Cpu className="h-4 w-4 shrink-0" strokeWidth={2} aria-hidden />
-              Hardware
-            </button>
-          </div>
-
-          <div
-            id="panel-projects-software"
-            role="tabpanel"
-            aria-labelledby="tab-software"
-            hidden={projectTab !== "software"}
-            className="mt-6 rounded-2xl border border-slate-200/95 bg-gradient-to-b from-slate-50 to-slate-50/40 px-4 py-8 shadow-inner shadow-slate-200/40 sm:px-6 sm:py-10"
-          >
+          <div className="mt-6 rounded-2xl border border-slate-200/95 bg-gradient-to-b from-slate-50 to-slate-50/40 px-4 py-8 shadow-inner shadow-slate-200/40 sm:px-6 sm:py-10">
             <div className="mb-6 flex flex-col gap-1 border-b border-slate-200/80 pb-5 sm:mb-8 sm:pb-6">
               <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-slate-500">
                 Software
@@ -454,13 +404,7 @@ export function PortfolioEditorialHome() {
             </div>
           </div>
 
-          <div
-            id="panel-projects-hardware"
-            role="tabpanel"
-            aria-labelledby="tab-hardware"
-            hidden={projectTab !== "hardware"}
-            className="mt-6 rounded-2xl border border-zinc-200/95 bg-gradient-to-b from-zinc-50 to-zinc-100/35 px-4 py-8 shadow-inner shadow-zinc-200/40 sm:px-6 sm:py-10"
-          >
+          <div className="mt-10 rounded-2xl border border-zinc-200/95 bg-gradient-to-b from-zinc-50 to-zinc-100/35 px-4 py-8 shadow-inner shadow-zinc-200/40 sm:px-6 sm:py-10">
             <div className="mb-6 flex flex-col gap-1 border-b border-zinc-200/80 pb-5 sm:mb-8 sm:pb-6">
               <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-zinc-500">
                 Hardware
