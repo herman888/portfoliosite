@@ -215,17 +215,6 @@ export const fullName = `${site.person.firstName} ${site.person.lastName}`;
 export const navInitials =
   `${site.person.firstName[0]}${site.person.lastName[0]}`.toUpperCase();
 
-/** v0-style About section */
-export const portfolioSkills = [
-  "Python",
-  "C/C++",
-  "Arduino",
-  "React",
-  "Next.js",
-  "Node.js",
-  "TypeScript",
-] as const;
-
 /** Two-sentence blurb for the portfolio About section on the home page. */
 export const portfolioAbout =
   "I'm genuinely interested in software and robotics, and I like going deep on both. I spend most of my time building and learning where code meets hardware, control, and real-world problems.";
@@ -244,16 +233,6 @@ export type PortfolioExperience = {
   highlight?: string;
   location?: string;
 };
-
-/** Shown under About — kept separate from work experience. */
-export const portfolioEducation: PortfolioExperience[] = [
-  {
-    company: "York University",
-    role: "Electrical Engineering",
-    period: "2025 — Present",
-    url: "https://yorku.ca",
-  },
-];
 
 export const portfolioExperience: PortfolioExperience[] = [
   {
