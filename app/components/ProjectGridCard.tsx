@@ -17,6 +17,7 @@ type Props = {
  */
 export function ProjectGridCard({ project }: Props) {
   const imageSrc = project.image ?? project.images?.[0];
+  const videoSrc = project.video;
   const caption = project.caption ?? project.description;
   const href = hrefFor(project);
   const isNemo = project.title === "Finding N.E.M.O (ConUHacks)";
@@ -30,6 +31,14 @@ export function ProjectGridCard({ project }: Props) {
           className="absolute inset-0 h-full w-full border-0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+        />
+      ) : videoSrc ? (
+        <video
+          src={videoSrc}
+          controls
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 h-full w-full object-cover"
         />
       ) : imageSrc ? (
         <Image

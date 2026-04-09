@@ -14,6 +14,14 @@ type ArduinoProject = {
 
 const HEATED_DRIVEWAY_REPO = "https://github.com/herman888/heated-driveway";
 
+const ARDUINO_ANCHORS = [
+  "car-obstacle",
+  "car-line-follower",
+  "water-pump",
+  "digital-timer",
+  "digital-clock",
+] as const;
+
 const arduinoProjects: ArduinoProject[] = [
   {
     title: "Car with obstacle detection",
@@ -91,9 +99,18 @@ function MediaSlot({ project }: { project: ArduinoProject }) {
   );
 }
 
-function ProjectCard({ project }: { project: ArduinoProject }) {
+function ProjectCard({
+  project,
+  anchorId,
+}: {
+  project: ArduinoProject;
+  anchorId: string;
+}) {
   return (
-    <article className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-shadow duration-300 hover:shadow-md">
+    <article
+      id={anchorId}
+      className="scroll-mt-28 flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-shadow duration-300 hover:shadow-md"
+    >
       <MediaSlot project={project} />
       <div className="flex min-h-[8.5rem] flex-1 flex-col p-4 md:p-5">
         <h2 className="font-sans text-base font-semibold leading-snug tracking-tight text-foreground">
@@ -119,10 +136,11 @@ function ProjectCard({ project }: { project: ArduinoProject }) {
 function HeatedDrivewayCard() {
   return (
     <a
+      id="heated-driveway"
       href={HEATED_DRIVEWAY_REPO}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm outline-none transition-shadow duration-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      className="group scroll-mt-28 flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm outline-none transition-shadow duration-300 hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
       <div className="relative aspect-video w-full overflow-hidden bg-muted">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -183,8 +201,12 @@ export default function ArduinoProjectsPage() {
         </header>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-          {arduinoProjects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
+          {arduinoProjects.map((project, i) => (
+            <ProjectCard
+              key={project.title}
+              anchorId={ARDUINO_ANCHORS[i] ?? `arduino-${i}`}
+              project={project}
+            />
           ))}
           <HeatedDrivewayCard />
         </div>
