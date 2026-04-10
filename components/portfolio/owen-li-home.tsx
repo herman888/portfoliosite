@@ -78,7 +78,7 @@ function InlineThumb({
   );
 }
 
-const nameLower = `${site.person.firstName} ${site.person.lastName}`.toLowerCase();
+const typedDisplayName = `${site.person.firstName} ${site.person.lastName}`;
 
 function JotIcon({
   children,
@@ -128,6 +128,8 @@ export function OwenLiStyleHome() {
     "RedLamp (UofTHacks)",
     "CityPath AI (Shopify Hackathon)",
     "GrowthSync (CTRLHACKDEL)",
+    "Car line follower",
+    "Car with obstacle detection",
   ];
   const featuredProjects = featuredProjectTitles
     .map((title) => allPortfolioProjects.find((p) => p.title === title))
@@ -139,7 +141,7 @@ export function OwenLiStyleHome() {
     featuredProjects.find((p) => p.title === activeProjectTitle) ?? null;
 
   useEffect(() => {
-    const full = nameLower;
+    const full = typedDisplayName;
     const reduceMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -183,7 +185,7 @@ export function OwenLiStyleHome() {
         <header className="mb-10">
           <h1
             className="text-2xl font-semibold tracking-tight text-black sm:text-[1.65rem]"
-            aria-label={nameLower}
+            aria-label={typedDisplayName}
           >
             <span aria-hidden="true">{typedName}</span>
             {!typingDone ? (
@@ -244,7 +246,7 @@ export function OwenLiStyleHome() {
             >
               Schulich Leader
             </a>
-            <span className="text-neutral-600"> — $120,000 Stem Award</span>
+            <span className="text-neutral-600"> — $120,000 STEM award</span>
             .
           </JotRow>
           <JotRow
