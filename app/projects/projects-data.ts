@@ -14,6 +14,10 @@ export type Project = {
   images?: string[];
   /** Card preview video (hardware demos). */
   video?: string;
+  /** Shown as the video poster / first-frame preview in grids. */
+  videoPoster?: string;
+  /** CSS `object-position` for still thumbnails (e.g. `"center 85%"`). */
+  imageObjectPosition?: string;
   code?: string;
   devpost?: string;
   link?: string;
@@ -35,7 +39,7 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "CityPath AI (Shopify Hackathon Winner)",
+    title: "CityPath AI (Shopify Hackathon)",
     description:
       "CityPath AI quickly analyzes past data, spots dangerous patterns, and tests safer street layout options in minutes, cutting down the time it takes to move from identifying a problem to finding a practical solution.",
     caption: "AI for safer street layouts and city planning.",
@@ -46,7 +50,7 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "RedLamp (UofTHacks Winner)",
+    title: "RedLamp (UofTHacks)",
     description:
       "RedLamp is a study companion lamp, that detects student stress and responds with encouragement or guidance in real time, making studying feel less isolating while continuing to evolve with more personalized support.",
     caption: "Study lamp that detects stress and responds in real time.",
@@ -66,7 +70,7 @@ export const projects: Project[] = [
     image: "/ctrlhackdel.png",
     code: "https://github.com/EVAnunit1307/City_Sync",
     devpost: "https://devpost.com/software/growthsync",
-    year: "2024",
+    year: "2026",
     category: "software",
   },
   {
@@ -75,7 +79,7 @@ export const projects: Project[] = [
       "Finding N.E.M.O turns the idea of a pirate treasure hunt into an interactive simulation where users track and recover lost shipping containers, blending a fun digital experience with a practical way to model container drift and plan recovery efforts.",
     caption: "Interactive simulation for container drift and recovery.",
     tags: ["ConUHacks", "NLP", "Python", "Hackathon"],
-    image: "/project-nemo.jpg",
+    image: "/findingnemo.png",
     code: gh("container-search"),
     devpost: "https://devpost.com/software/finding-n-e-m-o",
     year: "2025",
@@ -90,7 +94,7 @@ export const projects: Project[] = [
     image: "/giveway.png",
     code: gh("route-optimizer"),
     devpost: "https://devpost.com/software/placeholder-pomuiy",
-    year: "2024",
+    year: "2025",
     category: "software",
   },
   {
@@ -106,14 +110,14 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "KinKitchen",
+    title: "KinKitchen (HackCanada 2026)",
     description:
-      "Simulate real-world recipes step by step in 3D so cooking feels visual, interactive, and easier to follow.",
-    caption: "Step-by-step 3D recipe simulation for home cooking.",
-    tags: ["React", "Next.js", "Web", "Product"],
+      "Simulate real-world recipes step by step in 3D so cooking feels visual, interactive, and easier to follow — developed for HackCanada 2026.",
+    caption: "HackCanada 2026 — step-by-step 3D recipe simulation.",
+    tags: ["HackCanada", "Hackathon", "React", "Next.js", "Web", "3D"],
     image: "/kinkitchen.png",
     code: gh("kinkitchen"),
-    year: "2025",
+    year: "2026",
     category: "software",
   },
   {
@@ -123,8 +127,9 @@ export const projects: Project[] = [
     caption: "Arduino car with obstacle avoidance.",
     tags: ["Arduino", "Hardware", "Electronics"],
     video: "/car.mov",
+    videoPoster: "/car-obstacle-poster.jpg",
     link: "/projects/arduino#car-obstacle",
-    year: "2024–25",
+    year: "2024",
     category: "hardware",
   },
   {
@@ -133,9 +138,9 @@ export const projects: Project[] = [
       "A car that follows a line using infrared sensors and Arduino logic.",
     caption: "Line-following car with IR sensors.",
     tags: ["Arduino", "Hardware", "Electronics"],
-    image: "/car.jpg",
+    image: "/linefollow.png",
     link: "/projects/arduino#car-line-follower",
-    year: "2024–25",
+    year: "2024",
     category: "hardware",
   },
   {
@@ -146,7 +151,7 @@ export const projects: Project[] = [
     tags: ["Arduino", "Hardware", "IoT"],
     image: "/water.jpg",
     link: "/projects/arduino#water-pump",
-    year: "2024–25",
+    year: "2024",
     category: "hardware",
   },
   {
@@ -156,8 +161,9 @@ export const projects: Project[] = [
     caption: "Arduino timer with 555 IC and EasyEDA schematic.",
     tags: ["Arduino", "Hardware", "Electronics"],
     video: "/timer.mp4",
+    videoPoster: "/digital-timer-poster.jpg",
     link: "/projects/arduino#digital-timer",
-    year: "2024–25",
+    year: "2025",
     category: "hardware",
   },
   {
@@ -167,8 +173,9 @@ export const projects: Project[] = [
     caption: "7-segment clock build.",
     tags: ["Arduino", "Hardware", "Electronics"],
     video: "/clock.mp4",
+    videoPoster: "/digital-clock-poster.jpg",
     link: "/projects/arduino#digital-clock",
-    year: "2024–25",
+    year: "2025",
     category: "hardware",
   },
   {
@@ -179,10 +186,47 @@ export const projects: Project[] = [
     tags: ["Arduino", "Hardware", "IoT"],
     image: "/heateddriveway.png",
     code: "https://github.com/herman888/heated-driveway",
-    year: "2024–25",
+    year: "2026",
     category: "hardware",
   },
 ];
 
 export const softwareProjects = projects.filter((p) => p.category === "software");
 export const hardwareProjects = projects.filter((p) => p.category === "hardware");
+
+const HACKATHON_TAG_HINTS = new Set([
+  "Hackathon",
+  "HackThe6ix",
+  "EurekaHacks",
+  "CTRLHACKDEL",
+  "HackCanada",
+]);
+
+/** Weekend / competition builds (distinct from research coursework software). */
+export function isHackathonSoftware(p: Project): boolean {
+  if (p.category !== "software") return false;
+  if (p.tags.some((t) => HACKATHON_TAG_HINTS.has(t))) return true;
+  const hay = `${p.title} ${p.tags.join(" ")}`.toLowerCase();
+  return /uofthacks|conuhacks|hackthe6ix|eurekahacks|ctrlhackdel|shopify hackathon|hackcanada|hack canada/.test(
+    hay
+  );
+}
+
+export const softwareHackathonProjects = softwareProjects.filter(isHackathonSoftware);
+export const softwareResearchProjects = softwareProjects.filter(
+  (p) => !isHackathonSoftware(p)
+);
+
+/** Single list for home + /projects: Drone Racing first, then hackathons, other software, hardware. */
+export const allPortfolioProjects: Project[] = (() => {
+  const droneRacing = projects.find((p) => p.title === "Drone Racing");
+  const researchSansDrone = softwareResearchProjects.filter(
+    (p) => p.title !== "Drone Racing"
+  );
+  return [
+    ...(droneRacing ? [droneRacing] : []),
+    ...softwareHackathonProjects,
+    ...researchSansDrone,
+    ...hardwareProjects,
+  ];
+})();

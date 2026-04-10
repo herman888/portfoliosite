@@ -11,7 +11,7 @@ export function PortfolioContact() {
   return (
     <section
       id="contact"
-      className="border-t border-border/80 py-24 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16"
+      className="scroll-mt-20 border-t border-border/80 px-4 py-16 sm:px-6 sm:py-20 md:px-8 md:py-24 lg:px-10 xl:px-14 2xl:px-16"
     >
       <div className="mx-auto max-w-2xl">
         <motion.h2
@@ -29,7 +29,7 @@ export function PortfolioContact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={inView}
           transition={{ ...easeOut, delay: 0.05 }}
-          className="mb-8 text-xl font-medium leading-snug text-foreground md:text-2xl"
+          className="mb-8 text-lg font-medium leading-snug text-foreground text-pretty sm:text-xl md:text-2xl"
         >
           Open to internships and collaborations. If something here resonates,
           say hello.
@@ -43,7 +43,7 @@ export function PortfolioContact() {
         >
           <motion.a
             href={`mailto:${site.links.email}`}
-            className="inline-flex items-center gap-2 text-base font-medium text-foreground underline underline-offset-[6px] decoration-foreground/25 hover:decoration-foreground/55"
+            className="inline-flex min-h-11 flex-wrap items-center gap-2 break-words text-base font-medium text-foreground underline underline-offset-[6px] decoration-foreground/25 hover:decoration-foreground/55"
             whileHover={{ x: 2 }}
             transition={springSnappy}
           >

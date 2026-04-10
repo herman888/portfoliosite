@@ -20,25 +20,17 @@ export function ProjectGridCard({ project }: Props) {
   const videoSrc = project.video;
   const caption = project.caption ?? project.description;
   const href = hrefFor(project);
-  const isNemo = project.title === "Finding N.E.M.O (ConUHacks)";
 
   const media = (
     <div className="relative aspect-video w-full bg-muted">
-      {isNemo ? (
-        <iframe
-          title="Finding N.E.M.O Demo"
-          src="https://www.youtube.com/embed/PQBeq-7WKRE"
-          className="absolute inset-0 h-full w-full border-0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      ) : videoSrc ? (
+      {videoSrc ? (
         <video
           src={videoSrc}
+          poster={project.videoPoster}
           controls
           playsInline
           preload="metadata"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover bg-muted"
         />
       ) : imageSrc ? (
         <Image
@@ -47,6 +39,11 @@ export function ProjectGridCard({ project }: Props) {
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          style={
+            project.imageObjectPosition
+              ? { objectPosition: project.imageObjectPosition }
+              : undefined
+          }
         />
       ) : (
         <div className="flex h-full items-center justify-center text-sm text-muted-foreground">

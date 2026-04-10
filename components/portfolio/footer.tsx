@@ -25,20 +25,20 @@ const socialLinks = [
 
 export function PortfolioFooter() {
   return (
-    <footer className="border-t border-border/80 py-10 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-14 2xl:px-16">
+    <footer className="border-t border-border/80 px-4 py-8 pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-6 sm:py-10 md:px-8 lg:px-10 xl:px-14 2xl:px-16">
       <div className="mx-auto flex w-full max-w-screen-2xl flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
         <p className="text-sm text-muted-foreground">{fullName}</p>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-2 sm:gap-5">
           {socialLinks.map(({ Icon, href, label }) => (
             <a
               key={label}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               aria-label={label}
             >
-              <Icon />
+              <Icon className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
             </a>
           ))}
         </div>

@@ -1,7 +1,8 @@
-import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/next';
-import './globals.css';
-import { siteMetadata } from './site-metadata';
+import type { Viewport } from "next";
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
+import { siteMetadata } from "./site-metadata";
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -20,6 +21,13 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata = siteMetadata;
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#ffffff",
+};
+
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -30,7 +38,7 @@ export default function RootLayout({
 			lang="en"
 			className={`${inter.variable} ${jetbrainsMono.variable} ${plusJakarta.variable}`}
 		>
-			<body className="font-sans antialiased bg-background text-foreground min-h-screen">
+			<body className="min-h-screen bg-background font-sans text-foreground antialiased">
 				{children}
 				<Analytics />
 			</body>

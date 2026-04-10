@@ -210,6 +210,67 @@ export const currentlyItems: CurrentlyItem[] = [
   },
 ];
 
+/** Fiona-style hero — location line under “I’m …”. */
+export const heroLocation = "Toronto, ON";
+
+/** Short line under location (lowercase reads closer to fiona-cai.vercel.app). */
+export const heroTagline =
+  "building where software, hardware, and real systems meet";
+
+/** Two paragraphs beside / below the portrait on the home hero. */
+export const heroBioParagraphs: [string, string] = [
+  "I'm genuinely interested in software and robotics, and I like going deep on both. I spend most of my time building and learning where code meets hardware, control, and city-scale problems.",
+  "That shows up as hackathon builds, drone racing research at UTIAS, Schulich-funded work at York, internships, and hands-on Arduino projects—from line followers to sensing and control systems.",
+];
+
+export const educationLine = `Electrical Engineering @ York University · Schulich Leader`;
+
+export const heroPortrait = {
+  src: "/newpicture.png",
+  alt: `Photo by ${site.person.firstName} ${site.person.lastName}`,
+  /** `object-position` for next/image — sit higher to crop baked-in bars/captions at the bottom. */
+  objectPosition: "center 28%" as const,
+} as const;
+
+export type PortfolioSkillCategory =
+  | "languages"
+  | "web"
+  | "embedded"
+  | "tools"
+  | "research";
+
+export type PortfolioSkill = {
+  name: string;
+  category: PortfolioSkillCategory;
+};
+
+export const portfolioSkillTabLabels: Record<PortfolioSkillCategory, string> = {
+  languages: "Languages",
+  web: "Web",
+  embedded: "Embedded",
+  tools: "Tools",
+  research: "Research",
+};
+
+export const portfolioSkills: PortfolioSkill[] = [
+  { name: "Python", category: "languages" },
+  { name: "TypeScript", category: "languages" },
+  { name: "JavaScript", category: "languages" },
+  { name: "C++", category: "languages" },
+  { name: "React", category: "web" },
+  { name: "Next.js", category: "web" },
+  { name: "Node.js", category: "web" },
+  { name: "HTML", category: "web" },
+  { name: "CSS", category: "web" },
+  { name: "Tailwind CSS", category: "web" },
+  { name: "Arduino", category: "embedded" },
+  { name: "ROS", category: "embedded" },
+  { name: "OpenCV", category: "embedded" },
+  { name: "Git", category: "tools" },
+  { name: "Gazebo", category: "research" },
+  { name: "Simulink", category: "research" },
+];
+
 export const fullName = `${site.person.firstName} ${site.person.lastName}`;
 
 export const navInitials =
@@ -276,5 +337,57 @@ export const profilePastItems: ProfilePastItem[] = [
     kind: "research",
     topic: "Drone vision",
     institution: "University of Toronto",
+  },
+];
+
+/** Single-column home (owenli.ca-style): work history blocks. */
+export type OwenWorkEntry = {
+  role: string;
+  company: string;
+  companyUrl?: string;
+  period: string;
+  note?: string;
+  description?: string;
+  /** Small logo / mark beside the entry. */
+  thumb?: { src: string; alt: string };
+};
+
+export const owenWorkEntries: OwenWorkEntry[] = [
+  {
+    role: "Upcoming Technical Intern",
+    company: "Human Computer Lab",
+    companyUrl: "https://www.humancomputerlab.com/",
+    period: "2026",
+    note: "Incoming — San Francisco, CA",
+    description:
+      "HCI-focused technical internship building research-aligned software.",
+    thumb: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
+  },
+  {
+    role: "Software Engineering Intern",
+    company: "SellStatic",
+    companyUrl: site.links.sellstatic,
+    period: "Sep 2025 — Jan 2026",
+    description:
+      "Backend, data plumbing, and DX for teams shipping and monitoring web experiences.",
+    thumb: { src: "/sellstatic.jpeg", alt: "SellStatic" },
+  },
+  {
+    role: "Undergraduate Research Assistant",
+    company: "Spacecraft Dynamics, Control and Navigation Laboratory",
+    companyUrl: "https://www.yorku.ca/jjshan/SDCNLab.html",
+    period: "Sep 2025 — Dec 2025",
+    description:
+      "Dynamics, control, and navigation research for spacecraft applications.",
+    thumb: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
+  },
+  {
+    role: "Research — Autonomous Drone Racing",
+    company: "UTIAS Flight Systems and Control Laboratory",
+    companyUrl: "https://utias.utoronto.ca",
+    period: "Apr 2023 — Aug 2025",
+    description:
+      "Flight stacks, simulated and real races, trajectory analysis for high-speed autonomy.",
+    thumb: { src: "/utias.jpeg", alt: "UTIAS" },
   },
 ];

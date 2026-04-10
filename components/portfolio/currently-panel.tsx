@@ -4,10 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { currentlyItems } from "@/app/site-content";
 
+type CurrentlyPanelProps = {
+  /** Lighter layout without card chrome (Fiona-style flow). */
+  bare?: boolean;
+};
+
 /** Light, large “Currently” list — sits under the hero on the editorial home. */
-export function PortfolioCurrentlyPanel() {
+export function PortfolioCurrentlyPanel({ bare = false }: CurrentlyPanelProps) {
+  const shell = bare
+    ? "px-0 py-0"
+    : "rounded-2xl border border-neutral-200 bg-neutral-50/50 px-6 py-10 sm:px-10 sm:py-12 md:px-12 md:py-14";
+
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-neutral-50/50 px-6 py-10 sm:px-10 sm:py-12 md:px-12 md:py-14">
+    <div className={shell}>
       <div className="mb-8 flex min-w-0 items-center gap-5 sm:mb-10">
         <span
           id="currently-heading"
@@ -17,7 +26,7 @@ export function PortfolioCurrentlyPanel() {
         </span>
         <div className="h-px min-w-0 flex-1 bg-neutral-300" aria-hidden />
       </div>
-      <ul className="space-y-6 text-base leading-relaxed text-neutral-800 sm:space-y-7 sm:text-lg md:text-xl md:leading-relaxed">
+      <ul className="space-y-5 text-[0.9375rem] leading-relaxed text-neutral-800 sm:space-y-7 sm:text-base md:text-lg md:leading-relaxed lg:text-xl">
         {currentlyItems.map((item) => (
           <li
             key={item.id}
