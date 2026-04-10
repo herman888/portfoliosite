@@ -43,6 +43,10 @@ function githubRepoUrl(p: Project): string | undefined {
   return undefined;
 }
 
+function shouldUseProjectVideo(p: Project): boolean {
+  return p.title === "Car with obstacle detection" && Boolean(p.video);
+}
+
 const projectTitleLinkClass =
   "font-medium text-black underline decoration-neutral-400 underline-offset-[5px] transition-colors hover:decoration-black";
 
@@ -384,15 +388,29 @@ export function OwenLiStyleHome() {
                   key={p.title}
                   type="button"
                   onClick={() => setActiveProjectTitle(p.title)}
-                  className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 >
                   <div className="relative aspect-[16/10] w-full bg-neutral-100">
-                    {thumb ? (
+                    {shouldUseProjectVideo(p) ? (
+                      <video
+                        src={p.video}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        aria-label={`${name} preview video`}
+                      />
+                    ) : thumb ? (
                       <Image
                         src={thumb}
                         alt={`${name} preview`}
                         fill
                         className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                        style={{
+                          objectPosition: p.imageObjectPosition ?? "center",
+                        }}
                         sizes="(max-width: 640px) 100vw, 50vw"
                       />
                     ) : (
@@ -401,11 +419,11 @@ export function OwenLiStyleHome() {
                       </div>
                     )}
                   </div>
-                  <div className="space-y-2 px-4 py-3">
+                  <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
                     <p className="text-base font-semibold tracking-tight text-black sm:text-[1.06rem]">
                       {name}
                     </p>
-                    <p className="text-sm leading-relaxed text-neutral-600 line-clamp-3">
+                    <p className="text-sm leading-relaxed text-neutral-600 line-clamp-3 min-h-[4.5rem]">
                       {p.description}
                     </p>
                     <p className="text-xs text-neutral-500">
@@ -543,13 +561,30 @@ export function OwenLiStyleHome() {
               aria-label={`${splitProjectTitle(activeProject.title).name} details`}
             >
               <div className="grid grid-cols-1 md:grid-cols-[1.45fr_1fr]">
-                <div className="relative min-h-[260px] bg-[#b7d4af] md:min-h-[440px]">
-                  {projectThumbSrc(activeProject) ? (
+                <div
+                  className="relative min-h-[260px] bg-[#b7d4af] md:min-h-[440px]"
+                >
+                  {shouldUseProjectVideo(activeProject) ? (
+                    <video
+                      src={activeProject.video}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      controls
+                      preload="metadata"
+                      aria-label={`${splitProjectTitle(activeProject.title).name} demo video`}
+                    />
+                  ) : projectThumbSrc(activeProject) ? (
                     <Image
                       src={projectThumbSrc(activeProject) as string}
                       alt={`${splitProjectTitle(activeProject.title).name} visual`}
                       fill
                       className="object-cover p-6 md:p-8"
+                      style={{
+                        objectPosition: activeProject.imageObjectPosition ?? "center",
+                      }}
                       sizes="(max-width: 768px) 100vw, 65vw"
                     />
                   ) : null}
