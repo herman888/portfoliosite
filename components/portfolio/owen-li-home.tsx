@@ -6,7 +6,6 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Activity, Cpu, FileText, Mail } from "lucide-react";
 import { fullName, owenWorkEntries, site } from "@/app/site-content";
 import { GitHubIcon, LinkedInIcon } from "@/components/portfolio/social-icons";
-import { SkillsFrameworksSection } from "@/components/portfolio/skills-frameworks-section";
 import { allPortfolioProjects, type Project } from "@/app/projects/projects-data";
 
 const linkClass =
@@ -313,9 +312,6 @@ export function OwenLiStyleHome() {
           </a>
           <a href="#projects" className={navClass}>
             Projects
-          </a>
-          <a href="#skills" className={navClass}>
-            Skills
           </a>
         </nav>
 
@@ -645,8 +641,6 @@ export function OwenLiStyleHome() {
             </div>
           </div>
         ) : null}
-
-        <SkillsFrameworksSection />
 
         <footer className="mt-20 border-t border-neutral-200 pt-10 text-sm text-neutral-500">
           <p>{fullName}</p>

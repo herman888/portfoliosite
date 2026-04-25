@@ -359,8 +359,6 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     companyUrl: "https://www.humancomputerlab.com/",
     period: "2026",
     note: "Incoming — San Francisco, CA",
-    description:
-      "HCI-focused technical internship building research-aligned software.",
     thumb: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
   },
   {
@@ -368,8 +366,6 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     company: "SellStatic",
     companyUrl: site.links.sellstatic,
     period: "Sep 2025 — Jan 2026",
-    description:
-      "Backend, data plumbing, and DX for teams shipping and monitoring web experiences.",
     thumb: { src: "/sellstatic.jpeg", alt: "SellStatic" },
   },
   {
@@ -377,8 +373,6 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     company: "Spacecraft Dynamics, Control and Navigation Laboratory",
     companyUrl: "https://www.yorku.ca/jjshan/SDCNLab.html",
     period: "Sep 2025 — Dec 2025",
-    description:
-      "Dynamics, control, and navigation research for spacecraft applications.",
     thumb: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
   },
   {
@@ -386,8 +380,6 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     company: "UTIAS Flight Systems and Control Laboratory",
     companyUrl: "https://utias.utoronto.ca",
     period: "Apr 2023 — Aug 2025",
-    description:
-      "Flight stacks, simulated and real races, trajectory analysis for high-speed autonomy.",
     thumb: { src: "/utias.jpeg", alt: "UTIAS" },
   },
 ];
