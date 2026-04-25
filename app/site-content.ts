@@ -58,7 +58,7 @@ export const questionPrompts: Record<SectionKey, string> = {
   sellstatic: "What did you do as a SWE intern at SellStatic?",
   uoft: "What kind of research are you doing at U of T / UTIAS?",
   internships: "What kind of internships are you looking for?",
-  humancomputerlab: "What will you do at the Human Computer Lab?",
+  humancomputerlab: "What is your role at the Human Computer Lab?",
   sdcn: "What did you do at the Spacecraft Dynamics, Control and Navigation Lab?",
 };
 
@@ -81,7 +81,7 @@ export const fallbackAnswers: Record<SectionKey, string> = {
   internships:
     "I'm looking for a winter 2027 internship where I can work on real systems—backend, data-heavy products, robotics, or infrastructure—ideally somewhere that touches autonomy, simulation, or large-scale city problems.",
   humancomputerlab:
-    "I'm an upcoming technical intern at the Human Computer Lab, focused on human–computer interaction and related research.",
+    "I'm a Technical Robotics Staff Intern at the Human Computer Lab, focused on human–computer interaction and related research.",
   sdcn:
     "I was an undergraduate researcher at York's Spacecraft Dynamics, Control and Navigation Laboratory (SDCN Lab), working on dynamics, control, and navigation problems for spacecraft.",
 };
@@ -112,7 +112,7 @@ knowledge), answer like a normal helpful AI assistant.
 - I'm looking for a winter 2027 internship and roles close to real systems:
   backend and platform engineering, data/ML-heavy systems, robotics,
   autonomy, simulation, and city-scale infrastructure problems.
-- I have an upcoming technical internship at the Human Computer Lab.
+- I am a Technical Robotics Staff Intern at the Human Computer Lab.
 `.trim();
 
 export type AboutBriefMode = "drone" | "air" | "city";
@@ -153,7 +153,7 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "human-computer-lab",
     topic: "humancomputerlab",
-    prefix: "upcoming technical intern @",
+    prefix: "technical robotics staff intern @",
     image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
     linkLabel: "Human Computer Lab",
     href: "https://www.humancomputerlab.com/",
@@ -354,7 +354,7 @@ export type OwenWorkEntry = {
 
 export const owenWorkEntries: OwenWorkEntry[] = [
   {
-    role: "Upcoming Technical Intern",
+    role: "Technical Robotics Staff Intern",
     company: "Human Computer Lab",
     companyUrl: "https://www.humancomputerlab.com/",
     period: "2026",
