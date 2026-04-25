@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
-import { Activity, Cpu, FileText, Mail } from "lucide-react";
+import { Activity, Cpu, Mail } from "lucide-react";
 import { fullName, owenWorkEntries, site } from "@/app/site-content";
 import { GitHubIcon, LinkedInIcon } from "@/components/portfolio/social-icons";
 import { allPortfolioProjects, type Project } from "@/app/projects/projects-data";
+import { easeOut } from "@/components/portfolio/portfolio-motion";
 
 const linkClass =
   "underline decoration-neutral-400 underline-offset-[5px] transition-colors hover:decoration-black";
@@ -55,6 +57,7 @@ function isExternalHref(href: string) {
 
 const githubIconBtn =
   "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-neutral-200 text-neutral-600 transition-colors hover:border-neutral-300 hover:text-black";
+const revealViewport = { once: false, margin: "-40px" };
 
 function InlineThumb({
   src,
@@ -133,6 +136,10 @@ export function OwenLiStyleHome() {
     "GrowthSync (CTRLHACKDEL)",
     "Car line follower",
     "Car with obstacle detection",
+    "Finding N.E.M.O (ConUHacks)",
+    "Giveway (HackThe6ix)",
+    "Meal2Go (EurekaHacks)",
+    "KinKitchen (HackCanada 2026)",
   ];
   const featuredProjects = featuredProjectTitles
     .map((title) => allPortfolioProjects.find((p) => p.title === title))
@@ -293,13 +300,6 @@ export function OwenLiStyleHome() {
             >
               <GitHubIcon className="h-5 w-5" />
             </a>
-            <a
-              href="/resume.pdf"
-              className={socialIconLink}
-              aria-label="Download resume PDF"
-            >
-              <FileText className="h-5 w-5" strokeWidth={1.75} aria-hidden />
-            </a>
           </p>
         </div>
 
@@ -322,10 +322,14 @@ export function OwenLiStyleHome() {
             Work
           </h2>
           <div className="mt-8 space-y-10">
-            {owenWorkEntries.map((job) => (
-              <article
+            {owenWorkEntries.map((job, idx) => (
+              <motion.article
                 key={`${job.role}-${job.company}`}
                 className="flex gap-3 sm:gap-4"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={revealViewport}
+                transition={{ ...easeOut, delay: idx * 0.03 }}
               >
                 {job.thumb ? (
                   <InlineThumb src={job.thumb.src} alt={job.thumb.alt} />
@@ -365,7 +369,7 @@ export function OwenLiStyleHome() {
                   </p>
                 ) : null}
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         </section>
@@ -375,16 +379,20 @@ export function OwenLiStyleHome() {
             Projects
           </h2>
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {featuredProjects.map((p) => {
+            {featuredProjects.map((p, idx) => {
               const href = projectPrimaryHref(p);
               const thumb = projectThumbSrc(p);
               const { name, context } = splitProjectTitle(p.title);
               return (
-                <button
+                <motion.button
                   key={p.title}
                   type="button"
                   onClick={() => setActiveProjectTitle(p.title)}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={revealViewport}
+                  transition={{ ...easeOut, delay: idx * 0.025 }}
                 >
                   <div className="relative aspect-[16/10] w-full bg-neutral-100">
                     {shouldUseProjectVideo(p) ? (
@@ -429,7 +437,7 @@ export function OwenLiStyleHome() {
                       <p className="text-xs text-neutral-500">Click card for details</p>
                     ) : null}
                   </div>
-                </button>
+                </motion.button>
               );
             })}
           </div>
@@ -446,7 +454,7 @@ export function OwenLiStyleHome() {
 
           {showOtherProjects ? (
             <div className="mt-7 space-y-10">
-              {otherProjects.map((p) => {
+              {otherProjects.map((p, idx) => {
                 const href = projectPrimaryHref(p);
                 const body = p.description;
                 const thumb = projectThumbSrc(p);
@@ -454,7 +462,14 @@ export function OwenLiStyleHome() {
                 const ghUrl = githubRepoUrl(p);
                 const rightMeta = [context, p.year].filter(Boolean).join(" · ");
                 return (
-                  <article key={p.title} className="flex gap-3 sm:gap-4">
+                  <motion.article
+                    key={p.title}
+                    className="flex gap-3 sm:gap-4"
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={revealViewport}
+                    transition={{ ...easeOut, delay: idx * 0.02 }}
+                  >
                     {thumb ? (
                       href ? (
                         isExternalHref(href) ? (
@@ -536,7 +551,7 @@ export function OwenLiStyleHome() {
                         {body}
                       </p>
                     </div>
-                  </article>
+                  </motion.article>
                 );
               })}
             </div>
@@ -544,22 +559,27 @@ export function OwenLiStyleHome() {
         </section>
 
         {activeProject ? (
-          <div
+          <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6"
             onClick={() => setActiveProjectTitle(null)}
             role="presentation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
-            <div
-              className="w-full max-w-5xl overflow-hidden rounded-2xl border border-neutral-300 bg-white shadow-2xl"
+            <motion.div
+              className="w-full max-w-3xl overflow-hidden rounded-2xl border border-neutral-300 bg-white shadow-2xl"
               onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"
               aria-label={`${splitProjectTitle(activeProject.title).name} details`}
+              initial={{ opacity: 0, y: 14, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={easeOut}
             >
-              <div className="grid grid-cols-1 md:grid-cols-[1.45fr_1fr]">
-                <div
-                  className="relative min-h-[260px] bg-[#b7d4af] md:min-h-[440px]"
-                >
+              <div className="flex flex-col gap-4 p-5 sm:p-6">
+                <div className="relative h-52 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 sm:h-64">
                   {shouldUseProjectVideo(activeProject) ? (
                     <video
                       src={activeProject.video}
@@ -568,37 +588,51 @@ export function OwenLiStyleHome() {
                       muted
                       loop
                       playsInline
-                      controls
                       preload="metadata"
                       aria-label={`${splitProjectTitle(activeProject.title).name} demo video`}
+                      controls
                     />
                   ) : projectThumbSrc(activeProject) ? (
                     <Image
                       src={projectThumbSrc(activeProject) as string}
                       alt={`${splitProjectTitle(activeProject.title).name} visual`}
                       fill
-                      className="object-cover p-6 md:p-8"
+                      className="object-cover"
                       style={{
                         objectPosition: activeProject.imageObjectPosition ?? "center",
                       }}
-                      sizes="(max-width: 768px) 100vw, 65vw"
+                      sizes="(max-width: 768px) 100vw, 720px"
                     />
                   ) : null}
                 </div>
-                <div className="p-6 md:p-8">
-                  <p className="text-4xl font-bold leading-none text-black">03</p>
-                  <h3 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-black">
-                    {splitProjectTitle(activeProject.title).name}
-                  </h3>
-                  <p className="mt-2 text-sm text-neutral-500">
-                    {[splitProjectTitle(activeProject.title).context, activeProject.year]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </p>
-                  <p className="mt-6 text-[1.06rem] leading-relaxed text-neutral-800">
+                <div>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                    <div className="flex min-w-0 flex-wrap items-center gap-2">
+                      <span className="text-[1.2rem] font-medium leading-snug text-black sm:text-[1.25rem]">
+                        {splitProjectTitle(activeProject.title).name}
+                      </span>
+                      {githubRepoUrl(activeProject) ? (
+                        <a
+                          href={githubRepoUrl(activeProject)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={githubIconBtn}
+                          aria-label={`${splitProjectTitle(activeProject.title).name} on GitHub`}
+                        >
+                          <GitHubIcon className="h-4 w-4" />
+                        </a>
+                      ) : null}
+                    </div>
+                    <p className="text-sm text-neutral-500">
+                      {[splitProjectTitle(activeProject.title).context, activeProject.year]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </p>
+                  </div>
+                  <p className="mt-3 text-[1.05rem] leading-relaxed text-neutral-800 sm:text-[1.0625rem]">
                     {activeProject.description}
                   </p>
-                  <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="mt-5 flex flex-wrap gap-3">
                     {projectPrimaryHref(activeProject) ? (
                       isExternalHref(projectPrimaryHref(activeProject) as string) ? (
                         <a
@@ -638,8 +672,8 @@ export function OwenLiStyleHome() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         ) : null}
 
         <footer className="mt-20 border-t border-neutral-200 pt-10 text-sm text-neutral-500">

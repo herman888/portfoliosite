@@ -358,7 +358,7 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     company: "Human Computer Lab",
     companyUrl: "https://www.humancomputerlab.com/",
     period: "2026",
-    note: "Incoming — San Francisco, CA",
+    note: "San Francisco, CA",
     thumb: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
   },
   {
@@ -366,6 +366,7 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     company: "SellStatic",
     companyUrl: site.links.sellstatic,
     period: "Sep 2025 — Jan 2026",
+    note: "Toronto, ON",
     thumb: { src: "/sellstatic.jpeg", alt: "SellStatic" },
   },
   {
@@ -373,6 +374,7 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     company: "Spacecraft Dynamics, Control and Navigation Laboratory",
     companyUrl: "https://www.yorku.ca/jjshan/SDCNLab.html",
     period: "Sep 2025 — Dec 2025",
+    note: "Toronto, ON",
     thumb: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
   },
   {
@@ -380,6 +382,7 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     company: "UTIAS Flight Systems and Control Laboratory",
     companyUrl: "https://utias.utoronto.ca",
     period: "Apr 2023 — Aug 2025",
+    note: "Toronto, ON",
     thumb: { src: "/utias.jpeg", alt: "UTIAS" },
   },
 ];
