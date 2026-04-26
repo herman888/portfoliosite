@@ -447,7 +447,7 @@ export function OwenLiStyleHome() {
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={sectionsReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-          transition={{ ...easeOut, duration: 0.55, delay: 0.25 }}
+          transition={{ ...easeOut, duration: 0.4, delay: 0 }}
         >
           <nav
             className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium sm:gap-x-6"
