@@ -58,6 +58,10 @@ function isExternalHref(href: string) {
 const githubIconBtn =
   "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-neutral-200 text-neutral-600 transition-colors hover:border-neutral-300 hover:text-black";
 const revealViewport = { once: false, margin: "-40px" };
+const socialDropTransition = {
+  duration: 0.62,
+  ease: [0.18, 0.9, 0.24, 1],
+};
 
 function InlineThumb({
   src,
@@ -85,6 +89,37 @@ function InlineThumb({
 }
 
 const typedDisplayName = `${site.person.firstName} ${site.person.lastName}`;
+type TypedPart =
+  | { kind: "text"; value: string }
+  | { kind: "link"; value: string; href: string; className?: string };
+
+const introTypedRows: TypedPart[][] = [
+  [
+    { kind: "text", value: "Electrical engineering student at " },
+    {
+      kind: "link",
+      value: "York University",
+      href: "https://yorku.ca",
+      className: linkClass,
+    },
+    { kind: "text", value: "." },
+  ],
+  [
+    {
+      kind: "link",
+      value: "Schulich Leader",
+      href: site.links.schulichLeaders,
+      className:
+        "font-medium text-black no-underline transition-opacity hover:opacity-70",
+    },
+    { kind: "text", value: " — $120,000 STEM award." },
+  ],
+  [{ kind: "text", value: "Interested in software, hardware, and robotics." }],
+  [{ kind: "text", value: "i enjoy rock climbing, hockey, and tennis." }],
+];
+const introTypedTotals = introTypedRows.map((row) =>
+  row.reduce((sum, p) => sum + p.value.length, 0)
+);
 
 function JotIcon({
   children,
@@ -126,6 +161,8 @@ function JotRow({
 export function OwenLiStyleHome() {
   const [typedName, setTypedName] = useState("");
   const [typingDone, setTypingDone] = useState(false);
+  const [typedIntroLengths, setTypedIntroLengths] = useState([0, 0, 0, 0]);
+  const [socialVisible, setSocialVisible] = useState(false);
   const [showOtherProjects, setShowOtherProjects] = useState(false);
   const [activeProjectTitle, setActiveProjectTitle] = useState<string | null>(null);
 
@@ -148,7 +185,11 @@ export function OwenLiStyleHome() {
     (p) => !featuredProjectTitles.includes(p.title)
   );
   const activeProject =
-    featuredProjects.find((p) => p.title === activeProjectTitle) ?? null;
+    [...featuredProjects, ...otherProjects].find((p) => p.title === activeProjectTitle) ?? null;
+  const socialReady = typedIntroLengths.every(
+    (count, i) => count >= (introTypedTotals[i] ?? 0)
+  );
+  const sectionsReady = socialVisible;
 
   useEffect(() => {
     const full = typedDisplayName;
@@ -175,6 +216,85 @@ export function OwenLiStyleHome() {
 
     return () => window.clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (!typingDone) return;
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      setTypedIntroLengths(introTypedTotals);
+      return;
+    }
+
+    const totals = introTypedTotals;
+    let rowIdx = 0;
+    let charIdx = 0;
+    const id = window.setInterval(() => {
+      setTypedIntroLengths((prev) => {
+        const next = [...prev];
+        if (rowIdx >= totals.length) return next;
+        charIdx += 1;
+        next[rowIdx] = Math.min(charIdx, totals[rowIdx]);
+        if (charIdx >= totals[rowIdx]) {
+          rowIdx += 1;
+          charIdx = 0;
+        }
+        return next;
+      });
+      if (rowIdx >= totals.length) window.clearInterval(id);
+    }, 18);
+
+    return () => window.clearInterval(id);
+  }, [typingDone]);
+
+  useEffect(() => {
+    if (socialReady) {
+      setSocialVisible(true);
+    }
+  }, [socialReady]);
+
+  useEffect(() => {
+    if (!typingDone) {
+      setSocialVisible(false);
+      return;
+    }
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      setSocialVisible(true);
+      return;
+    }
+    const totalChars = introTypedTotals.reduce((sum, n) => sum + n, 0);
+    const estimatedTypingMs = totalChars * 16;
+    const id = window.setTimeout(() => setSocialVisible(true), estimatedTypingMs);
+    return () => window.clearTimeout(id);
+  }, [typingDone]);
+
+  const renderTypedParts = (parts: TypedPart[], shownChars: number) => {
+    let left = shownChars;
+    return parts.map((part, idx) => {
+      const take = Math.max(0, Math.min(left, part.value.length));
+      const visible = part.value.slice(0, take);
+      left -= take;
+      if (!visible) return null;
+      if (part.kind === "link") {
+        return (
+          <a
+            key={`${part.href}-${idx}`}
+            href={part.href}
+            className={part.className ?? linkClass}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {visible}
+          </a>
+        );
+      }
+      return <span key={`${part.value}-${idx}`}>{visible}</span>;
+    });
+  };
 
   useEffect(() => {
     if (!activeProject) return;
@@ -225,16 +345,7 @@ export function OwenLiStyleHome() {
               />
             }
           >
-            Electrical engineering student at{" "}
-            <a
-              href="https://yorku.ca"
-              className={linkClass}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              York University
-            </a>
-            .
+            {renderTypedParts(introTypedRows[0], typedIntroLengths[0])}
           </JotRow>
           <JotRow
             iconLabel="Schulich Leader"
@@ -248,76 +359,111 @@ export function OwenLiStyleHome() {
               />
             }
           >
-            <a
-              href={site.links.schulichLeaders}
-              className="font-medium text-black no-underline transition-opacity hover:opacity-70"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Schulich Leader
-            </a>
-            <span className="text-neutral-600"> — $120,000 STEM award</span>
-            .
+            {renderTypedParts(introTypedRows[1], typedIntroLengths[1])}
           </JotRow>
           <JotRow
             iconLabel="Focus"
             icon={<Cpu className="h-[1.15rem] w-[1.15rem] sm:h-5 sm:w-5" strokeWidth={1.75} />}
           >
-            Interested in software, hardware, and robotics.
+            {renderTypedParts(introTypedRows[2], typedIntroLengths[2])}
           </JotRow>
           <JotRow
             iconLabel="Rock climbing, hockey, tennis"
             icon={<Activity className="h-[1.15rem] w-[1.15rem] sm:h-5 sm:w-5" strokeWidth={1.75} />}
           >
-            i enjoy rock climbing, hockey, and tennis.
+            {renderTypedParts(introTypedRows[3], typedIntroLengths[3])}
           </JotRow>
         </ul>
 
         <div className="mt-8">
           <p className="m-0 flex flex-wrap items-center gap-3 pt-1 sm:gap-4">
-            <a
+            <motion.a
               href={`mailto:${site.links.email}`}
               className={socialIconLink}
               aria-label={`Email ${site.links.email}`}
+              initial={{ opacity: 0, x: -220, y: -24, rotate: -26, scale: 0.76 }}
+              animate={
+                socialVisible
+                  ? {
+                      opacity: 1,
+                      x: [0, 20, -12, 6, 0],
+                      y: [0, 9, -4, 2, 0],
+                      rotate: [0, 16, -8, 4, 0],
+                      scale: [1, 1.16, 0.94, 1.03, 1],
+                    }
+                  : { opacity: 0, x: -220, y: -24, rotate: -26, scale: 0.76 }
+              }
+              transition={{ ...socialDropTransition, delay: 0 }}
             >
               <Mail className="h-5 w-5" strokeWidth={1.75} aria-hidden />
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href={site.links.linkedIn}
               className={socialIconLink}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
+              initial={{ opacity: 0, x: 250, y: -20, rotate: 28, scale: 0.74 }}
+              animate={
+                socialVisible
+                  ? {
+                      opacity: 1,
+                      x: [0, -22, 11, -6, 0],
+                      y: [0, 11, -5, 2, 0],
+                      rotate: [0, -18, 9, -4, 0],
+                      scale: [1, 1.17, 0.93, 1.03, 1],
+                    }
+                  : { opacity: 0, x: 250, y: -20, rotate: 28, scale: 0.74 }
+              }
+              transition={{ ...socialDropTransition, delay: 0.03 }}
             >
               <LinkedInIcon className="h-5 w-5" />
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href={site.links.github}
               className={socialIconLink}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
+              initial={{ opacity: 0, x: -260, y: 12, rotate: -30, scale: 0.72 }}
+              animate={
+                socialVisible
+                  ? {
+                      opacity: 1,
+                      x: [0, 24, -13, 7, 0],
+                      y: [0, 10, -4, 2, 0],
+                      rotate: [0, 20, -11, 5, 0],
+                      scale: [1, 1.18, 0.92, 1.04, 1],
+                    }
+                  : { opacity: 0, x: -260, y: 12, rotate: -30, scale: 0.72 }
+              }
+              transition={{ ...socialDropTransition, delay: 0.06 }}
             >
               <GitHubIcon className="h-5 w-5" />
-            </a>
+            </motion.a>
           </p>
         </div>
 
-        <nav
-          className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium sm:gap-x-6"
-          aria-label="On this page"
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={sectionsReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+          transition={{ ...easeOut, duration: 0.55, delay: 0.25 }}
         >
-          <a href="#work" className={navClass}>
-            Work
-          </a>
-          <a href="#projects" className={navClass}>
-            Projects
-          </a>
-        </nav>
+          <nav
+            className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium sm:gap-x-6"
+            aria-label="On this page"
+          >
+            <a href="#work" className={navClass}>
+              Work
+            </a>
+            <a href="#projects" className={navClass}>
+              Projects
+            </a>
+          </nav>
 
-        <hr className="my-12 border-neutral-200" />
+          <hr className="my-12 border-neutral-200" />
 
-        <section id="work" className="scroll-mt-8">
+          <section id="work" className="scroll-mt-8">
           <h2 className="text-xl font-semibold tracking-tight text-black sm:text-2xl">
             Work
           </h2>
@@ -372,9 +518,9 @@ export function OwenLiStyleHome() {
               </motion.article>
             ))}
           </div>
-        </section>
+          </section>
 
-        <section id="projects" className="mt-16 scroll-mt-8 sm:mt-20">
+          <section id="projects" className="mt-16 scroll-mt-8 sm:mt-20">
           <h2 className="text-xl font-semibold tracking-tight text-black sm:text-2xl">
             Projects
           </h2>
@@ -453,110 +599,72 @@ export function OwenLiStyleHome() {
           </div>
 
           {showOtherProjects ? (
-            <div className="mt-7 space-y-10">
+            <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {otherProjects.map((p, idx) => {
                 const href = projectPrimaryHref(p);
-                const body = p.description;
                 const thumb = projectThumbSrc(p);
                 const { name, context } = splitProjectTitle(p.title);
-                const ghUrl = githubRepoUrl(p);
-                const rightMeta = [context, p.year].filter(Boolean).join(" · ");
                 return (
-                  <motion.article
+                  <motion.button
                     key={p.title}
-                    className="flex gap-3 sm:gap-4"
-                    initial={{ opacity: 0, y: 14 }}
+                    type="button"
+                    onClick={() => setActiveProjectTitle(p.title)}
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                    initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={revealViewport}
-                    transition={{ ...easeOut, delay: idx * 0.02 }}
+                    transition={{ ...easeOut, delay: idx * 0.025 }}
                   >
-                    {thumb ? (
-                      href ? (
-                        isExternalHref(href) ? (
-                          <a
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="shrink-0"
-                          >
-                            <InlineThumb
-                              src={thumb}
-                              alt={`${name} — open project`}
-                            />
-                          </a>
-                        ) : (
-                          <Link href={href} className="shrink-0">
-                            <InlineThumb
-                              src={thumb}
-                              alt={`${name} — open project`}
-                            />
-                          </Link>
-                        )
+                    <div className="relative aspect-[16/10] w-full bg-neutral-100">
+                      {shouldUseProjectVideo(p) ? (
+                        <video
+                          src={p.video}
+                          className="absolute inset-0 h-full w-full object-cover"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          aria-label={`${name} preview video`}
+                        />
+                      ) : thumb ? (
+                        <Image
+                          src={thumb}
+                          alt={`${name} preview`}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                          style={{
+                            objectPosition: p.imageObjectPosition ?? "center",
+                          }}
+                          sizes="(max-width: 640px) 100vw, 50vw"
+                        />
                       ) : (
-                        <InlineThumb src={thumb} alt="" />
-                      )
-                    ) : (
-                      <div
-                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-neutral-200 bg-neutral-100 text-[0.65rem] font-medium text-neutral-400"
-                        aria-hidden
-                      >
-                        —
-                      </div>
-                    )}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-4">
-                        <div className="flex min-w-0 flex-wrap items-center gap-2">
-                          {href ? (
-                            isExternalHref(href) ? (
-                              <a
-                                href={href}
-                                className={`text-[1.05rem] leading-snug sm:text-[1.0625rem] ${projectTitleLinkClass}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {name}
-                              </a>
-                            ) : (
-                              <Link
-                                href={href}
-                                className={`text-[1.05rem] leading-snug sm:text-[1.0625rem] ${projectTitleLinkClass}`}
-                              >
-                                {name}
-                              </Link>
-                            )
-                          ) : (
-                            <span className="text-[1.05rem] font-medium leading-snug text-black sm:text-[1.0625rem]">
-                              {name}
-                            </span>
-                          )}
-                          {ghUrl ? (
-                            <a
-                              href={ghUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={githubIconBtn}
-                              aria-label={`${name} on GitHub`}
-                            >
-                              <GitHubIcon className="h-4 w-4" />
-                            </a>
-                          ) : null}
+                        <div className="flex h-full items-center justify-center text-xs text-neutral-400">
+                          No preview
                         </div>
-                        {rightMeta ? (
-                          <p className="m-0 shrink-0 text-[0.9375rem] leading-snug text-neutral-500 sm:max-w-[min(100%,20rem)] sm:text-right sm:text-[0.95rem]">
-                            {rightMeta}
-                          </p>
-                        ) : null}
-                      </div>
-                      <p className="mt-2 text-[1.05rem] leading-relaxed text-neutral-800 sm:text-[1.0625rem]">
-                        {body}
-                      </p>
+                      )}
                     </div>
-                  </motion.article>
+                    <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
+                      <p className="text-base font-semibold tracking-tight text-black sm:text-[1.06rem]">
+                        {name}
+                      </p>
+                      <p className="text-sm leading-relaxed text-neutral-600 line-clamp-3 min-h-[4.5rem]">
+                        {p.description}
+                      </p>
+                      <p className="text-xs text-neutral-500">
+                        {[context, p.year].filter(Boolean).join(" · ") || "Project"}
+                      </p>
+                      {href ? (
+                        <p className="text-xs text-neutral-500">Click card for details</p>
+                      ) : null}
+                    </div>
+                  </motion.button>
                 );
               })}
             </div>
           ) : null}
-        </section>
+          </section>
+        </motion.div>
 
         {activeProject ? (
           <motion.div
