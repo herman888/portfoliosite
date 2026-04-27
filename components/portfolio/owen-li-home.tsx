@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
-import { Activity, Cpu, Mail } from "lucide-react";
+import { Activity, Briefcase, Cpu, Mail } from "lucide-react";
 import { fullName, owenWorkEntries, site } from "@/app/site-content";
 import { GitHubIcon, LinkedInIcon } from "@/components/portfolio/social-icons";
 import { allPortfolioProjects, type Project } from "@/app/projects/projects-data";
@@ -116,6 +116,7 @@ const introTypedRows: TypedPart[][] = [
   ],
   [{ kind: "text", value: "Interested in software, hardware, and robotics." }],
   [{ kind: "text", value: "i enjoy rock climbing, hockey, and tennis." }],
+  [{ kind: "text", value: "Seeking winter 2027 internship." }],
 ];
 const introTypedTotals = introTypedRows.map((row) =>
   row.reduce((sum, p) => sum + p.value.length, 0)
@@ -161,7 +162,9 @@ function JotRow({
 export function OwenLiStyleHome() {
   const [typedName, setTypedName] = useState("");
   const [typingDone, setTypingDone] = useState(false);
-  const [typedIntroLengths, setTypedIntroLengths] = useState([0, 0, 0, 0]);
+  const [typedIntroLengths, setTypedIntroLengths] = useState(() =>
+    introTypedRows.map(() => 0)
+  );
   const [socialVisible, setSocialVisible] = useState(false);
   const [showOtherProjects, setShowOtherProjects] = useState(false);
   const [activeProjectTitle, setActiveProjectTitle] = useState<string | null>(null);
@@ -372,6 +375,12 @@ export function OwenLiStyleHome() {
             icon={<Activity className="h-[1.15rem] w-[1.15rem] sm:h-5 sm:w-5" strokeWidth={1.75} />}
           >
             {renderTypedParts(introTypedRows[3], typedIntroLengths[3])}
+          </JotRow>
+          <JotRow
+            iconLabel="Internship"
+            icon={<Briefcase className="h-[1.15rem] w-[1.15rem] sm:h-5 sm:w-5" strokeWidth={1.75} />}
+          >
+            {renderTypedParts(introTypedRows[4], typedIntroLengths[4])}
           </JotRow>
         </ul>
 
