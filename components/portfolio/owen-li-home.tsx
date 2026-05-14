@@ -42,12 +42,58 @@ function githubRepoUrl(p: Project): string | undefined {
   return undefined;
 }
 
-function shouldUseProjectVideo(p: Project): boolean {
-  return p.title === "Car with obstacle detection" && Boolean(p.video);
+function hasProjectVideo(p: Project): boolean {
+  return Boolean(p.video) || Boolean(p.youtubeId);
 }
 
 function isExternalHref(href: string) {
   return href.startsWith("http");
+}
+
+function ProjectMedia({ p, name }: { p: Project; name: string }) {
+  const thumb = projectThumbSrc(p);
+  if (p.youtubeId) {
+    return (
+      <iframe
+        src={`https://www.youtube.com/embed/${p.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${p.youtubeId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+        className="absolute inset-0 h-full w-full border-0"
+        allow="autoplay; encrypted-media"
+        loading="lazy"
+        title={`${name} demo`}
+      />
+    );
+  }
+  if (p.video) {
+    return (
+      <video
+        src={p.video}
+        className="absolute inset-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={`${name} preview video`}
+      />
+    );
+  }
+  if (thumb) {
+    return (
+      <Image
+        src={thumb}
+        alt={`${name} preview`}
+        fill
+        className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+        style={{ objectPosition: p.imageObjectPosition ?? "center" }}
+        sizes="(max-width: 640px) 100vw, 50vw"
+      />
+    );
+  }
+  return (
+    <div className="flex h-full items-center justify-center text-xs text-neutral-600">
+      No preview
+    </div>
+  );
 }
 
 const githubIconBtn =
@@ -407,7 +453,7 @@ export function OwenLiStyleHome() {
                       <span className="text-neutral-400">{job.period}</span>
                     </p>
                     {job.note ? (
-                      <p className="mt-1.5 text-[0.95rem] leading-relaxed text-neutral-500">
+                      <p className="mt-1.5 text-[0.95rem] leading-relaxed text-neutral-200">
                         {job.note}
                       </p>
                     ) : null}
@@ -427,9 +473,8 @@ export function OwenLiStyleHome() {
               Projects
             </h2>
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {featuredProjects.map((p, idx) => {
+                  {featuredProjects.map((p, idx) => {
                 const href = projectPrimaryHref(p);
-                const thumb = projectThumbSrc(p);
                 const { name, context } = splitProjectTitle(p.title);
                 return (
                   <motion.button
@@ -442,34 +487,8 @@ export function OwenLiStyleHome() {
                     viewport={revealViewport}
                     transition={{ ...easeOut, delay: idx * 0.025 }}
                   >
-                    <div className="relative aspect-[16/10] w-full bg-neutral-800">
-                      {shouldUseProjectVideo(p) ? (
-                        <video
-                          src={p.video}
-                          className="absolute inset-0 h-full w-full object-cover"
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          aria-label={`${name} preview video`}
-                        />
-                      ) : thumb ? (
-                        <Image
-                          src={thumb}
-                          alt={`${name} preview`}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                          style={{
-                            objectPosition: p.imageObjectPosition ?? "center",
-                          }}
-                          sizes="(max-width: 640px) 100vw, 50vw"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-xs text-neutral-600">
-                          No preview
-                        </div>
-                      )}
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-800">
+                      <ProjectMedia p={p} name={name} />
                     </div>
                     <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
                       <p className="text-base font-semibold tracking-tight text-white sm:text-[1.06rem]">
@@ -504,7 +523,6 @@ export function OwenLiStyleHome() {
               <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {otherProjects.map((p, idx) => {
                   const href = projectPrimaryHref(p);
-                  const thumb = projectThumbSrc(p);
                   const { name, context } = splitProjectTitle(p.title);
                   return (
                     <motion.button
@@ -517,34 +535,8 @@ export function OwenLiStyleHome() {
                       viewport={revealViewport}
                       transition={{ ...easeOut, delay: idx * 0.025 }}
                     >
-                      <div className="relative aspect-[16/10] w-full bg-neutral-800">
-                        {shouldUseProjectVideo(p) ? (
-                          <video
-                            src={p.video}
-                            className="absolute inset-0 h-full w-full object-cover"
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            preload="metadata"
-                            aria-label={`${name} preview video`}
-                          />
-                        ) : thumb ? (
-                          <Image
-                            src={thumb}
-                            alt={`${name} preview`}
-                            fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                            style={{
-                              objectPosition: p.imageObjectPosition ?? "center",
-                            }}
-                            sizes="(max-width: 640px) 100vw, 50vw"
-                          />
-                        ) : (
-                          <div className="flex h-full items-center justify-center text-xs text-neutral-600">
-                            No preview
-                          </div>
-                        )}
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-800">
+                        <ProjectMedia p={p} name={name} />
                       </div>
                       <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
                         <p className="text-base font-semibold tracking-tight text-white sm:text-[1.06rem]">
@@ -591,30 +583,7 @@ export function OwenLiStyleHome() {
             >
               <div className="flex flex-col gap-4 p-5 sm:p-6">
                 <div className="relative h-52 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900 sm:h-64">
-                  {shouldUseProjectVideo(activeProject) ? (
-                    <video
-                      src={activeProject.video}
-                      className="absolute inset-0 h-full w-full object-cover"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      aria-label={`${splitProjectTitle(activeProject.title).name} demo video`}
-                      controls
-                    />
-                  ) : projectThumbSrc(activeProject) ? (
-                    <Image
-                      src={projectThumbSrc(activeProject) as string}
-                      alt={`${splitProjectTitle(activeProject.title).name} visual`}
-                      fill
-                      className="object-cover"
-                      style={{
-                        objectPosition: activeProject.imageObjectPosition ?? "center",
-                      }}
-                      sizes="(max-width: 768px) 100vw, 720px"
-                    />
-                  ) : null}
+                  <ProjectMedia p={activeProject} name={splitProjectTitle(activeProject.title).name} />
                 </div>
                 <div>
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">

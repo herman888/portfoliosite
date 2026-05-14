@@ -18,6 +18,8 @@ export type Project = {
   videoPoster?: string;
   /** CSS `object-position` for still thumbnails (e.g. `"center 85%"`). */
   imageObjectPosition?: string;
+  /** YouTube video ID for embed autoplay background. */
+  youtubeId?: string;
   code?: string;
   devpost?: string;
   link?: string;
@@ -34,6 +36,7 @@ export const projects: Project[] = [
     caption: "High-speed autonomous drone racing research @ UTIAS.",
     tags: ["Drones", "Gazebo", "Python", "ROS", "Simulink", "Research"],
     image: "/droneracing.jpg",
+    video: "/droneracing.mp4",
     link: "/projects/drone-racing-summary",
     year: "2023–25",
     category: "software",
@@ -56,6 +59,7 @@ export const projects: Project[] = [
     caption: "Study lamp that detects stress and responds in real time.",
     tags: ["Hackathon", "Winner", "UofTHacks", "React", "Node.js"],
     image: "/uofthacks.png",
+    youtubeId: "gwU1twqMq40",
     code: "https://github.com/Hackm0/lelampv3",
     devpost: "https://devpost.com/software/red-lamp",
     year: "2025",
@@ -68,6 +72,7 @@ export const projects: Project[] = [
     caption: "Visualize how new development affects infrastructure.",
     tags: ["CTRLHACKDEL", "Growth", "React", "Node.js"],
     image: "/ctrlhackdel.png",
+    youtubeId: "P3chEYABVYA",
     code: "https://github.com/EVAnunit1307/City_Sync",
     devpost: "https://devpost.com/software/growthsync",
     year: "2026",
@@ -80,6 +85,7 @@ export const projects: Project[] = [
     caption: "Interactive simulation for container drift and recovery.",
     tags: ["ConUHacks", "NLP", "Python", "Hackathon"],
     image: "/findingnemo.png",
+    youtubeId: "PQBeq-7WKRE",
     code: gh("container-search"),
     devpost: "https://devpost.com/software/finding-n-e-m-o",
     year: "2025",
@@ -92,6 +98,7 @@ export const projects: Project[] = [
     caption: "Meal requests and optimized driver routes.",
     tags: ["HackThe6ix", "Web", "React", "Node.js"],
     image: "/giveway.png",
+    youtubeId: "man2-PK6fbg",
     code: gh("route-optimizer"),
     devpost: "https://devpost.com/software/placeholder-pomuiy",
     year: "2025",
