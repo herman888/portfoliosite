@@ -123,6 +123,7 @@ export const projects: Project[] = [
     caption: "HackCanada 2026 — step-by-step 3D recipe simulation.",
     tags: ["HackCanada", "Hackathon", "React", "Next.js", "Web", "3D"],
     image: "/kinkitchen.png",
+    youtubeId: "1M8MoqCxQCI",
     code: gh("kinkitchen"),
     year: "2026",
     category: "software",
