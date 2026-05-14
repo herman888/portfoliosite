@@ -255,7 +255,7 @@ export function OwenLiStyleHome() {
       <div className="mx-auto max-w-2xl px-5 py-12 sm:px-6 sm:py-16 md:py-20">
         <header className="mb-10">
           <h1
-            className="font-mono text-2xl font-semibold tracking-tight text-white sm:text-[1.65rem]"
+            className="text-2xl font-semibold tracking-tight text-white sm:text-[1.65rem]"
             aria-label={typedDisplayName}
           >
             <span aria-hidden="true">{typedName}</span>
@@ -278,12 +278,12 @@ export function OwenLiStyleHome() {
         >
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-5">
-              <span className="font-mono text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-neutral-500">
+              <span className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-neutral-500">
                 Currently
               </span>
               <div className="h-px flex-1 bg-neutral-800" />
             </div>
-            <ul className="m-0 list-none space-y-4 p-0 font-mono text-[0.92rem] leading-relaxed sm:text-[0.95rem]">
+            <ul className="m-0 list-none space-y-4 p-0 text-[0.92rem] leading-relaxed sm:text-[0.95rem]">
               {currentlyRows.map((row, idx) => (
                 <motion.li
                   key={idx}

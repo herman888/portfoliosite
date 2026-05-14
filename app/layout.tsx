@@ -1,5 +1,5 @@
 import type { Viewport } from "next";
-import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans, Silkscreen } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { siteMetadata } from "./site-metadata";
@@ -19,6 +19,12 @@ const plusJakarta = Plus_Jakarta_Sans({
 	variable: '--font-editorial',
 });
 
+const silkscreen = Silkscreen({
+	weight: ['400', '700'],
+	subsets: ['latin'],
+	variable: '--font-pixel',
+});
+
 export const metadata = siteMetadata;
 
 export const viewport: Viewport = {
@@ -36,7 +42,7 @@ export default function RootLayout({
 	return (
 		<html
 			lang="en"
-			className={`${inter.variable} ${jetbrainsMono.variable} ${plusJakarta.variable}`}
+			className={`${inter.variable} ${jetbrainsMono.variable} ${plusJakarta.variable} ${silkscreen.variable}`}
 		>
 			<body className="min-h-screen bg-background font-sans text-foreground antialiased">
 				{children}
