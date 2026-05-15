@@ -140,7 +140,7 @@ type CurrentlyRow = {
 
 const currentlyRows: CurrentlyRow[] = [
   {
-    prefix: "technical robotics staff intern @",
+    prefix: "robotics staff intern @",
     image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
     linkLabel: "Human Computer Lab",
     href: "https://www.humancomputerlab.com/",
@@ -287,26 +287,30 @@ export function OwenLiStyleHome() {
               {currentlyRows.map((row, idx) => (
                 <motion.li
                   key={idx}
-                  className="flex items-center gap-2 flex-wrap"
+                  className="flex items-center gap-2"
                   initial={{ opacity: 0, x: -10 }}
                   animate={currentlyVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
                   transition={{ ...easeOut, delay: idx * 0.08 }}
                 >
-                  <span className="text-neutral-500" aria-hidden>&#x25B8;</span>
-                  <span className="text-neutral-300">{row.prefix}</span>
-                  {row.image ? (
-                    <InlineThumb src={row.image.src} alt={row.image.alt} size="sm" />
-                  ) : null}
-                  {row.linkLabel && row.href ? (
-                    <a
-                      href={row.href}
-                      className="text-white underline decoration-neutral-600 underline-offset-[3px] transition-colors hover:decoration-neutral-300"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {row.linkLabel}
-                    </a>
-                  ) : null}
+                  <span className="shrink-0 text-neutral-500" aria-hidden>
+                    &#x25B8;
+                  </span>
+                  <span className="inline-flex min-w-0 flex-nowrap items-center gap-1.5">
+                    <span className="whitespace-nowrap text-neutral-300">{row.prefix}</span>
+                    {row.image ? (
+                      <InlineThumb src={row.image.src} alt={row.image.alt} size="sm" />
+                    ) : null}
+                    {row.linkLabel && row.href ? (
+                      <a
+                        href={row.href}
+                        className="whitespace-nowrap text-white underline decoration-neutral-600 underline-offset-[3px] transition-colors hover:decoration-neutral-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {row.linkLabel}
+                      </a>
+                    ) : null}
+                  </span>
                 </motion.li>
               ))}
             </ul>
