@@ -16,7 +16,8 @@ type Props = {
  * Uses `font-sans` so it follows the site Inter / layout fonts (not legacy monospace project styles).
  */
 export function ProjectGridCard({ project }: Props) {
-  const imageSrc = project.image ?? project.images?.[0];
+  const gallery = project.images;
+  const imageSrc = project.image ?? gallery?.[0];
   const videoSrc = project.video;
   const caption = project.caption ?? project.description;
   const href = hrefFor(project);

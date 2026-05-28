@@ -9,9 +9,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-pixel)", "Silkscreen", "monospace"],
-        mono: ["var(--font-pixel)", "Silkscreen", "monospace"],
-        pixel: ["var(--font-pixel)", "Silkscreen", "monospace"],
+        sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
         editorial: [
           "var(--font-editorial)",
           "Plus Jakarta Sans",

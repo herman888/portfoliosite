@@ -3,10 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { Mail } from "lucide-react";
-import { fullName, owenWorkEntries, currentlyItems, site } from "@/app/site-content";
-import { GitHubIcon, LinkedInIcon } from "@/components/portfolio/social-icons";
+import { fullName, owenWorkEntries, site } from "@/app/site-content";
+import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/portfolio/social-icons";
 import { allPortfolioProjects, type Project } from "@/app/projects/projects-data";
 import { easeOut } from "@/components/portfolio/portfolio-motion";
 
@@ -42,15 +42,19 @@ function githubRepoUrl(p: Project): string | undefined {
   return undefined;
 }
 
-function hasProjectVideo(p: Project): boolean {
-  return Boolean(p.video) || Boolean(p.youtubeId);
-}
-
 function isExternalHref(href: string) {
   return href.startsWith("http");
 }
 
-function ProjectMedia({ p, name }: { p: Project; name: string }) {
+function ProjectMedia({
+  p,
+  name,
+  layout = "card",
+}: {
+  p: Project;
+  name: string;
+  layout?: "card" | "detail";
+}) {
   const thumb = projectThumbSrc(p);
   if (p.youtubeId) {
     return (
@@ -72,9 +76,29 @@ function ProjectMedia({ p, name }: { p: Project; name: string }) {
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="auto"
         aria-label={`${name} preview video`}
       />
+    );
+  }
+  if (p.images && p.images.length > 1 && layout === "detail") {
+    return (
+      <div className="absolute inset-0 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {p.images.map((src, i) => (
+          <div
+            key={src}
+            className="relative min-h-0 overflow-hidden rounded-lg bg-neutral-950"
+          >
+            <Image
+              src={src}
+              alt={`${name} preview ${i + 1}`}
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 640px) 100vw, 40vw"
+            />
+          </div>
+        ))}
+      </div>
     );
   }
   if (thumb) {
@@ -172,7 +196,10 @@ export function OwenLiStyleHome() {
   const [activeProjectTitle, setActiveProjectTitle] = useState<string | null>(null);
 
   const featuredProjectTitles = [
-    "Drone Racing",
+    "Optimizing UAV Autonomous Navigation",
+    "Integrating UAV Controls into Navigation",
+    "UAV Navigation Model Training",
+    "Fixed-Wing UAV Airframe Design",
     "RedLamp (UofTHacks)",
     "CityPath AI (Shopify Hackathon)",
     "GrowthSync (CTRLHACKDEL)",
@@ -278,7 +305,7 @@ export function OwenLiStyleHome() {
         >
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-5">
-              <span className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-neutral-500">
+              <span className="text-xs font-medium tracking-wide text-neutral-500">
                 Currently
               </span>
               <div className="h-px flex-1 bg-neutral-800" />
@@ -383,6 +410,28 @@ export function OwenLiStyleHome() {
               transition={{ ...socialDropTransition, delay: 0.06 }}
             >
               <GitHubIcon className="h-5 w-5" />
+            </motion.a>
+            <motion.a
+              href={site.links.x}
+              className={socialIconLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X profile"
+              initial={{ opacity: 0, x: 240, y: 14, rotate: 24, scale: 0.74 }}
+              animate={
+                socialVisible
+                  ? {
+                      opacity: 1,
+                      x: [0, -20, 10, -5, 0],
+                      y: [0, 9, -4, 2, 0],
+                      rotate: [0, -16, 8, -3, 0],
+                      scale: [1, 1.16, 0.94, 1.03, 1],
+                    }
+                  : { opacity: 0, x: 240, y: 14, rotate: 24, scale: 0.74 }
+              }
+              transition={{ ...socialDropTransition, delay: 0.09 }}
+            >
+              <XIcon className="h-5 w-5" />
             </motion.a>
           </p>
         </div>
@@ -586,8 +635,18 @@ export function OwenLiStyleHome() {
               transition={easeOut}
             >
               <div className="flex flex-col gap-4 p-5 sm:p-6">
-                <div className="relative h-52 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900 sm:h-64">
-                  <ProjectMedia p={activeProject} name={splitProjectTitle(activeProject.title).name} />
+                <div
+                  className={
+                    activeProject.images && activeProject.images.length > 1
+                      ? "relative aspect-[16/10] overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950"
+                      : "relative h-52 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900 sm:h-64"
+                  }
+                >
+                  <ProjectMedia
+                    p={activeProject}
+                    name={splitProjectTitle(activeProject.title).name}
+                    layout="detail"
+                  />
                 </div>
                 <div>
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">

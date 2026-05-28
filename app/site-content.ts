@@ -38,6 +38,7 @@ export const site = {
     schulichLeaders: "https://www.schulichleaders.ca/",
     githubProfile,
     github: `https://github.com/${githubProfile}`,
+    x: "https://x.com/hermanisayenka",
     twitterCreator: "@hermanisayenka",
   },
 } as const;

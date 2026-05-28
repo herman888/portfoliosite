@@ -250,11 +250,11 @@ body {
 }
 
 .chat-text {
-  font-family: var(--font-pixel), system-ui, -apple-system, BlinkMacSystemFont,
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont,
     "SF Pro Text", sans-serif;
-  font-size: 0.7rem;
-  line-height: 1.8;
-  letter-spacing: 0.08em;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  letter-spacing: normal;
 }
 @media (max-width: 640px) {
   .chat-text {
@@ -327,12 +327,12 @@ body {
   mix-blend-mode: overlay;
 }
 .about-me-line {
-  font-family: var(--font-pixel), system-ui, -apple-system, BlinkMacSystemFont,
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont,
     "SF Pro Text", sans-serif;
-  font-size: 0.76rem;
-  line-height: 1.7;
+  font-size: 0.9375rem;
+  line-height: 1.6;
   color: #e5e5e5;
-  letter-spacing: 0.05em;
+  letter-spacing: normal;
 }
 @media (max-width: 640px) {
   .about-me-line {
@@ -523,10 +523,10 @@ body {
 }
 .terminal-line {
   margin: 0;
-  font-family: var(--font-pixel), ui-monospace, SFMono-Regular, Menlo, Monaco,
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 0.65rem;
-  line-height: 1.4;
+  font-size: 0.8125rem;
+  line-height: 1.5;
   white-space: pre-wrap;
 }
 
@@ -595,9 +595,9 @@ body {
   background: rgba(0, 0, 0, 0.35);
   color: #e5e5e5;
   outline: none;
-  font-family: var(--font-pixel), ui-monospace, SFMono-Regular, Menlo, Monaco,
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
-  letter-spacing: 0.02em;
+  letter-spacing: normal;
 }
 .command-palette-input:focus {
   border-color: rgba(148, 163, 184, 0.7);
@@ -618,7 +618,7 @@ body {
   background: transparent;
   color: #e5e5e5;
   cursor: pointer;
-  font-family: var(--font-pixel), ui-monospace, SFMono-Regular, Menlo, Monaco,
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
 }
 .command-palette-item:hover {
@@ -634,7 +634,7 @@ body {
   color: #9ca3af;
   padding: 0.65rem 0.65rem;
   font-size: 0.7rem;
-  font-family: var(--font-pixel), ui-monospace, SFMono-Regular, Menlo, Monaco,
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
 }
 

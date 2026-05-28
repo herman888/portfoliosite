@@ -30,15 +30,51 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Drone Racing",
+    title: "Optimizing UAV Autonomous Navigation",
     description:
-      "Developed @UTIAS Flight System and Control Laboratory. Built and tested drone racing systems, ran real and simulated flights, and contributed to research on autonomous flight and trajectory analysis.",
-    caption: "High-speed autonomous drone racing research @ UTIAS.",
-    tags: ["Drones", "Gazebo", "Python", "ROS", "Simulink", "Research"],
-    image: "/droneracing.jpg",
+      "Simulated drone trajectories in Simulink and Gazebo, analyzed flight paths and optimized control algorithms, and built tools to compare simulated vs. real flight data at UTIAS.",
+    caption: "Simulation & trajectory analysis @ UTIAS.",
+    tags: ["Drones", "Gazebo", "Simulink", "Python", "Research", "UTIAS", "UTIAS Summer"],
+    image: "/simulation.png",
+    link: "/projects/drone-racing-summary",
+    year: "2025",
+    category: "software",
+  },
+  {
+    title: "Integrating UAV Controls into Navigation",
+    description:
+      "Trained models on collected flight data, integrated them with drone hardware for real-time testing, ran component test flights, and set up CI/CD pipelines for rapid deployment and testing at UTIAS.",
+    caption: "Hardware integration & real-time flight testing @ UTIAS.",
+    tags: ["Drones", "Python", "ROS", "Research", "UTIAS", "UTIAS Summer"],
+    image: "/testdrone.jpg",
+    imageObjectPosition: "left top",
     video: "/droneracing.mp4",
     link: "/projects/drone-racing-summary",
-    year: "2023–25",
+    year: "2024",
+    category: "software",
+  },
+  {
+    title: "UAV Navigation Model Training",
+    description:
+      "At UTIAS Flight Systems and Control Laboratory: collected flight data from drone test runs, annotated sensor readings and flight logs for supervised learning, and built scripts for automated data preprocessing.",
+    caption: "Data collection & model training @ UTIAS.",
+    tags: ["Drones", "Python", "Research", "UTIAS", "UTIAS Summer"],
+    image: "/data.png",
+    video: "/drone-racing-2023-loop.mp4",
+    link: "/projects/drone-racing-summary",
+    year: "2023",
+    category: "software",
+  },
+  {
+    title: "Fixed-Wing UAV Airframe Design",
+    description:
+      "Designed and built a custom fixed-wing UAV airframe at UTIAS: laser-cut internal structure, wing skinning, and iterative layout to balance weight, stiffness, and aerodynamic performance for autonomous flight.",
+    caption: "Custom fixed-wing airframe build @ UTIAS.",
+    tags: ["Aerodynamics", "Fabrication", "Research", "UTIAS", "UTIAS Summer"],
+    image: "/wing-airframe-exterior.jpg",
+    imageObjectPosition: "center 55%",
+    images: ["/wing-airframe-exterior.jpg", "/wing-airframe-interior.jpg"],
+    year: "2023",
     category: "software",
   },
   {
@@ -226,16 +262,23 @@ export const softwareResearchProjects = softwareProjects.filter(
   (p) => !isHackathonSoftware(p)
 );
 
-/** Single list for home + /projects: Drone Racing first, then hackathons, other software, hardware. */
+/** Single list for home + /projects: UTIAS summers first, then hackathons, other software, hardware. */
 export const allPortfolioProjects: Project[] = (() => {
-  const droneRacing = projects.find((p) => p.title === "Drone Racing");
-  const researchSansDrone = softwareResearchProjects.filter(
-    (p) => p.title !== "Drone Racing"
-  );
+  const utiasSummers = softwareResearchProjects
+    .filter((p) => p.tags.includes("UTIAS Summer"))
+    .sort((a, b) => {
+      const byYear = (b.year ?? "").localeCompare(a.year ?? "");
+      if (byYear !== 0) return byYear;
+      const airframe = (t: string) => (t.includes("Airframe") ? 1 : 0);
+      return airframe(a.title) - airframe(b.title);
+    });
+  const researchSansUtiiasSummer = softwareResearchProjects
+    .filter((p) => !p.tags.includes("UTIAS Summer"))
+    .sort((a, b) => (b.year ?? "").localeCompare(a.year ?? ""));
   return [
-    ...(droneRacing ? [droneRacing] : []),
+    ...utiasSummers,
+    ...researchSansUtiiasSummer,
     ...softwareHackathonProjects,
-    ...researchSansDrone,
     ...hardwareProjects,
   ];
 })();
