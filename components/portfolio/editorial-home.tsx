@@ -207,18 +207,26 @@ function EditorialCard({
   );
 
   const isExternalHref = Boolean(item.href?.startsWith("http"));
+  const cardLinkClass =
+    "block outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2";
 
   if (item.href && item.linkAffordance) {
     return (
       <article className="group">
-        <a
-          href={item.href}
-          target={isExternalHref ? "_blank" : undefined}
-          rel={isExternalHref ? "noopener noreferrer" : undefined}
-          className="block outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-        >
-          {inner}
-        </a>
+        {isExternalHref ? (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cardLinkClass}
+          >
+            {inner}
+          </a>
+        ) : (
+          <Link href={item.href} className={cardLinkClass}>
+            {inner}
+          </Link>
+        )}
         <div className="mt-3">
           <ProjectLinkAffordance item={item} />
         </div>
@@ -229,14 +237,20 @@ function EditorialCard({
   if (item.href) {
     return (
       <article className="group">
-        <a
-          href={item.href}
-          target={isExternalHref ? "_blank" : undefined}
-          rel={isExternalHref ? "noopener noreferrer" : undefined}
-          className="block outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-        >
-          {inner}
-        </a>
+        {isExternalHref ? (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cardLinkClass}
+          >
+            {inner}
+          </a>
+        ) : (
+          <Link href={item.href} className={cardLinkClass}>
+            {inner}
+          </Link>
+        )}
       </article>
     );
   }

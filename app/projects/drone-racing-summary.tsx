@@ -4,7 +4,7 @@ export default function DroneRacingSummary() {
   return (
     <div className="max-w-3xl mx-auto py-16 px-4 bg-[#f5f5dc] rounded-xl shadow border border-[#d6c9a5]">
       <h1 className="text-3xl font-bold mb-6 text-[#bfa94c]">Drone Racing Project Summary</h1>
-      <p className="text-gray-700 mb-8">A breakdown of my work at UTIAS Flight System and Control Laboratory, spanning three summers of research and development.</p>
+      <p className="text-gray-700 mb-8">A breakdown of my work spanning three summers of research and development.</p>
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Summer 1: Data Collection & Annotation</h2>
         <ul className="list-disc pl-6 text-gray-700">

@@ -26,7 +26,7 @@ export default function DroneRacingSummary() {
           >
             <Image
               src="/team.jpg"
-              alt="Drone racing team at UTIAS"
+              alt="Drone racing team"
               fill
               className="object-cover object-center"
               sizes="(max-width: 768px) 100vw, 42rem"
@@ -38,13 +38,13 @@ export default function DroneRacingSummary() {
         <div className="mb-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Image
             src="/utias.jpeg"
-            alt="UTIAS"
+            alt="Laboratory"
             width={56}
             height={56}
             className="h-14 w-14 rounded-full border border-border object-cover"
           />
           <p className="text-center text-sm font-medium uppercase tracking-[0.12em] text-muted-foreground sm:text-left">
-            Associated with UTIAS Flight Systems and Control Laboratory
+            Research &amp; development — three summers
           </p>
         </div>
 
@@ -52,8 +52,8 @@ export default function DroneRacingSummary() {
           Drone racing project summary
         </h1>
         <p className="mb-12 max-w-2xl text-base leading-relaxed text-muted-foreground">
-          Three summers of work at the Flight System and Control Laboratory:
-          data, training, hardware, simulation, and trajectory analysis.
+          Three summers of work: data, training, hardware, simulation, and
+          trajectory analysis.
         </p>
 
         <section className="mb-12 border-t border-border pt-10">

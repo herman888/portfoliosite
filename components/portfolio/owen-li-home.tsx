@@ -690,6 +690,10 @@ export function OwenLiStyleHome() {
                         <Link
                           href={projectPrimaryHref(activeProject) as string}
                           className="rounded-md bg-neutral-950 px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+                          onClick={() => {
+                            setActiveProjectTitle(null);
+                            document.body.style.overflow = "";
+                          }}
                         >
                           Open project
                         </Link>

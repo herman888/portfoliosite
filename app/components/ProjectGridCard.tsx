@@ -1,10 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import type { Project } from "../projects/projects-data";
 
 function hrefFor(p: Project): string | undefined {
   return p.link ?? p.code ?? p.devpost;
+}
+
+function isExternalHref(href: string) {
+  return href.startsWith("http");
 }
 
 type Props = {
@@ -69,17 +74,29 @@ export function ProjectGridCard({ project }: Props) {
     "group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm transition-shadow duration-300 hover:shadow-md";
 
   if (href) {
+    const linkClass =
+      "flex h-full min-h-0 flex-col outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+    if (isExternalHref(href)) {
+      return (
+        <article className={shell}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={linkClass}
+          >
+            {media}
+            {body}
+          </a>
+        </article>
+      );
+    }
     return (
       <article className={shell}>
-        <a
-          href={href}
-          target={href.startsWith("http") ? "_blank" : undefined}
-          rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-          className="flex h-full min-h-0 flex-col outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
+        <Link href={href} className={linkClass}>
           {media}
           {body}
-        </a>
+        </Link>
       </article>
     );
   }

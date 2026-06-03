@@ -1,8 +1,22 @@
 import type { Metadata } from "next";
 import { fullName, site } from "./site-content";
 
+/**
+ * In dev, use localhost so relative URLs resolve on `next dev` (default port 3000).
+ * Override with NEXT_PUBLIC_SITE_URL if you use another origin (e.g. http://127.0.0.1:3001).
+ */
+function metadataBase(): URL {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL);
+  }
+  if (process.env.NODE_ENV === "development") {
+    return new URL("http://localhost:3000");
+  }
+  return new URL(site.url);
+}
+
 export const siteMetadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: metadataBase(),
   title: `${fullName} | Developer Portfolio`,
   description: `${fullName}. ${site.person.headline}`,
   keywords: [
