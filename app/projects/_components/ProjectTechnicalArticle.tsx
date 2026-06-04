@@ -46,7 +46,7 @@ export function ProjectTechnicalArticle({
         </nav>
 
         {hero ? (
-          <div className="mb-10 overflow-hidden rounded-xl border border-border bg-muted shadow-sm">
+          <div className="mb-10 overflow-hidden rounded-xl border border-border bg-muted shadow-sm ring-1 ring-black/[0.06]">
             <div
               className={`relative block w-full ${hero.heightClass ?? "h-52 md:h-64 lg:h-72"}`}
             >
