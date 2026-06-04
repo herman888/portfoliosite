@@ -39,19 +39,33 @@ export function ProjectGridCard({ project }: Props) {
           className="absolute inset-0 h-full w-full object-cover bg-muted"
         />
       ) : imageSrc ? (
-        <Image
-          src={imageSrc}
-          alt={project.title}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          style={
-            project.imageObjectPosition
-              ? { objectPosition: project.imageObjectPosition }
-              : undefined
-          }
-          unoptimized={project.imageUnoptimized}
-        />
+        project.imageUnoptimized ? (
+          <img
+            src={imageSrc}
+            alt={project.title}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            style={
+              project.imageObjectPosition
+                ? { objectPosition: project.imageObjectPosition }
+                : undefined
+            }
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <Image
+            src={imageSrc}
+            alt={project.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            style={
+              project.imageObjectPosition
+                ? { objectPosition: project.imageObjectPosition }
+                : undefined
+            }
+          />
+        )
       ) : (
         <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
           Preview

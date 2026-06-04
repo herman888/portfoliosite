@@ -14,10 +14,7 @@ export default function UavNavigationModelTrainingPage() {
       hero={{
         src: "/uav-gate-yolo-detection.png",
         alt: "Racing gate with YOLO-style bounding box overlay from onboard vision",
-        variant: "contain",
-        imageQuality: 95,
         heightClass: "h-56 min-h-[14rem] md:h-[22rem] md:min-h-[22rem]",
-        sizes: "(max-width: 768px) 100vw, min(960px, 90vw)",
       }}
     >
       <WriteupP>

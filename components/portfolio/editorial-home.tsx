@@ -146,19 +146,33 @@ function EditorialCard({
           className="absolute inset-0 h-full w-full object-cover bg-neutral-200"
         />
       ) : imageSrc ? (
-        <Image
-          src={imageSrc}
-          alt=""
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-          style={
-            item.imageObjectPosition
-              ? { objectPosition: item.imageObjectPosition }
-              : undefined
-          }
-          unoptimized={item.imageUnoptimized}
-        />
+        item.imageUnoptimized ? (
+          <img
+            src={imageSrc}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            style={
+              item.imageObjectPosition
+                ? { objectPosition: item.imageObjectPosition }
+                : undefined
+            }
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <Image
+            src={imageSrc}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            style={
+              item.imageObjectPosition
+                ? { objectPosition: item.imageObjectPosition }
+                : undefined
+            }
+          />
+        )
       ) : (
         <div className="flex h-full items-center justify-center text-sm text-neutral-500">
           Preview

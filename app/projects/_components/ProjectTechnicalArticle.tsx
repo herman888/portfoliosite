@@ -1,20 +1,15 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 type Hero = {
   src: string;
   alt: string;
-  /** Use contain for hardware photos with padding */
+  /** `cover` fills the frame (no side letterboxing). `contain` only if you need the full uncropped photo. */
   variant?: "cover" | "contain";
-  /** Next/Image quality 1–100 (higher = sharper, larger files). Default 90. */
-  imageQuality?: number;
   /** Outer box height, Tailwind classes. Default: readable hero on desktop. */
   heightClass?: string;
-  /** Override responsive `sizes` for LCP hero (retina-friendly). */
-  sizes?: string;
-  /** Skip `/_next/image` optimizer (fixes rare decode/ICC issues on some JPEGs). */
-  unoptimized?: boolean;
+  /** CSS `object-position` for the image (e.g. `"center 45%"`). */
+  objectPosition?: string;
 };
 
 type Props = {
@@ -48,25 +43,23 @@ export function ProjectTechnicalArticle({
         </nav>
 
         {hero ? (
-          <div className="mb-10 overflow-hidden rounded-xl border border-border bg-muted shadow-sm ring-1 ring-black/[0.06]">
+          <div className="mb-10 overflow-hidden rounded-xl border border-border bg-background shadow-sm ring-1 ring-black/[0.06]">
             <div
               className={`relative block w-full ${hero.heightClass ?? "h-52 md:h-64 lg:h-72"}`}
             >
-              <Image
+              {/* Native <img>: avoids next/image + optimizer failures on some JPEGs from tooling exports */}
+              <img
                 src={hero.src}
                 alt={hero.alt}
-                fill
                 className={
                   hero.variant === "contain"
-                    ? "object-contain object-center p-1 sm:p-2"
-                    : "object-cover object-center"
+                    ? "absolute inset-0 h-full w-full object-contain object-center"
+                    : "absolute inset-0 h-full w-full object-cover"
                 }
-                sizes={
-                  hero.sizes ?? "(max-width: 768px) 100vw, (max-width: 1280px) 896px, 960px"
-                }
-                quality={hero.imageQuality ?? 90}
-                priority
-                unoptimized={hero.unoptimized ?? false}
+                style={{ objectPosition: hero.objectPosition ?? "center" }}
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
               />
             </div>
           </div>

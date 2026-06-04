@@ -15,12 +15,12 @@ export default function FixedWingUavAirframePage() {
       year="2023"
       breadcrumb="Fixed-wing airframe"
       hero={{
-        src: "/wing-airframe-hero.jpg",
+        src: "/img_7211.jpg",
         alt: "Wing build: heat-shrink covering on one panel and internal rib mesh on the other",
         variant: "contain",
-        imageQuality: 95,
-        heightClass: "h-56 min-h-[14rem] md:h-[24rem] md:min-h-[24rem]",
-        unoptimized: true,
+        objectPosition: "center center",
+        heightClass:
+          "mx-auto aspect-[3/4] max-h-[min(72vh,680px)] min-h-[16rem] w-full max-w-lg sm:max-w-xl",
       }}
     >
       <WriteupP>

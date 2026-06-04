@@ -14,8 +14,6 @@ export default function IntegratingUavControlsPage() {
       hero={{
         src: "/testdrone.jpg",
         alt: "Quadrotor test platform with sensors and compute",
-        variant: "contain",
-        imageQuality: 92,
         heightClass: "h-56 min-h-[14rem] md:h-[22rem] md:min-h-[22rem]",
       }}
     >

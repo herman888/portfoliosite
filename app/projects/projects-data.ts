@@ -34,9 +34,9 @@ export const projects: Project[] = [
   {
     title: "Optimizing UAV Autonomous Navigation",
     description:
-      "Built a MATLAB/Simulink + Gazebo-style co-simulation stack around a quadrotor plant with realistic thrust saturation, motor bandwidth limits, and first-order actuator dynamics so controllers were tuned against hardware-like constraints—not an idealized double integrator. Implemented cascaded attitude/rate control (inner rate loop, outer attitude loop) with anti-windup on torque/thrust integrators, reference shaping on roll/pitch commands, and explicit thrust mixing / saturation handling to study when the stack clips during aggressive gate turns. Generated and scored trajectories using time-aligned state histories (position, velocity, quaternion, body rates, per-motor command) and gate-centric metrics: crossing tube error, heading misalignment at the plane, peak ω and ṗ norms, and margin to saturation before/after the gate. Ran scripted gain sweeps and disturbance injections (wind gust models, mass offsets) to map stability margins and failure modes, then exported comparable signals from flight bags for overlay: aligned attitude, ω, specific force, and commanded thrust after time-base sync and unit checks. Closed the sim-to-real gap iteratively by feeding identified discrepancies (effective delay, underestimated drag in high-β segments, IMU noise floors) back into the plant and delay blocks so the next controller revision predicted the same failure modes observed in logs.",
+      "MATLAB/Simulink co-simulation of a quadrotor with realistic dynamics and cascaded attitude control, plus gate-passage metrics and sweeps to tune controllers before flight.",
     caption:
-      "Simulink/Gazebo co-sim: cascaded rate/attitude control, saturation-aware thrust mixing, gate-passage metrics, scripted sweeps, flight-log overlay for sim-to-real.",
+      "Simulink co-sim, attitude/rate control, gate metrics, sim-to-real tuning.",
     tags: ["Drones", "Gazebo", "Simulink", "Python", "Research", "UTIAS", "UTIAS Summer"],
     image: "/simulation.png",
     link: "/projects/optimizing-uav-navigation",
@@ -46,9 +46,9 @@ export const projects: Project[] = [
   {
     title: "Integrating UAV Controls into Navigation",
     description:
-      "Exported trained vision weights to an onboard runtime (PyTorch → ONNX-style deploy path), wrapped inference in a ROS perception node with explicit message contracts (camera frame_id, capture time, detections, confidence), and wired outputs into the navigation stack so outer-loop commands were driven from live gate geometry instead of static waypoints. Hardened the real-time path with bounded subscriber queues, newest-frame-wins and hard-drop policies when inference missed deadlines, and structured logging so every flight could replay image time, publish time, and control ticks on one timeline. Bench work covered camera intrinsics/extrinsics validation, clock sanity (chrony / PPS alignment between camera host and flight computer where used), and optional IMU-assisted motion priors to stabilize boxes under motion blur. Field progression followed a ladder: tethered hover with perception-only logging, low-speed gate approaches under explicit speed caps, then iterative flights while tracking end-to-end latency from frame grab through topic publish to command, alongside motor saturation and tracking-error monitors when the planner tightened corners. Added lightweight CI for launch graphs, model checksums, and schema/smoke tests so lab laptops and cage rigs stayed on the same artifact hash between flight days.",
+      "Deployed trained vision models on the drone with ROS so navigation used live gate detections, with timestamped topics, bounded queues, and flight logs for latency checks.",
     caption:
-      "Onboard ROS: ONNX/PyTorch export, timestamped vision topics, bounded queues + frame drops, detection→nav interface, unified flight logs, staged flight tests, CI on configs and models.",
+      "ROS stack, vision→nav wiring, staged flight tests.",
     tags: ["Drones", "Python", "ROS", "Research", "UTIAS", "UTIAS Summer"],
     image: "/testdrone.jpg",
     imageObjectPosition: "left top",
@@ -72,11 +72,11 @@ export const projects: Project[] = [
   {
     title: "Fixed-Wing UAV Airframe Design",
     description:
-      "Iterated three laser-cut wing architectures—open light mesh, denser ribbed torque box, then a blended layout—trading torsional stiffness, build time, and skinning quality until the structure matched what we needed for avionics and covering. Version 0 was a deliberate prototype: balsa/ply ribs and spars skinned with heat-shrink film using a covering iron and heat gun so the film pulled tight and compact over the frame before we committed to final integration. Documented each mesh style with pros/cons (weight vs twist, panel buckling vs reworkability), then converged on the assembled airframe shown in the build photos with GPS and wiring integrated in the bay.",
+      "Laser-cut wing iterations from open rib mesh to a stiffer layout, with a heat-shrink prototype skin before final assembly and avionics integration.",
     caption:
-      "3 wing iterations · rib mesh trade-offs · V0 heat-shrink prototype · final integrated airframe.",
+      "Wing iterations, mesh trade-offs, prototype skin, integrated airframe.",
     tags: ["Aerodynamics", "Fabrication", "Research", "UTIAS", "UTIAS Summer"],
-    image: "/wing-airframe-hero.jpg",
+    image: "/img_7212.jpg",
     imageObjectPosition: "center 45%",
     imageUnoptimized: true,
     link: "/projects/fixed-wing-uav-airframe",

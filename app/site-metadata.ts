@@ -6,8 +6,13 @@ import { fullName, site } from "./site-content";
  * Override with NEXT_PUBLIC_SITE_URL if you use another origin (e.g. http://127.0.0.1:3001).
  */
 function metadataBase(): URL {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return new URL(process.env.NEXT_PUBLIC_SITE_URL);
+  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (fromEnv) {
+    try {
+      return new URL(fromEnv);
+    } catch {
+      // Invalid env (e.g. missing scheme) would crash layout/metadata; fall back below.
+    }
   }
   if (process.env.NODE_ENV === "development") {
     return new URL("http://localhost:3000");

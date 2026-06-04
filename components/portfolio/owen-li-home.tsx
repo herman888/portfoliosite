@@ -89,29 +89,58 @@ function ProjectMedia({
             key={src}
             className="relative min-h-0 overflow-hidden rounded-lg bg-neutral-100"
           >
-            <Image
-              src={src}
-              alt={`${name} preview ${i + 1}`}
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 640px) 100vw, 40vw"
-              unoptimized={p.imageUnoptimized}
-            />
+            {p.imageUnoptimized ? (
+              <img
+                src={src}
+                alt={`${name} preview ${i + 1}`}
+                className="absolute inset-0 h-full w-full object-cover object-center"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <Image
+                src={src}
+                alt={`${name} preview ${i + 1}`}
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 640px) 100vw, 40vw"
+              />
+            )}
           </div>
         ))}
       </div>
     );
   }
   if (thumb) {
+    const detailFit = layout === "detail";
+    if (p.imageUnoptimized) {
+      return (
+        <img
+          src={thumb}
+          alt={`${name} preview`}
+          className={
+            detailFit
+              ? "absolute inset-0 h-full w-full object-contain object-center"
+              : "absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          }
+          style={{ objectPosition: p.imageObjectPosition ?? "center" }}
+          loading="lazy"
+          decoding="async"
+        />
+      );
+    }
     return (
       <Image
         src={thumb}
         alt={`${name} preview`}
         fill
-        className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+        className={
+          detailFit
+            ? "object-contain object-center"
+            : "object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+        }
         style={{ objectPosition: p.imageObjectPosition ?? "center" }}
         sizes="(max-width: 640px) 100vw, 50vw"
-        unoptimized={p.imageUnoptimized}
       />
     );
   }
@@ -641,7 +670,7 @@ export function OwenLiStyleHome() {
                   className={
                     activeProject.images && activeProject.images.length > 1
                       ? "relative aspect-[16/10] overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100"
-                      : "relative h-52 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 sm:h-64"
+                      : "relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 max-h-[min(58vh,560px)] sm:max-w-lg"
                   }
                 >
                   <ProjectMedia
