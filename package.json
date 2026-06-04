@@ -2,6 +2,10 @@
 	"name": "simple-portfolio-template",
 	"version": "0.1.0",
 	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/herman888/v0-portfolio-website.git"
+	},
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"dev:clean": "rm -rf .next && next dev --turbopack",
