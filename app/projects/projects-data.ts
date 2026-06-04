@@ -18,6 +18,8 @@ export type Project = {
   videoPoster?: string;
   /** CSS `object-position` for still thumbnails (e.g. `"center 85%"`). */
   imageObjectPosition?: string;
+  /** Pass through to next/image `unoptimized` for thumbnails that break the optimizer. */
+  imageUnoptimized?: boolean;
   /** YouTube video ID for embed autoplay background. */
   youtubeId?: string;
   code?: string;
@@ -76,6 +78,7 @@ export const projects: Project[] = [
     tags: ["Aerodynamics", "Fabrication", "Research", "UTIAS", "UTIAS Summer"],
     image: "/wing-airframe-hero.jpg",
     imageObjectPosition: "center 45%",
+    imageUnoptimized: true,
     link: "/projects/fixed-wing-uav-airframe",
     year: "2023",
     category: "software",

@@ -50,6 +50,7 @@ export function ProjectGridCard({ project }: Props) {
               ? { objectPosition: project.imageObjectPosition }
               : undefined
           }
+          unoptimized={project.imageUnoptimized}
         />
       ) : (
         <div className="flex h-full items-center justify-center text-sm text-muted-foreground">

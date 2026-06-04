@@ -13,6 +13,8 @@ type Hero = {
   heightClass?: string;
   /** Override responsive `sizes` for LCP hero (retina-friendly). */
   sizes?: string;
+  /** Skip `/_next/image` optimizer (fixes rare decode/ICC issues on some JPEGs). */
+  unoptimized?: boolean;
 };
 
 type Props = {
@@ -64,6 +66,7 @@ export function ProjectTechnicalArticle({
                 }
                 quality={hero.imageQuality ?? 90}
                 priority
+                unoptimized={hero.unoptimized ?? false}
               />
             </div>
           </div>

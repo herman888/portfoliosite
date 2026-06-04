@@ -39,6 +39,7 @@ type EditorialItem = {
   video?: string;
   videoPoster?: string;
   imageObjectPosition?: string;
+  imageUnoptimized?: boolean;
   href?: string;
   location?: string;
   /** Set for project cards — icon row below the main link. */
@@ -56,6 +57,7 @@ function projectToEditorialItem(p: Project): EditorialItem {
     video: p.video,
     videoPoster: p.videoPoster,
     imageObjectPosition: p.imageObjectPosition,
+    imageUnoptimized: p.imageUnoptimized,
     href: hrefForProject(p),
     linkAffordance: linkAffordanceForProject(p),
   };
@@ -155,6 +157,7 @@ function EditorialCard({
               ? { objectPosition: item.imageObjectPosition }
               : undefined
           }
+          unoptimized={item.imageUnoptimized}
         />
       ) : (
         <div className="flex h-full items-center justify-center text-sm text-neutral-500">

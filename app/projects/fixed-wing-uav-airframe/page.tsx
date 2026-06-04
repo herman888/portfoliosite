@@ -20,6 +20,7 @@ export default function FixedWingUavAirframePage() {
         variant: "contain",
         imageQuality: 95,
         heightClass: "h-56 min-h-[14rem] md:h-[24rem] md:min-h-[24rem]",
+        unoptimized: true,
       }}
     >
       <WriteupP>

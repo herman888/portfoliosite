@@ -95,6 +95,7 @@ function ProjectMedia({
               fill
               className="object-cover object-center"
               sizes="(max-width: 640px) 100vw, 40vw"
+              unoptimized={p.imageUnoptimized}
             />
           </div>
         ))}
@@ -110,6 +111,7 @@ function ProjectMedia({
         className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
         style={{ objectPosition: p.imageObjectPosition ?? "center" }}
         sizes="(max-width: 640px) 100vw, 50vw"
+        unoptimized={p.imageUnoptimized}
       />
     );
   }
