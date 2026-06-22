@@ -5,9 +5,12 @@ import type { NextConfig } from "next";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
-/** Keep build output off iCloud-synced Documents — prevents ETIMEDOUT / ENOENT on `.next`. */
+/** Local dev only — keeps `.next` off iCloud-synced Documents (ETIMEDOUT / ENOENT). */
 const distDir =
-  process.env.NEXT_DIST_DIR ?? path.join(os.tmpdir(), "minimalist-portfolio-next");
+  process.env.NEXT_DIST_DIR ??
+  (process.env.NODE_ENV === "development"
+    ? path.join(os.tmpdir(), "minimalist-portfolio-next")
+    : ".next");
 
 const nextConfig: NextConfig = {
   distDir,
