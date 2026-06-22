@@ -5,12 +5,12 @@ import type { NextConfig } from "next";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
-/** Local dev only — keeps `.next` off iCloud-synced Documents (ETIMEDOUT / ENOENT). */
+/** Local dev only — Vercel/production always use `.next`. */
 const distDir =
   process.env.NEXT_DIST_DIR ??
-  (process.env.NODE_ENV === "development"
-    ? path.join(os.tmpdir(), "minimalist-portfolio-next")
-    : ".next");
+  (process.env.VERCEL || process.env.NODE_ENV !== "development"
+    ? ".next"
+    : path.join(os.tmpdir(), "minimalist-portfolio-next"));
 
 const nextConfig: NextConfig = {
   distDir,
