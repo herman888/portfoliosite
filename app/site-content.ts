@@ -20,10 +20,11 @@ export const site = {
     firstName: "Herman",
     lastName: "Isayenka",
     /** One-line role for meta / OG. */
-    headline: "Electrical Engineering student at York University.",
+    headline:
+      "Electrical Engineering student building autonomy for aerospace, space, and defense.",
     /** Shown under your name on the classic profile block. */
-    roleLine: "Electrical Engineering @ YorkU, Schulich Leader",
-    displayTitle: "Developer Portfolio",
+    roleLine: "EE @ YorkU · Autonomy · Space · Defense",
+    displayTitle: "Aerospace & Defense Portfolio",
     age: 18,
     origin: "Belarus",
     scholarshipAmount: "$120,000",
@@ -66,9 +67,9 @@ export const questionPrompts: Record<SectionKey, string> = {
 export const fallbackAnswers: Record<SectionKey, string> = {
   age: `I'm ${site.person.age} years old, originally from ${site.person.origin}, and studying Electrical Engineering at York University as a Schulich Leader. Old enough to have shipped real projects and research, young enough to still be obsessed with learning new stacks and building hardware–software hybrids.`,
   projects:
-    "I build things at the intersection of AI, robotics, and cities: CityPath AI (Shopify hackathon winner for city planning), RedLamp (UofTHacks winner, a stress-aware study lamp), GrowthSync (visualizes how new developments hit infrastructure), Finding N.E.M.O (interactive container-drift simulation), plus a bunch of Arduino and hardware builds tying sensors, motors, and code together.",
+    "Most of my work sits at the intersection of flight software and hardware: drone defence (Project L.A.R.P), autonomous UAV navigation at UTIAS, fixed-wing airframe builds, onboard vision with ROS, and spacecraft dynamics research at York's SDCN Lab—plus hackathon prototypes when there's time.",
   roles:
-    "I'm looking for roles close to real systems: backend and platform engineering, data or ML-heavy systems, and anything that touches autonomy, drones, or city-scale infrastructure problems.",
+    "I'm looking for roles in autonomy, aerospace, and defense-adjacent systems: flight software, embedded control, perception for UAVs, simulation, and anything that ships on real hardware—not just slides.",
   drone:
     "The drone racing work I do at UTIAS is all about high-speed autonomy: building and tuning flight stacks, running both simulated races and real flights through gates, and analyzing trajectories to understand how close we can get to the physical limits.",
   york:
@@ -78,13 +79,13 @@ export const fallbackAnswers: Record<SectionKey, string> = {
   sellstatic:
     "I was previously a SWE intern at SellStatic, working on systems that make it easier for teams to ship and monitor web experiences. I spent a lot of time on backend logic, data plumbing, and smoothing out the developer experience.",
   uoft:
-    "At the University of Toronto / UTIAS I work on drone racing and autonomy—building and testing flight systems, running both real and simulated races, and helping with research on how we can make high-speed flight safer and more reliable.",
+    "At UTIAS I worked on high-speed drone autonomy—onboard vision, ROS integration, controller tuning, and closing the loop from simulation to flight tests through gates and structured logs.",
   internships:
-    "I'm looking for a winter 2027 internship where I can work on real systems—backend, data-heavy products, robotics, or infrastructure—ideally somewhere that touches autonomy, simulation, or large-scale city problems.",
+    "I'm looking for a winter 2027 internship in flight software, embedded control, autonomy, or aerospace/defense-adjacent systems—somewhere hardware and software ship together.",
   humancomputerlab:
     "I'm a Technical Robotics Staff Intern at the Human Computer Lab, focused on human–computer interaction and related research.",
   sdcn:
-    "I was an undergraduate researcher at York's Spacecraft Dynamics, Control and Navigation Laboratory (SDCN Lab), working on dynamics, control, and navigation problems for spacecraft.",
+    "At York's Spacecraft Dynamics, Control and Navigation Laboratory I worked on dynamics, estimation, and navigation problems for spacecraft—control-oriented math meeting real simulation and analysis.",
 };
 
 /** Groq system prompt — keep in sync with fallback facts. */
@@ -100,23 +101,21 @@ knowledge), answer like a normal helpful AI assistant.
 
 - I'm ${site.person.age} years old and originally from ${site.person.origin}.
 - I'm a Schulich Leader studying Electrical Engineering at York University.
-- I build projects at the intersection of AI, robotics, and cities:
-  - CityPath AI (Shopify hackathon winner for city planning).
-  - RedLamp (UofTHacks winner, a stress-aware study lamp).
-  - GrowthSync (visualizes how new developments hit infrastructure).
-  - Finding N.E.M.O (interactive container-drift simulation).
-  - Multiple Arduino and hardware projects tying sensors, motors, and code together.
-- I work on drone racing and autonomy research at U of T / UTIAS.
-- I was an undergraduate research assistant at SDCN Lab (York) from Sep 2025 to Dec 2025.
+- Focus areas: aerospace autonomy, UAV perception & control, spacecraft dynamics, defense-adjacent flight systems.
+- Project L.A.R.P — drone defence system (hands-on build + demo).
+- UTIAS Flight Systems & Control Lab — onboard vision, ROS, autonomous navigation, flight testing.
+- SDCN Lab (York) — spacecraft dynamics, control, and navigation research.
+- Fixed-wing UAV airframe design, Simulink/Gazebo co-simulation, YOLO gate detection pipelines.
+- Also: hackathon builds (CityPath AI, RedLamp, etc.) and Arduino hardware projects.
 - I was previously a SWE intern at SellStatic.
 - My favourite sports are ${site.person.interests.sports.join(", ")}.
 - I'm looking for a winter 2027 internship and roles close to real systems:
-  backend and platform engineering, data/ML-heavy systems, robotics,
-  autonomy, simulation, and city-scale infrastructure problems.
+  flight software, embedded control, autonomy, simulation, perception,
+  aerospace, and defense-adjacent hardware–software integration.
 - I am a Technical Robotics Staff Intern at the Human Computer Lab.
 `.trim();
 
-export type AboutBriefMode = "drone" | "air" | "city";
+export type AboutBriefMode = "drone" | "space" | "defense";
 
 export const aboutBriefs: Record<
   AboutBriefMode,
@@ -124,15 +123,15 @@ export const aboutBriefs: Record<
 > = {
   drone: {
     title: "Autonomy / Flight stacks",
-    body: "I build high-speed autonomy: tuning flight controllers, analyzing trajectories, and testing both simulated and real races. Speed is the constraint; reliability is the goal.",
+    body: "High-speed UAV work at UTIAS: onboard vision, ROS graphs, controller tuning, and flight tests where latency and reliability matter as much as the algorithm on paper.",
   },
-  air: {
-    title: "Control / Systems thinking",
-    body: 'I like problems where dynamics meet software: estimation, planning, and robust control. The "why" matters as much as the "it flies."',
+  space: {
+    title: "Spacecraft dynamics & navigation",
+    body: "Research at York's SDCN Lab on estimation, control, and navigation for spacecraft—problems where small errors compound fast and the model has to respect physics.",
   },
-  city: {
-    title: "AI / Infrastructure for cities",
-    body: "CityPath AI connects planning with data-driven experiments—spotting dangerous patterns, evaluating options, and shrinking the time from problem to practical roadmaps.",
+  defense: {
+    title: "Defense-adjacent systems",
+    body: "Project L.A.R.P and related builds: integrating sensors, actuators, and software into platforms meant to operate under stress—defence-oriented demos with real hardware in the loop.",
   },
 };
 
@@ -214,14 +213,14 @@ export const currentlyItems: CurrentlyItem[] = [
 /** Fiona-style hero — location line under “I’m …”. */
 export const heroLocation = "Toronto, ON";
 
-/** Short line under location (lowercase reads closer to fiona-cai.vercel.app). */
+/** Short line under name on the home hero (editorial layout). */
 export const heroTagline =
   "building where software, hardware, and real systems meet";
 
 /** Two paragraphs beside / below the portrait on the home hero. */
 export const heroBioParagraphs: [string, string] = [
-  "I'm genuinely interested in software and robotics, and I like going deep on both. I spend most of my time building and learning where code meets hardware, control, and city-scale problems.",
-  "That shows up as hackathon builds, drone racing research at UTIAS, Schulich-funded work at York, internships, and hands-on Arduino projects—from line followers to sensing and control systems.",
+  "I work where code meets airframes, sensors, and control—UAV autonomy at UTIAS, spacecraft dynamics at York's SDCN Lab, and hands-on defense-oriented builds like Project L.A.R.P.",
+  "Most of my time goes to perception pipelines, ROS integration, simulation before flight, and hardware that has to survive real tests—not just look good in a deck.",
 ];
 
 export const educationLine = `Electrical Engineering @ York University · Schulich Leader`;
@@ -279,7 +278,7 @@ export const navInitials =
 
 /** Two-sentence blurb for the portfolio About section on the home page. */
 export const portfolioAbout =
-  "I'm genuinely interested in software and robotics, and I like going deep on both. I spend most of my time building and learning where code meets hardware, control, and real-world problems.";
+  "Electrical engineering student focused on aerospace autonomy, spacecraft dynamics, and defense-adjacent flight systems—closing the gap between simulation, onboard software, and hardware that actually flies.";
 
 /** Short off-script note — reserved when eats page is re-enabled. */
 export const portfolioTangent = {
@@ -376,6 +375,8 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     companyUrl: "https://www.yorku.ca/jjshan/SDCNLab.html",
     period: "Sep 2025 — Dec 2025",
     note: "Toronto, ON",
+    description:
+      "Spacecraft dynamics, estimation, and navigation—control-oriented research with simulation and analysis.",
     thumb: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
   },
   {
@@ -384,6 +385,8 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     companyUrl: "https://utias.utoronto.ca",
     period: "Apr 2023 — Aug 2025",
     note: "Toronto, ON",
+    description:
+      "Onboard vision, ROS integration, and flight testing for high-speed autonomous navigation.",
     thumb: { src: "/utias.jpeg", alt: "UTIAS" },
   },
 ];

@@ -18,10 +18,21 @@ export type Project = {
   videoPoster?: string;
   /** CSS `object-position` for still thumbnails (e.g. `"center 85%"`). */
   imageObjectPosition?: string;
+  /** Card zoom-out for tight crops (`0.65` ≈ noticeably wider framing). */
+  imageObjectScale?: number;
+  /** Card thumbnail fit — `contain` shows the full image (best for portrait photos). */
+  imageCardFit?: "cover" | "contain";
   /** Pass through to next/image `unoptimized` for thumbnails that break the optimizer. */
   imageUnoptimized?: boolean;
   /** YouTube video ID for embed autoplay background. */
   youtubeId?: string;
+  /** Instagram reel shortcode from the URL path (`/reel/THIS_PART/`). Renders the official embed. */
+  instagramReelId?: string;
+  /**
+   * Grid card: `embed` loads Instagram’s widget (tall, can look rough small).
+   * `link` uses a static hero; embed stays in modals / detail views.
+   */
+  instagramCardPreview?: "embed" | "link" | "autoplay";
   code?: string;
   devpost?: string;
   link?: string;
@@ -30,7 +41,66 @@ export type Project = {
   category: ProjectCategory;
 };
 
+/** Card thumbnail framing (`cover` default; `contain` fits the whole image). */
+export function projectCardImageFraming(p: {
+  imageObjectPosition?: string;
+  imageObjectScale?: number;
+  imageCardFit?: "cover" | "contain";
+}) {
+  const imageStyle = { objectPosition: p.imageObjectPosition ?? "center" };
+
+  if (p.imageCardFit === "contain") {
+    return {
+      className: "absolute inset-0 h-full w-full object-contain object-center",
+      imageClassName: "object-contain object-center",
+      style: imageStyle,
+      zoomBox: undefined,
+      imageStyle,
+    };
+  }
+
+  const zoom = p.imageObjectScale;
+  if (zoom && zoom < 1) {
+    const size = 100 / zoom;
+    const inset = (size - 100) / 2;
+    const zoomBox = {
+      width: `${size}%`,
+      height: `${size}%`,
+      left: `-${inset}%`,
+      top: `-${inset}%`,
+    };
+    return {
+      className: "absolute object-cover",
+      imageClassName: "object-cover",
+      style: { ...imageStyle, ...zoomBox },
+      zoomBox,
+      imageStyle,
+    };
+  }
+  return {
+    className: "absolute inset-0 h-full w-full object-cover",
+    imageClassName: "object-cover",
+    style: imageStyle,
+    zoomBox: undefined,
+    imageStyle,
+  };
+}
+
+export const PROJECT_LARP: Project = {
+  title: "Project L.A.R.P",
+  description: "Drone defence system.",
+  caption: "Localized Aerial Response Platform",
+  tags: ["Drones", "Hardware", "Build", "UTIAS"],
+  video: "/larp-reel.mp4?v=ig",
+  instagramReelId: "DZVuXiRhw1N",
+  instagramCardPreview: "autoplay",
+  code: "https://www.instagram.com/reel/DZVuXiRhw1N/",
+  year: "2025",
+  category: "hardware",
+};
+
 export const projects: Project[] = [
+  PROJECT_LARP,
   {
     title: "Optimizing UAV Autonomous Navigation",
     description:
@@ -76,11 +146,11 @@ export const projects: Project[] = [
     caption:
       "Wing iterations, mesh trade-offs, prototype skin, integrated airframe.",
     tags: ["Aerodynamics", "Fabrication", "Research", "UTIAS", "UTIAS Summer"],
-    image: "/img_7212.jpg",
-    imageObjectPosition: "center 45%",
+    image: "/wing-build-prototype-right-rot180.png",
+    imageObjectPosition: "center 55%",
     imageUnoptimized: true,
     link: "/projects/fixed-wing-uav-airframe",
-    year: "2023",
+    year: "2025",
     category: "software",
   },
   {
@@ -268,9 +338,11 @@ export const softwareResearchProjects = softwareProjects.filter(
   (p) => !isHackathonSoftware(p)
 );
 
-/** Single list for home + /projects: UTIAS summers first, then hackathons, other software, hardware. */
 export const allPortfolioProjects: Project[] = (() => {
-  const utiasSummers = softwareResearchProjects
+  const softwareResearchOrdered = softwareResearchProjects.filter(
+    (p) => p.title !== PROJECT_LARP.title
+  );
+  const utiasSummers = softwareResearchOrdered
     .filter((p) => p.tags.includes("UTIAS Summer"))
     .sort((a, b) => {
       const byYear = (b.year ?? "").localeCompare(a.year ?? "");
@@ -278,10 +350,11 @@ export const allPortfolioProjects: Project[] = (() => {
       const airframe = (t: string) => (t.includes("Airframe") ? 1 : 0);
       return airframe(a.title) - airframe(b.title);
     });
-  const researchSansUtiiasSummer = softwareResearchProjects
+  const researchSansUtiiasSummer = softwareResearchOrdered
     .filter((p) => !p.tags.includes("UTIAS Summer"))
     .sort((a, b) => (b.year ?? "").localeCompare(a.year ?? ""));
   return [
+    PROJECT_LARP,
     ...utiasSummers,
     ...researchSansUtiiasSummer,
     ...softwareHackathonProjects,

@@ -5,9 +5,9 @@ import Link from "next/link";
 import { aboutBriefs, type AboutBriefMode } from "../site-content";
 
 const modes: { id: AboutBriefMode; label: string }[] = [
-  { id: "drone", label: "DRONE" },
-  { id: "air", label: "AIRPLANE" },
-  { id: "city", label: "CITY" },
+  { id: "drone", label: "UAV" },
+  { id: "space", label: "SPACE" },
+  { id: "defense", label: "DEFENSE" },
 ];
 
 export default function AboutPage() {

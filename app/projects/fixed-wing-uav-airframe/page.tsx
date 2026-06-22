@@ -12,7 +12,7 @@ export default function FixedWingUavAirframePage() {
   return (
     <ProjectTechnicalArticle
       title="Fixed-Wing UAV Airframe Design"
-      year="2023"
+      year="2025"
       breadcrumb="Fixed-wing airframe"
       hero={{
         src: "/img_7211.jpg",

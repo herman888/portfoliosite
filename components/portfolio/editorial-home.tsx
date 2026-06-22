@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
+import { InstagramReelCardPreview } from "@/components/media/InstagramReelCardPreview";
+import { InstagramReelEmbed } from "@/components/media/InstagramReelEmbed";
 import { allPortfolioProjects, type Project } from "@/app/projects/projects-data";
 import {
   educationLine,
@@ -38,6 +40,8 @@ type EditorialItem = {
   image?: string;
   video?: string;
   videoPoster?: string;
+  instagramReelId?: string;
+  instagramCardPreview?: "embed" | "link" | "autoplay";
   imageObjectPosition?: string;
   imageUnoptimized?: boolean;
   href?: string;
@@ -51,11 +55,17 @@ function projectToEditorialItem(p: Project): EditorialItem {
     id: p.title,
     title: p.title.toUpperCase(),
     displayName: p.title,
-    subtitle: p.caption ?? p.description,
+    subtitle:
+      p.instagramCardPreview === "link" ||
+      p.instagramCardPreview === "autoplay"
+        ? p.description
+        : p.caption ?? p.description,
     year: p.year ?? "—",
     image: p.image ?? p.images?.[0],
     video: p.video,
     videoPoster: p.videoPoster,
+    instagramReelId: p.instagramReelId,
+    instagramCardPreview: p.instagramCardPreview,
     imageObjectPosition: p.imageObjectPosition,
     imageUnoptimized: p.imageUnoptimized,
     href: hrefForProject(p),
@@ -135,8 +145,45 @@ function EditorialCard({
   const videoSrc = item.video;
 
   const media = (
-    <div className="relative aspect-[16/11] w-full max-w-full overflow-hidden rounded-lg bg-neutral-100 sm:rounded-xl">
-      {videoSrc ? (
+    <div
+      className={`relative w-full max-w-full overflow-hidden rounded-lg sm:rounded-xl ${
+        item.instagramReelId
+          ? item.instagramCardPreview === "autoplay" && videoSrc
+            ? "aspect-[16/11] overflow-hidden bg-neutral-900"
+            : item.instagramCardPreview === "link"
+              ? "aspect-[16/11] overflow-hidden bg-neutral-100"
+              : "flex min-h-[300px] items-center justify-center bg-white py-2 sm:min-h-[340px]"
+          : "aspect-[16/11] bg-neutral-100"
+      }`}
+    >
+      {item.instagramReelId ? (
+        item.instagramCardPreview === "autoplay" && videoSrc ? (
+          <video
+            src={videoSrc}
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-label={`${item.displayName} preview video`}
+          />
+        ) : item.instagramCardPreview === "link" ? (
+          <InstagramReelCardPreview
+            title={item.displayName}
+            posterSrc={imageSrc}
+            posterUnoptimized={item.imageUnoptimized}
+            className="h-full w-full rounded-lg sm:rounded-xl"
+          />
+        ) : (
+          <InstagramReelEmbed
+            reelId={item.instagramReelId}
+            title={item.displayName}
+            density="card"
+            className="h-full w-full min-h-0"
+          />
+        )
+      ) : videoSrc ? (
         <video
           src={videoSrc}
           poster={item.videoPoster}
