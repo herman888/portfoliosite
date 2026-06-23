@@ -292,7 +292,7 @@ const currentlyRows: CurrentlyRow[] = [
     href: site.links.schulichLeaders,
   },
   {
-    prefix: "seeking winter 2027 internships — autonomy / aerospace / defense",
+    prefix: "seeking fall 2026 internships — autonomy / aerospace / defense",
     linkLabel: "",
   },
 ];

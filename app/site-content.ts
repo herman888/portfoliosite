@@ -81,7 +81,7 @@ export const fallbackAnswers: Record<SectionKey, string> = {
   uoft:
     "At UTIAS I worked on high-speed drone autonomy—onboard vision, ROS integration, controller tuning, and closing the loop from simulation to flight tests through gates and structured logs.",
   internships:
-    "I'm looking for a winter 2027 internship in flight software, embedded control, autonomy, or aerospace/defense-adjacent systems—somewhere hardware and software ship together.",
+    "I'm looking for a fall 2026 internship in flight software, embedded control, autonomy, or aerospace/defense-adjacent systems—somewhere hardware and software ship together.",
   humancomputerlab:
     "I'm a Technical Robotics Staff Intern at the Human Computer Lab, focused on human–computer interaction and related research.",
   sdcn:
@@ -109,7 +109,7 @@ knowledge), answer like a normal helpful AI assistant.
 - Also: hackathon builds (CityPath AI, RedLamp, etc.) and Arduino hardware projects.
 - I was previously a SWE intern at SellStatic.
 - My favourite sports are ${site.person.interests.sports.join(", ")}.
-- I'm looking for a winter 2027 internship and roles close to real systems:
+- I'm looking for a fall 2026 internship and roles close to real systems:
   flight software, embedded control, autonomy, simulation, perception,
   aerospace, and defense-adjacent hardware–software integration.
 - I am a Technical Robotics Staff Intern at the Human Computer Lab.
@@ -205,7 +205,7 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "internships",
     topic: "internships",
-    linkLabel: "looking for winter 2027 internships",
+    linkLabel: "looking for fall 2026 internships",
     href: "/#contact",
   },
 ];
