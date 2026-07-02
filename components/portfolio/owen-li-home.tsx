@@ -262,7 +262,7 @@ type CurrentlyRow = {
 
 const currentlyRows: CurrentlyRow[] = [
   {
-    prefix: "robotics staff intern @",
+    prefix: "robotic systems intern @",
     image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
     linkLabel: "Human Computer Lab",
     href: "https://www.humancomputerlab.com/",

@@ -83,7 +83,7 @@ export const fallbackAnswers: Record<SectionKey, string> = {
   internships:
     "I'm looking for a fall 2026 internship in flight software, embedded control, autonomy, or aerospace/defense-adjacent systems—somewhere hardware and software ship together.",
   humancomputerlab:
-    "I'm a Technical Robotics Staff Intern at the Human Computer Lab, focused on human–computer interaction and related research.",
+    "I'm a Robotic Systems Intern at the Human Computer Lab, focused on human–computer interaction and related research.",
   sdcn:
     "At York's Spacecraft Dynamics, Control and Navigation Laboratory I worked on dynamics, estimation, and navigation problems for spacecraft—control-oriented math meeting real simulation and analysis.",
 };
@@ -112,7 +112,7 @@ knowledge), answer like a normal helpful AI assistant.
 - I'm looking for a fall 2026 internship and roles close to real systems:
   flight software, embedded control, autonomy, simulation, perception,
   aerospace, and defense-adjacent hardware–software integration.
-- I am a Technical Robotics Staff Intern at the Human Computer Lab.
+- I am a Robotic Systems Intern at the Human Computer Lab.
 `.trim();
 
 export type AboutBriefMode = "drone" | "space" | "defense";
@@ -153,7 +153,7 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "human-computer-lab",
     topic: "humancomputerlab",
-    prefix: "technical robotics staff intern @",
+    prefix: "robotic systems intern @",
     image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
     linkLabel: "Human Computer Lab",
     href: "https://www.humancomputerlab.com/",
@@ -354,7 +354,7 @@ export type OwenWorkEntry = {
 
 export const owenWorkEntries: OwenWorkEntry[] = [
   {
-    role: "Technical Robotics Staff Intern",
+    role: "Robotic Systems Intern",
     company: "Human Computer Lab",
     companyUrl: "https://www.humancomputerlab.com/",
     period: "2026",
