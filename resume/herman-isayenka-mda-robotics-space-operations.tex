@@ -1,0 +1,144 @@
+%-------------------------
+% Herman Isayenka — MDA Space
+% Target: Software Developer Student, Robotics & Space Operations (Brampton)
+%-------------------------
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\textwidth}{1.2in}
+\addtolength{\topmargin}{-.75in}
+\addtolength{\textheight}{1.6in}
+
+\titleformat{\section}{\vspace{-6pt}\scshape\large\bfseries}{}{0em}{}[\titlerule \vspace{-5pt}]
+
+\newcommand{\resumeSubheading}[4]{
+  \item
+  \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & \textbf{\small #2} \\
+    \textit{\small #3} & \textit{\small #4}
+  \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & \textbf{\small #2}
+  \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeItem}[1]{\item \small{#1}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in, itemsep=-2pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-6pt}}
+
+\begin{document}
+
+\begin{center}
+  {\Huge \textbf{Herman Isayenka}} \\
+  \vspace{4pt}
+  \faPhone\ 905-955-9248 \quad
+  \faEnvelope\ \href{mailto:herman.isayenka@gmail.com}{herman.isayenka@gmail.com} \quad
+  \faGlobe\ \href{https://hermanisayenka.ca}{hermanisayenka.ca} \quad
+  \faLinkedin\ \href{https://linkedin.com/in/hermanisayenka}{linkedin.com/in/hermanisayenka}
+\end{center}
+
+\section{Education}
+\begin{itemize}[leftmargin=0in, label={}]
+  \item
+  \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \textbf{York University} & \textbf{\small Sep.\ 2025 -- May 2029} \\
+    \multicolumn{2}{@{}l@{}}{\small Bachelor of Engineering, Electrical Engineering \textbar\ Schulich Leader Scholarship (\textbf{\$120,000}) \textbar\ Entrance Scholarship (\textbf{\$3,500})}
+  \end{tabular*}
+  \vspace{-6pt}
+\end{itemize}
+
+\section{Experience}
+\begin{itemize}[leftmargin=0in, label={}]
+
+\resumeSubheading
+{Robotic Systems Intern}{May 2026 -- Present}
+{Human Computer Lab}{San Francisco, CA}
+\resumeItemListStart
+  \resumeItem{Developed modular \textbf{Python/C++} test harnesses in \textbf{MuJoCo} and \textbf{PyBullet} to exercise perception and control modules before hardware bring-up.}
+  \resumeItem{Built \textbf{telemetry logging} and replay tooling for IMU, encoder, and actuator streams; used logs to debug timing faults and tune \textbf{real-time control loops}.}
+  \resumeItem{Implemented \textbf{regression-style simulation checks} (latency, tracking error, stability) to catch software regressions before deploying to the physical robot.}
+\resumeItemListEnd
+
+\resumeSubheading
+{Controls \& Navigation Research Intern}{Apr.\ 2023 -- Aug.\ 2025}
+{UTIAS Flight Systems and Control Laboratory}{Toronto, ON}
+\resumeItemListStart
+  \resumeItem{Implemented \textbf{onboard navigation software} in \textbf{ROS/ROS2} and \textbf{Python/C++}, integrating vision outputs into \textbf{closed-loop UAV control} under strict latency budgets.}
+  \resumeItem{Packaged \textbf{YOLOv8} inference for onboard deployment; added \textbf{bounded message queues}, timestamp sync, and explicit frame-drop handling for \textbf{deterministic runtime} behavior.}
+  \resumeItem{Wrote \textbf{log-replay} and bag-analysis scripts to validate perception-to-control performance (precision, recall, \textbf{end-to-end latency}) before field tests.}
+  \resumeItem{Co-simulated \textbf{quadrotor dynamics} and \textbf{cascaded attitude controllers} in \textbf{MATLAB/Simulink} and \textbf{Gazebo} to de-risk controller changes prior to flight.}
+\resumeItemListEnd
+
+\resumeSubheading
+{Undergraduate Research Assistant}{Sep.\ 2025 -- Dec.\ 2025}
+{Spacecraft Dynamics, Control and Navigation Laboratory (SDCN)}{Toronto, ON}
+\resumeItemListStart
+  \resumeItem{Developed \textbf{MATLAB/Python} simulation scripts to evaluate \textbf{spacecraft attitude dynamics} and \textbf{orbit propagation} under varying initial conditions, disturbance torques, and sensor noise profiles.}
+  \resumeItem{Implemented an \textbf{Extended Kalman Filter} prototype for \textbf{spacecraft state estimation}; validated convergence and steady-state error against truth trajectories across \textbf{Monte Carlo} test sets.}
+  \resumeItem{Supported \textbf{software-in-the-loop} verification by scripting automated test runs, comparing simulated trajectories to baseline solutions, and flagging deviations exceeding tolerance thresholds.}
+\resumeItemListEnd
+
+\resumeSubheading
+{Software Engineering Intern}{Sep.\ 2025 -- Jan.\ 2026}
+{SellStatic}{Toronto, ON}
+\resumeItemListStart
+  \resumeItem{Built internal engineering tools in \textbf{C\#} with modular service boundaries, \textbf{unit-testable} components, and clear interfaces for maintainability.}
+  \resumeItem{Deployed and monitored services on \textbf{Microsoft Azure}; automated operational tasks and improved reliability of internal developer workflows.}
+\resumeItemListEnd
+
+\end{itemize}
+
+\section{Selected Projects}
+\begin{itemize}[leftmargin=0in, label={}]
+
+\resumeProjectHeading
+{Project L.A.R.P — Counter-UAS Prototype}{2025 -- 2026}
+\resumeItemListStart
+  \resumeItem{Integrated sensing, tracking, and actuation software on \textbf{embedded hardware} for a defense-oriented \textbf{drone-intercept} demonstrator; emphasized testable modules and field debugging.}
+  \resumeItem{Garnered \textbf{250,000+ views} and \textbf{10,000+ likes} validating market demand; opened conversations with manufacturers and VCs on commercialization.}
+\resumeItemListEnd
+
+\resumeProjectHeading
+{Fixed-Wing UAV Airframe \& Avionics Integration}{2025}
+\resumeItemListStart
+  \resumeItem{Designed laser-cut wing structures in \textbf{SolidWorks}; built prototype airframe, integrated \textbf{avionics bay}, and validated stiffness through physical testing.}
+\resumeItemListEnd
+
+\end{itemize}
+
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}, itemsep=0pt, topsep=0pt]
+  \small{
+    \item{
+      \textbf{Languages:} C, C++, C\#, Python, TypeScript \\
+      \textbf{Robotics \& Space:} ROS/ROS2, OpenCV, PyTorch, MuJoCo, PyBullet, MATLAB/Simulink, Gazebo \\
+      \textbf{Practices \& Tools:} Modular design, unit/integration testing, log replay, simulation-based V\&V, Git, Linux, Docker, Azure \\
+      \textbf{Relevant Courses:} Intro to Embedded Systems, Digital Logic Design, Data Structures \& Algorithms, Circuit Analysis
+    }
+  }
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}
+\small\textit{Eligible for Canadian Reliability Status / Controlled Goods Program screening.}
+\end{center}
+
+\end{document}

@@ -88,14 +88,14 @@ export function projectCardImageFraming(p: {
 
 export const PROJECT_LARP: Project = {
   title: "Project L.A.R.P",
-  description: "Drone defence system.",
+  description: "C-UAS Interceptor.",
   caption: "Localized Aerial Response Platform",
   tags: ["Drones", "Hardware", "Build", "UTIAS"],
   video: "/larp-reel.mp4?v=ig",
   instagramReelId: "DZVuXiRhw1N",
   instagramCardPreview: "autoplay",
   code: "https://www.instagram.com/reel/DZVuXiRhw1N/",
-  year: "2025",
+  year: "2026",
   category: "hardware",
 };
 
