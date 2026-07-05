@@ -411,7 +411,7 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     companyUrl: "https://utias.utoronto.ca",
     period: "May 2025 — Sep 2025",
     note: "Toronto, ON · 2x Intern · AI & Computer Vision",
-    thumb: { src: "/utias.jpeg", alt: "UTIAS FSC Lab" },
+    thumb: { src: "/utias-fsc.jpeg", alt: "UTIAS FSC Lab" },
   },
   {
     role: "UAV Navigation Research Intern",
@@ -427,6 +427,6 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     companyUrl: "https://utias.utoronto.ca",
     period: "Apr 2023 — Sep 2023",
     note: "Toronto, ON · Hybrid · 2x Intern · AI & Computer Vision",
-    thumb: { src: "/utias.jpeg", alt: "UTIAS FSC Lab" },
+    thumb: { src: "/utias-fsc.jpeg", alt: "UTIAS FSC Lab" },
   },
 ];
