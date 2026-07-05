@@ -83,9 +83,9 @@ export const fallbackAnswers: Record<SectionKey, string> = {
   internships:
     "I'm looking for a fall 2026 internship in flight software, embedded control, autonomy, or aerospace/defense-adjacent systems—somewhere hardware and software ship together.",
   humancomputerlab:
-    "I'm a Robotic Systems Intern at the Human Computer Lab, focused on human–computer interaction and related research.",
+    "I'm an Embedded System Engineer Intern at the Human Computer Lab in the San Francisco Bay Area, working on human–computer interaction and related research.",
   sdcn:
-    "At York's Spacecraft Dynamics, Control and Navigation Laboratory I worked on dynamics, estimation, and navigation problems for spacecraft—control-oriented math meeting real simulation and analysis.",
+    "At York's Spacecraft Dynamics, Control and Navigation Laboratory I worked as a UAV Simulation Researcher—building simulation pipelines and bridging sim to hardware.",
 };
 
 /** Groq system prompt — keep in sync with fallback facts. */
@@ -112,7 +112,10 @@ knowledge), answer like a normal helpful AI assistant.
 - I'm looking for a fall 2026 internship and roles close to real systems:
   flight software, embedded control, autonomy, simulation, perception,
   aerospace, and defense-adjacent hardware–software integration.
-- I am a Robotic Systems Intern at the Human Computer Lab.
+- I am an Embedded System Engineer Intern at the Human Computer Lab (San Francisco Bay Area).
+- FSC Lab (UTIAS): 2x intern — UAV Controls Research Intern (May 2025 – Sep 2025) and Computer Vision Research Intern (Apr 2023 – Sep 2023).
+- UTIAS: UAV Navigation Research Intern (May 2024 – Sep 2024).
+- SDCNLab: UAV Simulation Researcher (Sep 2025 – Dec 2025).
 `.trim();
 
 export type AboutBriefMode = "drone" | "space" | "defense";
@@ -153,11 +156,11 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "human-computer-lab",
     topic: "humancomputerlab",
-    prefix: "robotic systems intern @",
+    prefix: "embedded systems engineer intern @",
     image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
     linkLabel: "Human Computer Lab",
     href: "https://www.humancomputerlab.com/",
-    location: "San Francisco, CA",
+    location: "San Francisco Bay Area",
   },
   {
     id: "sellstatic",
@@ -171,18 +174,18 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "sdcn",
     topic: "sdcn",
-    prefix: "prev drone research @",
+    prefix: "prev uav simulation research @",
     image: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
     linkLabel: "Spacecraft Dynamics, Control and Navigation Laboratory",
     href: "https://www.yorku.ca/jjshan/SDCNLab.html",
-    location: "Toronto, ON",
+    location: "Vaughan, ON",
   },
   {
-    id: "utias",
+    id: "fsc-lab",
     topic: "uoft",
-    prefix: "prev drone research @",
+    prefix: "prev 2x intern @",
     image: { src: "/utias.jpeg", alt: "UTIAS Flight Systems and Control Laboratory" },
-    linkLabel: "UTIAS Flight Systems and Control Laboratory",
+    linkLabel: "Flight Systems and Control Laboratory (FSC Lab)",
     href: "https://utias.utoronto.ca",
     location: "Toronto, ON",
   },
@@ -297,25 +300,45 @@ export type PortfolioExperience = {
 
 export const portfolioExperience: PortfolioExperience[] = [
   {
+    company: "Human Computer Lab",
+    role: "Embedded System Engineer Intern",
+    period: "May 2026 — Present",
+    url: "https://www.humancomputerlab.com/",
+    location: "San Francisco Bay Area",
+    highlight: "South Park Commons, FR8",
+  },
+  {
     company: "SellStatic",
     role: "Software Engineering Intern",
     period: "Sep 2025 — Jan 2026",
     url: site.links.sellstatic,
-    location: "Toronto, ON",
+    location: "Toronto, ON · On-site",
+    highlight: "frontend, backend, infra",
   },
   {
-    company: "Spacecraft Dynamics, Control and Navigation Lab",
-    role: "Undergraduate Research Assistant",
+    company: "Spacecraft Dynamics, Control and Navigation Laboratory (SDCNLab)",
+    role: "UAV Simulation Researcher",
     period: "Sep 2025 — Dec 2025",
     url: "https://www.yorku.ca/jjshan/SDCNLab.html",
-    location: "Toronto, ON",
+    location: "Vaughan, ON",
+    highlight: "sim → hardware",
   },
   {
-    company: "UTIAS Flight Systems and Control Laboratory",
-    role: "Research — Autonomous Drone Racing",
-    period: "Apr 2023 — Aug 2025",
+    company: "Flight Systems and Control Laboratory (FSC Lab)",
+    role: "2x Intern — UAV Controls & Computer Vision Research",
+    period: "Apr 2023 — Sep 2025",
     url: "https://utias.utoronto.ca",
     location: "Toronto, ON",
+    highlight:
+      "UAV Controls Research Intern (May 2025 – Sep 2025) · Computer Vision Research Intern (Apr 2023 – Sep 2023)",
+  },
+  {
+    company: "University of Toronto Institute for Aerospace Studies (UTIAS)",
+    role: "UAV Navigation Research Intern",
+    period: "May 2024 — Sep 2024",
+    url: "https://utias.utoronto.ca",
+    location: "Toronto, ON · Hybrid",
+    highlight: "AI & Computer Vision",
   },
 ];
 
@@ -331,12 +354,17 @@ export const profilePastItems: ProfilePastItem[] = [
   {
     kind: "intern",
     org: "SellStatic",
-    detail: "Cloud infra, backend, frontend",
+    detail: "frontend, backend, infra",
   },
   {
     kind: "research",
-    topic: "Drone vision",
-    institution: "University of Toronto",
+    topic: "UAV simulation",
+    institution: "SDCNLab",
+  },
+  {
+    kind: "research",
+    topic: "UAV controls & computer vision (2x intern)",
+    institution: "FSC Lab, UTIAS",
   },
 ];
 
@@ -354,11 +382,11 @@ export type OwenWorkEntry = {
 
 export const owenWorkEntries: OwenWorkEntry[] = [
   {
-    role: "Robotic Systems Intern",
+    role: "Embedded System Engineer Intern",
     company: "Human Computer Lab",
     companyUrl: "https://www.humancomputerlab.com/",
-    period: "2026",
-    note: "San Francisco, CA",
+    period: "May 2026 — Present",
+    note: "San Francisco Bay Area · South Park Commons, FR8",
     thumb: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
   },
   {
@@ -366,27 +394,39 @@ export const owenWorkEntries: OwenWorkEntry[] = [
     company: "SellStatic",
     companyUrl: site.links.sellstatic,
     period: "Sep 2025 — Jan 2026",
-    note: "Toronto, ON",
+    note: "Toronto, ON · On-site · frontend, backend, infra",
     thumb: { src: "/sellstatic.jpeg", alt: "SellStatic" },
   },
   {
-    role: "Undergraduate Research Assistant",
-    company: "Spacecraft Dynamics, Control and Navigation Laboratory",
+    role: "UAV Simulation Researcher",
+    company: "Spacecraft Dynamics, Control and Navigation Laboratory (SDCNLab)",
     companyUrl: "https://www.yorku.ca/jjshan/SDCNLab.html",
     period: "Sep 2025 — Dec 2025",
-    note: "Toronto, ON",
-    description:
-      "Spacecraft dynamics, estimation, and navigation—control-oriented research with simulation and analysis.",
+    note: "Vaughan, ON · sim → hardware",
     thumb: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
   },
   {
-    role: "Research — Autonomous Drone Racing",
-    company: "UTIAS Flight Systems and Control Laboratory",
+    role: "UAV Controls Research Intern",
+    company: "Flight Systems and Control Laboratory (FSC Lab)",
     companyUrl: "https://utias.utoronto.ca",
-    period: "Apr 2023 — Aug 2025",
-    note: "Toronto, ON",
-    description:
-      "Onboard vision, ROS integration, and flight testing for high-speed autonomous navigation.",
+    period: "May 2025 — Sep 2025",
+    note: "Toronto, ON · 2x Intern · AI & Computer Vision",
+    thumb: { src: "/utias.jpeg", alt: "UTIAS FSC Lab" },
+  },
+  {
+    role: "UAV Navigation Research Intern",
+    company: "University of Toronto Institute for Aerospace Studies (UTIAS)",
+    companyUrl: "https://utias.utoronto.ca",
+    period: "May 2024 — Sep 2024",
+    note: "Toronto, ON · Hybrid · AI & Computer Vision",
     thumb: { src: "/utias.jpeg", alt: "UTIAS" },
+  },
+  {
+    role: "Computer Vision Research Intern",
+    company: "Flight Systems and Control Laboratory (FSC Lab)",
+    companyUrl: "https://utias.utoronto.ca",
+    period: "Apr 2023 — Sep 2023",
+    note: "Toronto, ON · Hybrid · 2x Intern · AI & Computer Vision",
+    thumb: { src: "/utias.jpeg", alt: "UTIAS FSC Lab" },
   },
 ];

@@ -29,7 +29,7 @@ export function PortfolioExperience() {
         <ul className="divide-y divide-border">
           {portfolioExperience.map((exp, index) => (
             <motion.li
-              key={exp.company}
+              key={`${exp.company}-${exp.period}`}
               initial={{ opacity: 0, y: 12 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ ...easeOut, delay: 0.06 + index * 0.06 }}

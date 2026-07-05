@@ -2,27 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Space / defense portfolio — deep navy ground, cyan telemetry accents */
+/* Minimal light portfolio */
 :root {
-  --background: #070b12;
-  --foreground: #e2e8f0;
-  --card: #0f1623;
-  --card-foreground: #e2e8f0;
-  --popover: #0f1623;
-  --popover-foreground: #e2e8f0;
-  --primary: #22d3ee;
-  --primary-foreground: #070b12;
-  --secondary: #131c2e;
-  --secondary-foreground: #cbd5e1;
-  --muted: #131c2e;
-  --muted-foreground: #94a3b8;
-  --accent: #1a2740;
-  --accent-foreground: #e2e8f0;
+  --background: #ffffff;
+  --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #171717;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #404040;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #f0f0f0;
+  --accent-foreground: #171717;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: rgba(56, 189, 248, 0.14);
-  --input: #131c2e;
-  --ring: #22d3ee;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: #f5f5f5;
+  --ring: #171717;
   --radius: 0.375rem;
 }
 
@@ -47,37 +47,14 @@ body {
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.22);
-  color: #f8fafc;
+  background: rgba(0, 0, 0, 0.12);
+  color: #171717;
 }
 
-/* Subtle mission-control grid + deep-space glow on portfolio pages */
 .portfolio-space {
   position: relative;
   isolation: isolate;
-  background-color: #070b12;
-}
-.portfolio-space::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(34, 211, 238, 0.07), transparent 55%),
-    radial-gradient(circle at 85% 75%, rgba(59, 130, 246, 0.05), transparent 45%);
-}
-.portfolio-space::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 75%);
+  background-color: #ffffff;
 }
 .portfolio-space > * {
   position: relative;

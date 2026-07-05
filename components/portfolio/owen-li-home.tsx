@@ -13,19 +13,19 @@ import { allPortfolioProjects, projectCardImageFraming, type Project } from "@/a
 import { easeOut } from "@/components/portfolio/portfolio-motion";
 
 const linkClass =
-  "underline decoration-cyan-500/35 underline-offset-[5px] transition-colors hover:decoration-cyan-400/70 text-slate-100";
+  "underline decoration-neutral-400 underline-offset-[5px] transition-colors hover:decoration-neutral-600 text-foreground";
 
 const navClass =
-  "font-mono text-xs uppercase tracking-[0.14em] text-slate-500 transition-colors hover:text-cyan-400";
+  "font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground";
 
 const socialIconLink =
-  "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-slate-700/80 bg-slate-900/60 text-slate-300 shadow-sm backdrop-blur-sm transition-colors hover:border-cyan-500/40 hover:text-cyan-300 sm:h-10 sm:w-10";
+  "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:border-neutral-400 hover:text-foreground sm:h-10 sm:w-10";
 
 const projectCardClass =
-  "group flex h-full flex-col overflow-hidden rounded-xl border border-slate-800/90 bg-slate-900/45 text-left shadow-lg shadow-black/25 backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-cyan-500/25 hover:shadow-cyan-950/20";
+  "group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md";
 
 const githubIconBtn =
-  "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-slate-600 text-slate-300 transition-colors hover:border-cyan-500/50 hover:text-cyan-300";
+  "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-neutral-400 hover:text-foreground";
 
 function projectPrimaryHref(p: Project): string | undefined {
   return p.link ?? p.devpost ?? p.code;
@@ -147,7 +147,7 @@ function ProjectMedia({
         {p.images.map((src, i) => (
           <div
             key={src}
-            className="relative min-h-0 overflow-hidden rounded-lg bg-slate-900"
+            className="relative min-h-0 overflow-hidden rounded-lg bg-muted"
           >
             {p.imageUnoptimized ? (
               <img
@@ -214,7 +214,7 @@ function ProjectMedia({
     );
   }
   return (
-    <div className="flex h-full items-center justify-center text-xs text-slate-500">
+    <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
       No preview
     </div>
   );
@@ -238,7 +238,7 @@ function InlineThumb({
   const dim = size === "sm" ? "h-6 w-6" : "h-7 w-7";
   return (
     <div
-      className={`relative ${dim} shrink-0 overflow-hidden rounded border border-slate-700 bg-slate-900`}
+      className={`relative ${dim} shrink-0 overflow-hidden rounded border border-border bg-muted`}
     >
       <Image
         src={src}
@@ -262,22 +262,28 @@ type CurrentlyRow = {
 
 const currentlyRows: CurrentlyRow[] = [
   {
-    prefix: "robotic systems intern @",
+    prefix: "embedded systems engineer intern @",
     image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
     linkLabel: "Human Computer Lab",
     href: "https://www.humancomputerlab.com/",
   },
   {
-    prefix: "prev flight systems research @",
-    image: { src: "/utias.jpeg", alt: "UTIAS Flight Systems and Control Laboratory" },
-    linkLabel: "UTIAS Flight Systems & Control Lab",
-    href: "https://utias.utoronto.ca",
+    prefix: "prev swe intern @",
+    image: { src: "/sellstatic.jpeg", alt: "SellStatic" },
+    linkLabel: "SellStatic",
+    href: site.links.sellstatic,
   },
   {
-    prefix: "prev spacecraft dynamics research @",
+    prefix: "prev uav simulation research @",
     image: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
-    linkLabel: "SDCN Lab",
+    linkLabel: "SDCNLab",
     href: "https://www.yorku.ca/jjshan/SDCNLab.html",
+  },
+  {
+    prefix: "prev 2x intern @",
+    image: { src: "/utias.jpeg", alt: "UTIAS Flight Systems and Control Laboratory" },
+    linkLabel: "Flight Systems and Control Laboratory (FSC Lab)",
+    href: "https://utias.utoronto.ca",
   },
   {
     prefix: "electrical engineering @",
@@ -389,18 +395,18 @@ export function OwenLiStyleHome() {
   }, [activeProject]);
 
   return (
-    <div className="portfolio-space min-h-screen text-slate-200 antialiased">
+    <div className="portfolio-space min-h-screen text-foreground antialiased">
       <div className="mx-auto max-w-2xl px-5 py-12 sm:px-6 sm:py-16 md:py-20">
         <header className="mb-10">
           <h1
-            className="text-2xl font-semibold tracking-tight text-white sm:text-[1.65rem]"
+            className="text-2xl font-semibold tracking-tight text-foreground sm:text-[1.65rem]"
             aria-label={typedDisplayName}
           >
             <span aria-hidden="true">{typedName}</span>
             {!typingDone ? (
               <span
                 aria-hidden
-                className="ml-0.5 inline-block min-w-[0.35em] animate-pulse font-light text-slate-500"
+                className="ml-0.5 inline-block min-w-[0.35em] animate-pulse font-light text-muted-foreground"
               >
                 |
               </span>
@@ -416,10 +422,10 @@ export function OwenLiStyleHome() {
         >
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-5">
-              <span className="text-xs font-medium tracking-wide text-slate-500">
+              <span className="text-xs font-medium tracking-wide text-muted-foreground">
                 Currently
               </span>
-              <div className="h-px flex-1 bg-slate-800" />
+              <div className="h-px flex-1 bg-border" />
             </div>
             <ul className="m-0 list-none space-y-4 p-0 text-[0.92rem] leading-relaxed sm:text-[0.95rem]">
               {currentlyRows.map((row, idx) => (
@@ -430,18 +436,18 @@ export function OwenLiStyleHome() {
                   animate={currentlyVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
                   transition={{ ...easeOut, delay: idx * 0.08 }}
                 >
-                  <span className="shrink-0 text-cyan-500/70" aria-hidden>
+                  <span className="shrink-0 text-neutral-500" aria-hidden>
                     &#x25B8;
                   </span>
                   <span className="inline-flex min-w-0 flex-wrap items-center gap-1.5">
-                    <span className="whitespace-nowrap text-slate-400">{row.prefix}</span>
+                    <span className="whitespace-nowrap text-muted-foreground">{row.prefix}</span>
                     {row.image ? (
                       <InlineThumb src={row.image.src} alt={row.image.alt} size="sm" />
                     ) : null}
                     {row.linkLabel && row.href ? (
                       <a
                         href={row.href}
-                        className="whitespace-nowrap text-slate-100 underline decoration-cyan-500/35 underline-offset-[3px] transition-colors hover:decoration-cyan-400/70"
+                        className="whitespace-nowrap text-foreground underline decoration-neutral-400 underline-offset-[3px] transition-colors hover:decoration-neutral-600"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -565,10 +571,10 @@ export function OwenLiStyleHome() {
             </a>
           </nav>
 
-          <hr className="my-12 border-slate-800" />
+          <hr className="my-12 border-border" />
 
           <section id="work" className="scroll-mt-8">
-            <h2 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+            <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               Work
             </h2>
             <div className="mt-8 space-y-10">
@@ -582,7 +588,7 @@ export function OwenLiStyleHome() {
                   transition={{ ...easeOut, delay: idx * 0.03 }}
                 >
                   {job.thumb ? (
-                    <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md border border-slate-700 bg-slate-900">
+                    <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md border border-border bg-muted">
                       <Image
                         src={job.thumb.src}
                         alt={job.thumb.alt}
@@ -593,14 +599,14 @@ export function OwenLiStyleHome() {
                     </div>
                   ) : (
                     <div
-                      className="h-11 w-11 shrink-0 rounded-md border border-dashed border-slate-700 bg-slate-900/50"
+                      className="h-11 w-11 shrink-0 rounded-md border border-dashed border-border bg-muted"
                       aria-hidden
                     />
                   )}
                   <div className="min-w-0 flex-1">
                     <p className="text-[1.05rem] leading-relaxed sm:text-[1.0625rem]">
-                      <span className="font-medium text-white">{job.role}</span>
-                      <span className="text-slate-600"> | </span>
+                      <span className="font-medium text-foreground">{job.role}</span>
+                      <span className="text-muted-foreground"> | </span>
                       {job.companyUrl ? (
                         <a
                           href={job.companyUrl}
@@ -611,18 +617,18 @@ export function OwenLiStyleHome() {
                           {job.company}
                         </a>
                       ) : (
-                        <span className="text-slate-200">{job.company}</span>
+                        <span className="text-foreground">{job.company}</span>
                       )}
-                      <span className="text-slate-600"> | </span>
-                      <span className="text-slate-500">{job.period}</span>
+                      <span className="text-muted-foreground"> | </span>
+                      <span className="text-muted-foreground">{job.period}</span>
                     </p>
                     {job.note ? (
-                      <p className="mt-1.5 text-[0.95rem] leading-relaxed text-slate-400">
+                      <p className="mt-1.5 text-[0.95rem] leading-relaxed text-muted-foreground">
                         {job.note}
                       </p>
                     ) : null}
                     {job.description ? (
-                      <p className="mt-3 text-[1.05rem] leading-relaxed text-slate-400 sm:text-[1.0625rem]">
+                      <p className="mt-3 text-[1.05rem] leading-relaxed text-muted-foreground sm:text-[1.0625rem]">
                         {job.description}
                       </p>
                     ) : null}
@@ -633,7 +639,7 @@ export function OwenLiStyleHome() {
           </section>
 
           <section id="projects" className="mt-16 scroll-mt-8 sm:mt-20">
-            <h2 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+            <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               Projects
             </h2>
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -652,7 +658,7 @@ export function OwenLiStyleHome() {
                     transition={{ ...easeOut, delay: idx * 0.025 }}
                   >
                     <div
-                      className={`relative w-full overflow-hidden bg-slate-950/80 ${
+                      className={`relative w-full overflow-hidden bg-muted ${
                         p.instagramReelId && p.instagramCardPreview !== "link" && p.instagramCardPreview !== "autoplay"
                           ? "flex min-h-[300px] items-center justify-center py-2 sm:min-h-[340px]"
                           : "aspect-[16/10]"
@@ -661,17 +667,17 @@ export function OwenLiStyleHome() {
                       <ProjectMedia p={p} name={name} />
                     </div>
                     <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
-                      <p className="text-base font-semibold tracking-tight text-white sm:text-[1.06rem]">
+                      <p className="text-base font-semibold tracking-tight text-foreground sm:text-[1.06rem]">
                         {name}
                       </p>
-                      <p className="text-sm leading-relaxed text-slate-400 line-clamp-3 min-h-[4.5rem]">
+                      <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3 min-h-[4.5rem]">
                         {p.description}
                       </p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-muted-foreground">
                         {[context, p.year].filter(Boolean).join(" · ") || "Project"}
                       </p>
                       {href ? (
-                        <p className="text-xs text-slate-500">Click card for details</p>
+                        <p className="text-xs text-muted-foreground">Click card for details</p>
                       ) : null}
                     </div>
                   </motion.button>
@@ -683,7 +689,7 @@ export function OwenLiStyleHome() {
               <button
                 type="button"
                 onClick={() => setShowOtherProjects((v) => !v)}
-                className="rounded-md border border-slate-600 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:border-cyan-500/45 hover:text-white"
+                className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-neutral-400 hover:text-foreground"
               >
                 {showOtherProjects ? "Hide other projects" : "View other projects"}
               </button>
@@ -706,7 +712,7 @@ export function OwenLiStyleHome() {
                       transition={{ ...easeOut, delay: idx * 0.025 }}
                     >
                       <div
-                        className={`relative w-full overflow-hidden bg-slate-950/80 ${
+                        className={`relative w-full overflow-hidden bg-muted ${
                           p.instagramReelId
                             ? "flex min-h-[300px] items-center justify-center py-2 sm:min-h-[340px]"
                             : "aspect-[16/10]"
@@ -715,17 +721,17 @@ export function OwenLiStyleHome() {
                         <ProjectMedia p={p} name={name} />
                       </div>
                       <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
-                        <p className="text-base font-semibold tracking-tight text-white sm:text-[1.06rem]">
+                        <p className="text-base font-semibold tracking-tight text-foreground sm:text-[1.06rem]">
                           {name}
                         </p>
-                        <p className="text-sm leading-relaxed text-slate-400 line-clamp-3 min-h-[4.5rem]">
+                        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3 min-h-[4.5rem]">
                           {p.description}
                         </p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-muted-foreground">
                           {[context, p.year].filter(Boolean).join(" · ") || "Project"}
                         </p>
                         {href ? (
-                          <p className="text-xs text-slate-500">Click card for details</p>
+                          <p className="text-xs text-muted-foreground">Click card for details</p>
                         ) : null}
                       </div>
                     </motion.button>
@@ -739,7 +745,7 @@ export function OwenLiStyleHome() {
         {/* Project detail modal */}
         {activeProject ? (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 py-6 backdrop-blur-sm"
             onClick={() => setActiveProjectTitle(null)}
             role="presentation"
             initial={{ opacity: 0 }}
@@ -748,7 +754,7 @@ export function OwenLiStyleHome() {
             transition={{ duration: 0.2 }}
           >
             <motion.div
-              className="w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl shadow-black/50"
+              className="w-full max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-black/10"
               onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"
@@ -761,10 +767,10 @@ export function OwenLiStyleHome() {
                 <div
                   className={
                     activeProject.images && activeProject.images.length > 1
-                      ? "relative aspect-[16/10] overflow-hidden rounded-xl border border-slate-700 bg-slate-950"
+                      ? "relative aspect-[16/10] overflow-hidden rounded-xl border border-border bg-muted"
                       : activeProject.instagramReelId
-                        ? "relative mx-auto flex min-h-[min(400px,50vh)] max-h-[min(720px,78vh)] w-full max-w-lg items-center justify-center overflow-hidden rounded-xl border border-slate-700 bg-slate-950 sm:max-w-xl"
-                        : "relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-xl border border-slate-700 bg-slate-950 max-h-[min(58vh,560px)] sm:max-w-lg"
+                        ? "relative mx-auto flex min-h-[min(400px,50vh)] max-h-[min(720px,78vh)] w-full max-w-lg items-center justify-center overflow-hidden rounded-xl border border-border bg-muted sm:max-w-xl"
+                        : "relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-xl border border-border bg-muted max-h-[min(58vh,560px)] sm:max-w-lg"
                   }
                 >
                   <ProjectMedia
@@ -776,7 +782,7 @@ export function OwenLiStyleHome() {
                 <div>
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                     <div className="flex min-w-0 flex-wrap items-center gap-2">
-                      <span className="text-[1.2rem] font-medium leading-snug text-white sm:text-[1.25rem]">
+                      <span className="text-[1.2rem] font-medium leading-snug text-foreground sm:text-[1.25rem]">
                         {splitProjectTitle(activeProject.title).name}
                       </span>
                       {githubRepoUrl(activeProject) ? (
@@ -791,18 +797,18 @@ export function OwenLiStyleHome() {
                         </a>
                       ) : null}
                     </div>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-muted-foreground">
                       {[splitProjectTitle(activeProject.title).context, activeProject.year]
                         .filter(Boolean)
                         .join(" · ")}
                     </p>
                   </div>
-                  <p className="mt-3 text-[1.05rem] leading-relaxed text-slate-300 sm:text-[1.0625rem]">
+                  <p className="mt-3 text-[1.05rem] leading-relaxed text-muted-foreground sm:text-[1.0625rem]">
                     {activeProject.description}
                   </p>
                   {activeProject.caption &&
                   activeProject.caption !== activeProject.description ? (
-                    <p className="mt-1.5 text-sm text-slate-500">{activeProject.caption}</p>
+                    <p className="mt-1.5 text-sm text-muted-foreground">{activeProject.caption}</p>
                   ) : null}
                   <div className="mt-5 flex flex-wrap gap-3">
                     {projectPrimaryHref(activeProject) ? (
@@ -811,14 +817,14 @@ export function OwenLiStyleHome() {
                           href={projectPrimaryHref(activeProject)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-md bg-cyan-500 px-4 py-2 text-sm font-medium text-slate-950 transition-opacity hover:opacity-90"
+                          className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90"
                         >
                           Open project
                         </a>
                       ) : (
                         <Link
                           href={projectPrimaryHref(activeProject) as string}
-                          className="rounded-md bg-cyan-500 px-4 py-2 text-sm font-medium text-slate-950 transition-opacity hover:opacity-90"
+                          className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90"
                           onClick={() => {
                             setActiveProjectTitle(null);
                             document.body.style.overflow = "";
@@ -833,7 +839,7 @@ export function OwenLiStyleHome() {
                         href={githubRepoUrl(activeProject)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-md border border-slate-600 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-500/50 hover:text-white"
+                        className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-neutral-400"
                       >
                         View code
                       </a>
@@ -841,7 +847,7 @@ export function OwenLiStyleHome() {
                     <button
                       type="button"
                       onClick={() => setActiveProjectTitle(null)}
-                      className="rounded-md border border-slate-600 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-500/50 hover:text-white"
+                      className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-neutral-400"
                     >
                       Close
                     </button>
@@ -852,7 +858,7 @@ export function OwenLiStyleHome() {
           </motion.div>
         ) : null}
 
-        <footer className="mt-20 border-t border-slate-800 pt-10 text-sm text-slate-500">
+        <footer className="mt-20 border-t border-border pt-10 text-sm text-muted-foreground">
           <p>{fullName}</p>
         </footer>
       </div>
