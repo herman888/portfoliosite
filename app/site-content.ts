@@ -81,7 +81,7 @@ export const fallbackAnswers: Record<SectionKey, string> = {
   uoft:
     "At UTIAS I worked on high-speed drone autonomy—onboard vision, ROS integration, controller tuning, and closing the loop from simulation to flight tests through gates and structured logs.",
   internships:
-    "I'm looking for a fall 2026 internship in flight software, embedded control, autonomy, or aerospace/defense-adjacent systems—somewhere hardware and software ship together.",
+    "I'm looking for a summer 2027 internship in flight software, embedded control, autonomy, or aerospace/defense-adjacent systems—somewhere hardware and software ship together.",
   humancomputerlab:
     "I'm an Embedded System Engineer Intern at the Human Computer Lab in the San Francisco Bay Area, working on human–computer interaction and related research.",
   sdcn:
@@ -109,7 +109,7 @@ knowledge), answer like a normal helpful AI assistant.
 - Also: hackathon builds (CityPath AI, RedLamp, etc.) and Arduino hardware projects.
 - I was previously a SWE intern at SellStatic.
 - My favourite sports are ${site.person.interests.sports.join(", ")}.
-- I'm looking for a fall 2026 internship and roles close to real systems:
+- I'm looking for a summer 2027 internship and roles close to real systems:
   flight software, embedded control, autonomy, simulation, perception,
   aerospace, and defense-adjacent hardware–software integration.
 - I am an Embedded System Engineer Intern at the Human Computer Lab (San Francisco Bay Area).
@@ -150,6 +150,8 @@ export type CurrentlyItem = {
   href?: string;
   /** Shown after the link in the Currently list (e.g. city, province/state). */
   location?: string;
+  /** Optional trailing detail after the link label. */
+  suffix?: string;
 };
 
 export const currentlyItems: CurrentlyItem[] = [
@@ -163,31 +165,11 @@ export const currentlyItems: CurrentlyItem[] = [
     location: "San Francisco Bay Area",
   },
   {
-    id: "sellstatic",
-    topic: "sellstatic",
-    prefix: "prev swe intern @",
-    image: { src: "/sellstatic.jpeg", alt: "SellStatic" },
-    linkLabel: "SellStatic",
-    href: site.links.sellstatic,
-    location: "Toronto, ON",
-  },
-  {
-    id: "sdcn",
-    topic: "sdcn",
-    prefix: "prev uav simulation research @",
-    image: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
-    linkLabel: "Spacecraft Dynamics, Control and Navigation Laboratory",
-    href: "https://www.yorku.ca/jjshan/SDCNLab.html",
-    location: "Vaughan, ON",
-  },
-  {
-    id: "fsc-lab",
-    topic: "uoft",
-    prefix: "prev 2x intern @",
-    image: { src: "/utias.jpeg", alt: "UTIAS Flight Systems and Control Laboratory" },
-    linkLabel: "Flight Systems and Control Laboratory (FSC Lab)",
-    href: "https://utias.utoronto.ca",
-    location: "Toronto, ON",
+    id: "project-larp",
+    topic: "projects",
+    prefix: "building",
+    linkLabel: "Project L.A.R.P.",
+    suffix: " — counter-UAS (500k+ views, vc interest, sf offers)",
   },
   {
     id: "schulich",
@@ -208,7 +190,7 @@ export const currentlyItems: CurrentlyItem[] = [
   {
     id: "internships",
     topic: "internships",
-    linkLabel: "looking for fall 2026 internships",
+    linkLabel: "looking for summer 2027 internships",
     href: "/#contact",
   },
 ];

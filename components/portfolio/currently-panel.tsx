@@ -76,6 +76,9 @@ export function PortfolioCurrentlyPanel({ bare = false }: CurrentlyPanelProps) {
             {item.location ? (
               <span className="text-neutral-500">· {item.location}</span>
             ) : null}
+            {item.suffix ? (
+              <span className="text-neutral-500">{item.suffix}</span>
+            ) : null}
           </li>
         ))}
       </ul>

@@ -258,6 +258,7 @@ type CurrentlyRow = {
   image?: { src: string; alt: string };
   linkLabel: string;
   href?: string;
+  suffix?: string;
 };
 
 const currentlyRows: CurrentlyRow[] = [
@@ -268,22 +269,9 @@ const currentlyRows: CurrentlyRow[] = [
     href: "https://www.humancomputerlab.com/",
   },
   {
-    prefix: "prev swe intern @",
-    image: { src: "/sellstatic.jpeg", alt: "SellStatic" },
-    linkLabel: "SellStatic",
-    href: site.links.sellstatic,
-  },
-  {
-    prefix: "prev uav simulation research @",
-    image: { src: "/SDCNLAB.jpeg", alt: "SDCN Lab" },
-    linkLabel: "SDCNLab",
-    href: "https://www.yorku.ca/jjshan/SDCNLab.html",
-  },
-  {
-    prefix: "prev 2x intern @",
-    image: { src: "/utias.jpeg", alt: "UTIAS Flight Systems and Control Laboratory" },
-    linkLabel: "Flight Systems and Control Laboratory (FSC Lab)",
-    href: "https://utias.utoronto.ca",
+    prefix: "building",
+    linkLabel: "Project L.A.R.P.",
+    suffix: " — counter-UAS (500k+ views, vc interest, sf offers)",
   },
   {
     prefix: "electrical engineering @",
@@ -298,7 +286,7 @@ const currentlyRows: CurrentlyRow[] = [
     href: site.links.schulichLeaders,
   },
   {
-    prefix: "seeking fall 2026 internships — autonomy / aerospace / defense",
+    prefix: "seeking summer 2027 internships — autonomy / aerospace / defense",
     linkLabel: "",
   },
 ];
@@ -453,6 +441,11 @@ export function OwenLiStyleHome() {
                       >
                         {row.linkLabel}
                       </a>
+                    ) : row.linkLabel ? (
+                      <span className="font-semibold text-foreground">{row.linkLabel}</span>
+                    ) : null}
+                    {row.suffix ? (
+                      <span className="text-muted-foreground">{row.suffix}</span>
                     ) : null}
                   </span>
                 </motion.li>

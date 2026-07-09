@@ -43,6 +43,9 @@ export default function CurrentlyTerminal({ onJumpToChat }: Props) {
               {item.location ? (
                 <span className="text-gray-500">· {item.location}</span>
               ) : null}
+              {item.suffix ? (
+                <span className="text-gray-500">{item.suffix}</span>
+              ) : null}
             </li>
           ))}
         </ul>
