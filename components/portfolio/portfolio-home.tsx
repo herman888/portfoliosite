@@ -421,12 +421,12 @@ export function PortfolioHome() {
     "Jane Street - 1st Place Estimation Competition 🥇",
     "CityPath AI - 3rd Place Shopify Hackathon 🥉",
     "GrowthSync - CtrlHackDel 2.0",
-    "Finding N.E.M.O (ConUHacks)",
+    "Finding N.E.M.O Hack Concordia",
     "Car line follower",
     "Car with obstacle detection",
-    "Giveway (HackThe6ix)",
-    "Meal2Go (EurekaHacks)",
-    "KinKitchen (HackCanada 2026)",
+    "Giveway - Hack The 6ix",
+    "Meal2Go - Eureka Hacks",
+    "KinKitchen - Hack Canada",
   ];
   const featuredProjects = featuredProjectTitles
     .map((title) => allPortfolioProjects.find((p) => p.title === title))

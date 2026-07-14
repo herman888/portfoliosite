@@ -242,7 +242,7 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "Finding N.E.M.O (ConUHacks)",
+    title: "Finding N.E.M.O Hack Concordia",
     description:
       "Finding N.E.M.O turns the idea of a pirate treasure hunt into an interactive simulation where users track and recover lost shipping containers, blending a fun digital experience with a practical way to model container drift and plan recovery efforts.",
     caption: "Interactive simulation for container drift and recovery.",
@@ -255,7 +255,7 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "Giveway (HackThe6ix)",
+    title: "Giveway - Hack The 6ix",
     description:
       "Students or community members request a meal, Drivers sign in, see the closest requests, and follow one optimized route.",
     caption: "Meal requests and optimized driver routes.",
@@ -268,7 +268,7 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "Meal2Go (EurekaHacks)",
+    title: "Meal2Go - Eureka Hacks",
     description:
       "A platform that offers quick and nutritious meal options tailored to the users health profile.",
     caption: "Quick, health-tailored meal options.",
@@ -280,7 +280,7 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "KinKitchen (HackCanada 2026)",
+    title: "KinKitchen - Hack Canada",
     description:
       "Simulate real-world recipes step by step in 3D so cooking feels visual, interactive, and easier to follow — developed for HackCanada 2026.",
     caption: "HackCanada 2026 — step-by-step 3D recipe simulation.",
