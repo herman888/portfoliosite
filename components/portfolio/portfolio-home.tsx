@@ -5,11 +5,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Mail } from "lucide-react";
-import { fullName, owenWorkEntries, site } from "@/app/site-content";
+import { fullName, workEntries, site } from "@/app/site-content";
 import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/portfolio/social-icons";
 import { InstagramReelCardPreview } from "@/components/media/InstagramReelCardPreview";
 import { InstagramReelEmbed } from "@/components/media/InstagramReelEmbed";
-import { allPortfolioProjects, projectCardImageFraming, type Project } from "@/app/projects/projects-data";
+import { allPortfolioProjects, projectCardImageFraming, type Project, type ProjectCarouselSlide } from "@/app/projects/projects-data";
 import { easeOut } from "@/components/portfolio/portfolio-motion";
 
 const linkClass =
@@ -52,6 +52,127 @@ function githubRepoUrl(p: Project): string | undefined {
 
 function isExternalHref(href: string) {
   return href.startsWith("http");
+}
+
+function CarouselSlideImage({
+  src,
+  alt,
+  fit,
+  layout,
+  p,
+}: {
+  src: string;
+  alt: string;
+  fit: "cover" | "contain";
+  layout: "card" | "detail";
+  p: Project;
+}) {
+  const detailFit = layout === "detail";
+  const framing = projectCardImageFraming({ ...p, imageCardFit: fit });
+  const useContain = fit === "contain";
+  const imgClass = useContain
+    ? "object-contain object-center"
+    : detailFit
+      ? "object-cover object-center"
+      : framing.imageClassName;
+
+  if (p.imageUnoptimized) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={`absolute inset-0 h-full w-full ${imgClass}`}
+        style={{ objectPosition: p.imageObjectPosition ?? "center" }}
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className={imgClass}
+      style={{ objectPosition: p.imageObjectPosition ?? "center" }}
+      sizes="(max-width: 640px) 100vw, 50vw"
+    />
+  );
+}
+
+function ProjectImageCarousel({
+  slides,
+  name,
+  p,
+  layout,
+}: {
+  slides: ProjectCarouselSlide[];
+  name: string;
+  p: Project;
+  layout: "card" | "detail";
+}) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (slides.length <= 1) return;
+    const id = window.setInterval(() => {
+      setIndex((i) => (i + 1) % slides.length);
+    }, 2000);
+    return () => window.clearInterval(id);
+  }, [slides.length]);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden bg-muted">
+      {slides.map((slide, i) => (
+        <div
+          key={slide.kind === "single" ? slide.src : `${slide.left}|${slide.right}`}
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            i === index ? "opacity-100" : "opacity-0"
+          }`}
+          aria-hidden={i !== index}
+        >
+          {slide.kind === "single" ? (
+            <div
+              className="absolute inset-0"
+              style={
+                slide.background ? { backgroundColor: slide.background } : undefined
+              }
+            >
+              <CarouselSlideImage
+                src={slide.src}
+                alt={`${name} preview ${i + 1}`}
+                fit={slide.fit ?? "cover"}
+                layout={layout}
+                p={p}
+              />
+            </div>
+          ) : (
+            <div className="absolute inset-0 grid grid-cols-2">
+              <div className="relative overflow-hidden border-r border-border/40 bg-white">
+                <CarouselSlideImage
+                  src={slide.left}
+                  alt={`${name} preview left`}
+                  fit={slide.leftFit ?? "cover"}
+                  layout={layout}
+                  p={p}
+                />
+              </div>
+              <div className="relative overflow-hidden bg-white">
+                <CarouselSlideImage
+                  src={slide.right}
+                  alt={`${name} preview right`}
+                  fit={slide.rightFit ?? "contain"}
+                  layout={layout}
+                  p={p}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function ProjectMedia({
@@ -141,34 +262,24 @@ function ProjectMedia({
       />
     );
   }
-  if (p.images && p.images.length > 1 && layout === "detail") {
+  if (p.carouselSlides && p.carouselSlides.length > 1) {
     return (
-      <div className="absolute inset-0 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {p.images.map((src, i) => (
-          <div
-            key={src}
-            className="relative min-h-0 overflow-hidden rounded-lg bg-muted"
-          >
-            {p.imageUnoptimized ? (
-              <img
-                src={src}
-                alt={`${name} preview ${i + 1}`}
-                className="absolute inset-0 h-full w-full object-cover object-center"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              <Image
-                src={src}
-                alt={`${name} preview ${i + 1}`}
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 640px) 100vw, 40vw"
-              />
-            )}
-          </div>
-        ))}
-      </div>
+      <ProjectImageCarousel
+        slides={p.carouselSlides}
+        name={name}
+        p={p}
+        layout={layout}
+      />
+    );
+  }
+  if (p.images && p.images.length > 1) {
+    return (
+      <ProjectImageCarousel
+        slides={p.images.map((src) => ({ kind: "single" as const, src, fit: "cover" as const }))}
+        name={name}
+        p={p}
+        layout={layout}
+      />
     );
   }
   if (thumb) {
@@ -291,7 +402,7 @@ const currentlyRows: CurrentlyRow[] = [
   },
 ];
 
-export function OwenLiStyleHome() {
+export function PortfolioHome() {
   const [typedName, setTypedName] = useState("");
   const [typingDone, setTypingDone] = useState(false);
   const [currentlyVisible, setCurrentlyVisible] = useState(false);
@@ -305,8 +416,10 @@ export function OwenLiStyleHome() {
     "Integrating UAV Controls into Navigation",
     "Optimizing UAV Autonomous Navigation",
     "UAV Navigation Model Training",
-    "RedLamp (UofTHacks)",
-    "CityPath AI (Shopify Hackathon)",
+    "RedLamp - UoftHacks 2nd Place 🥈",
+    "Foresters Financial - 1st Place Development Challenge 🥇",
+    "Jane Street - 1st Place Estimation Competition 🥇",
+    "CityPath AI - 3rd Place Shopify Hackathon 🥉",
     "GrowthSync (CTRLHACKDEL)",
     "Finding N.E.M.O (ConUHacks)",
     "Car line follower",
@@ -571,7 +684,7 @@ export function OwenLiStyleHome() {
               Work
             </h2>
             <div className="mt-8 space-y-10">
-              {owenWorkEntries.map((job, idx) => (
+              {workEntries.map((job, idx) => (
                 <motion.article
                   key={`${job.role}-${job.company}`}
                   className="flex gap-3 sm:gap-4"
@@ -663,7 +776,7 @@ export function OwenLiStyleHome() {
                       <p className="text-base font-semibold tracking-tight text-foreground sm:text-[1.06rem]">
                         {name}
                       </p>
-                      <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3 min-h-[4.5rem]">
+                      <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3 min-h-[4.5rem] whitespace-pre-line">
                         {p.description}
                       </p>
                       <p className="text-xs text-muted-foreground">
@@ -717,7 +830,7 @@ export function OwenLiStyleHome() {
                         <p className="text-base font-semibold tracking-tight text-foreground sm:text-[1.06rem]">
                           {name}
                         </p>
-                        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3 min-h-[4.5rem]">
+                        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3 min-h-[4.5rem] whitespace-pre-line">
                           {p.description}
                         </p>
                         <p className="text-xs text-muted-foreground">
@@ -796,7 +909,7 @@ export function OwenLiStyleHome() {
                         .join(" · ")}
                     </p>
                   </div>
-                  <p className="mt-3 text-[1.05rem] leading-relaxed text-muted-foreground sm:text-[1.0625rem]">
+                  <p className="mt-3 text-[1.05rem] leading-relaxed text-muted-foreground sm:text-[1.0625rem] whitespace-pre-line">
                     {activeProject.description}
                   </p>
                   {activeProject.caption &&

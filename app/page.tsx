@@ -1,9 +1,9 @@
-import { OwenLiStyleHome } from "@/components/portfolio/owen-li-home";
+import { PortfolioHome } from "@/components/portfolio/portfolio-home";
 
 export default function Home() {
   return (
     <main>
-      <OwenLiStyleHome />
+      <PortfolioHome />
     </main>
   );
 }

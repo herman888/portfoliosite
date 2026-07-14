@@ -5,6 +5,16 @@ const gh = (repo: string) =>
 
 export type ProjectCategory = "software" | "hardware";
 
+export type ProjectCarouselSlide =
+  | { kind: "single"; src: string; fit?: "cover" | "contain"; background?: string }
+  | {
+      kind: "split";
+      left: string;
+      right: string;
+      leftFit?: "cover" | "contain";
+      rightFit?: "cover" | "contain";
+    };
+
 export type Project = {
   title: string;
   description: string;
@@ -12,6 +22,8 @@ export type Project = {
   tags: string[];
   image?: string;
   images?: string[];
+  /** Multi-image carousel with optional split-frame slides. */
+  carouselSlides?: ProjectCarouselSlide[];
   /** Card preview video (hardware demos). */
   video?: string;
   /** Shown as the video poster / first-frame preview in grids. */
@@ -88,7 +100,7 @@ export function projectCardImageFraming(p: {
 
 export const PROJECT_LARP: Project = {
   title: "Project L.A.R.P",
-  description: "C-UAS Interceptor.",
+  description: "C-UAS Interceptor.\ncounter-UAS (500k+ views, vc interest, sf offers)",
   caption: "Localized Aerial Response Platform",
   tags: ["Drones", "Hardware", "Build", "UTIAS"],
   video: "/larp-reel.mp4?v=ig",
@@ -154,7 +166,7 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "CityPath AI (Shopify Hackathon)",
+    title: "CityPath AI - 3rd Place Shopify Hackathon 🥉",
     description:
       "CityPath AI quickly analyzes past data, spots dangerous patterns, and tests safer street layout options in minutes, cutting down the time it takes to move from identifying a problem to finding a practical solution.",
     caption: "AI for safer street layouts and city planning.",
@@ -165,7 +177,46 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "RedLamp (UofTHacks)",
+    title: "Foresters Financial - 1st Place Development Challenge 🥇",
+    description:
+      "1st place at the Foresters Financial Development Challenge — built and pitched a financial technology solution under competition constraints.",
+    caption: "1st place — Foresters Financial Development Challenge.",
+    tags: ["Competition", "Winner", "Finance"],
+    image: "/forestorsfinancial.jpeg",
+    carouselSlides: [
+      { kind: "single", src: "/forestorsfinancial.jpeg", fit: "cover" },
+      {
+        kind: "single",
+        src: "/forestorfinanciallogo.png",
+        fit: "cover",
+        background: "#4a2448",
+      },
+    ],
+    year: "2025",
+    category: "software",
+  },
+  {
+    title: "Jane Street - 1st Place Estimation Competition 🥇",
+    description:
+      "1st place at the Jane Street Estimation Competition — probabilistic reasoning, Fermi estimation, and structured problem-solving under time pressure.",
+    caption: "1st place — Jane Street Estimation Competition.",
+    tags: ["Competition", "Winner", "Quant"],
+    image: "/janestreet.jpeg",
+    carouselSlides: [
+      { kind: "single", src: "/janestreet.jpeg", fit: "cover" },
+      {
+        kind: "split",
+        left: "/janeshirt.jpeg",
+        right: "/janestreetlogo.png",
+        leftFit: "cover",
+        rightFit: "contain",
+      },
+    ],
+    year: "2025",
+    category: "software",
+  },
+  {
+    title: "RedLamp - UoftHacks 2nd Place 🥈",
     description:
       "RedLamp is a study companion lamp, that detects student stress and responds with encouragement or guidance in real time, making studying feel less isolating while continuing to evolve with more personalized support.",
     caption: "Study lamp that detects stress and responds in real time.",
@@ -317,6 +368,7 @@ export const hardwareProjects = projects.filter((p) => p.category === "hardware"
 
 const HACKATHON_TAG_HINTS = new Set([
   "Hackathon",
+  "Competition",
   "HackThe6ix",
   "EurekaHacks",
   "CTRLHACKDEL",

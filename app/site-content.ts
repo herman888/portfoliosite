@@ -350,8 +350,8 @@ export const profilePastItems: ProfilePastItem[] = [
   },
 ];
 
-/** Single-column home (owenli.ca-style): work history blocks. */
-export type OwenWorkEntry = {
+/** Single-column home: work history blocks. */
+export type WorkEntry = {
   role: string;
   company: string;
   companyUrl?: string;
@@ -362,7 +362,7 @@ export type OwenWorkEntry = {
   thumb?: { src: string; alt: string };
 };
 
-export const owenWorkEntries: OwenWorkEntry[] = [
+export const workEntries: WorkEntry[] = [
   {
     role: "Embedded System Engineer Intern",
     company: "Human Computer Lab",
