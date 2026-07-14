@@ -420,7 +420,7 @@ export function PortfolioHome() {
     "Foresters Financial - 1st Place Development Challenge 🥇",
     "Jane Street - 1st Place Estimation Competition 🥇",
     "CityPath AI - 3rd Place Shopify Hackathon 🥉",
-    "GrowthSync (CTRLHACKDEL)",
+    "GrowthSync - CtrlHackDel 2.0",
     "Finding N.E.M.O (ConUHacks)",
     "Car line follower",
     "Car with obstacle detection",

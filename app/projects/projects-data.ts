@@ -192,7 +192,7 @@ export const projects: Project[] = [
         background: "#4a2448",
       },
     ],
-    year: "2025",
+    year: "2026",
     category: "software",
   },
   {
@@ -229,7 +229,7 @@ export const projects: Project[] = [
     category: "software",
   },
   {
-    title: "GrowthSync (CTRLHACKDEL)",
+    title: "GrowthSync - CtrlHackDel 2.0",
     description:
       "GrowthSync helps city planners visualize how new subdivisions would affect existing infrastructure, traffic flow, and community resources, making it easier to understand the real impact of development before it happens.",
     caption: "Visualize how new development affects infrastructure.",
