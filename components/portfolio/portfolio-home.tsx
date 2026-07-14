@@ -331,6 +331,68 @@ function ProjectMedia({
   );
 }
 
+function ProjectGridCard({
+  p,
+  idx,
+  onSelect,
+  compact = false,
+}: {
+  p: Project;
+  idx: number;
+  onSelect: (title: string) => void;
+  compact?: boolean;
+}) {
+  const href = projectPrimaryHref(p);
+  const { name, context } = splitProjectTitle(p.title);
+
+  return (
+    <motion.button
+      key={p.title}
+      type="button"
+      onClick={() => onSelect(p.title)}
+      className={projectCardClass}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={revealViewport}
+      transition={{ ...easeOut, delay: idx * 0.025 }}
+    >
+      <div
+        className={`relative w-full overflow-hidden bg-muted ${
+          p.instagramReelId && p.instagramCardPreview !== "link" && p.instagramCardPreview !== "autoplay"
+            ? "flex min-h-[300px] items-center justify-center py-2 sm:min-h-[340px]"
+            : "aspect-[16/10]"
+        }`}
+      >
+        <ProjectMedia p={p} name={name} />
+      </div>
+      <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
+        <p
+          className={`font-semibold tracking-tight text-foreground ${
+            compact ? "text-sm leading-snug" : "text-base sm:text-[1.06rem]"
+          }`}
+        >
+          {name}
+        </p>
+        <p
+          className={`leading-relaxed text-muted-foreground whitespace-pre-line ${
+            compact
+              ? "line-clamp-2 min-h-[2.75rem] text-xs"
+              : "line-clamp-3 min-h-[4.5rem] text-sm"
+          }`}
+        >
+          {p.description}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          {[context, p.year].filter(Boolean).join(" · ") || "Project"}
+        </p>
+        {href ? (
+          <p className="text-xs text-muted-foreground">Click card for details</p>
+        ) : null}
+      </div>
+    </motion.button>
+  );
+}
+
 const revealViewport = { once: false, margin: "-40px" };
 const socialDropTransition = {
   duration: 0.62,
@@ -434,6 +496,7 @@ export function PortfolioHome() {
   const otherProjects = allPortfolioProjects.filter(
     (p) => !featuredProjectTitles.includes(p.title)
   );
+  const allDisplayProjects = [...featuredProjects, ...otherProjects];
   const activeProject =
     [...featuredProjects, ...otherProjects].find((p) => p.title === activeProjectTitle) ?? null;
   const sectionsReady = socialVisible;
@@ -745,106 +808,59 @@ export function PortfolioHome() {
           </section>
 
           <section id="projects" className="mt-16 scroll-mt-8 sm:mt-20">
-            <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-              Projects
-            </h2>
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {featuredProjects.map((p, idx) => {
-                const href = projectPrimaryHref(p);
-                const { name, context } = splitProjectTitle(p.title);
-                return (
-                  <motion.button
+            <div className="lg:relative lg:left-1/2 lg:w-screen lg:max-w-7xl lg:-translate-x-1/2 lg:px-6 xl:px-8">
+              <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+                Projects
+              </h2>
+
+              {/* Mobile / tablet: featured first, then optional extras */}
+              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:hidden">
+                {featuredProjects.map((p, idx) => (
+                  <ProjectGridCard
                     key={p.title}
-                    type="button"
-                    onClick={() => setActiveProjectTitle(p.title)}
-                    className={projectCardClass}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={revealViewport}
-                    transition={{ ...easeOut, delay: idx * 0.025 }}
-                  >
-                    <div
-                      className={`relative w-full overflow-hidden bg-muted ${
-                        p.instagramReelId && p.instagramCardPreview !== "link" && p.instagramCardPreview !== "autoplay"
-                          ? "flex min-h-[300px] items-center justify-center py-2 sm:min-h-[340px]"
-                          : "aspect-[16/10]"
-                      }`}
-                    >
-                      <ProjectMedia p={p} name={name} />
-                    </div>
-                    <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
-                      <p className="text-base font-semibold tracking-tight text-foreground sm:text-[1.06rem]">
-                        {name}
-                      </p>
-                      <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3 min-h-[4.5rem] whitespace-pre-line">
-                        {p.description}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {[context, p.year].filter(Boolean).join(" · ") || "Project"}
-                      </p>
-                      {href ? (
-                        <p className="text-xs text-muted-foreground">Click card for details</p>
-                      ) : null}
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
-
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={() => setShowOtherProjects((v) => !v)}
-                className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-neutral-400 hover:text-foreground"
-              >
-                {showOtherProjects ? "Hide other projects" : "View other projects"}
-              </button>
-            </div>
-
-            {showOtherProjects ? (
-              <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {otherProjects.map((p, idx) => {
-                  const href = projectPrimaryHref(p);
-                  const { name, context } = splitProjectTitle(p.title);
-                  return (
-                    <motion.button
-                      key={p.title}
-                      type="button"
-                      onClick={() => setActiveProjectTitle(p.title)}
-                      className={projectCardClass}
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={revealViewport}
-                      transition={{ ...easeOut, delay: idx * 0.025 }}
-                    >
-                      <div
-                        className={`relative w-full overflow-hidden bg-muted ${
-                          p.instagramReelId
-                            ? "flex min-h-[300px] items-center justify-center py-2 sm:min-h-[340px]"
-                            : "aspect-[16/10]"
-                        }`}
-                      >
-                        <ProjectMedia p={p} name={name} />
-                      </div>
-                      <div className="flex flex-1 flex-col space-y-2 px-4 py-3">
-                        <p className="text-base font-semibold tracking-tight text-foreground sm:text-[1.06rem]">
-                          {name}
-                        </p>
-                        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3 min-h-[4.5rem] whitespace-pre-line">
-                          {p.description}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {[context, p.year].filter(Boolean).join(" · ") || "Project"}
-                        </p>
-                        {href ? (
-                          <p className="text-xs text-muted-foreground">Click card for details</p>
-                        ) : null}
-                      </div>
-                    </motion.button>
-                  );
-                })}
+                    p={p}
+                    idx={idx}
+                    onSelect={setActiveProjectTitle}
+                  />
+                ))}
               </div>
-            ) : null}
+
+              <div className="mt-6 lg:hidden">
+                <button
+                  type="button"
+                  onClick={() => setShowOtherProjects((v) => !v)}
+                  className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-neutral-400 hover:text-foreground"
+                >
+                  {showOtherProjects ? "Hide other projects" : "View other projects"}
+                </button>
+              </div>
+
+              {showOtherProjects ? (
+                <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:hidden">
+                  {otherProjects.map((p, idx) => (
+                    <ProjectGridCard
+                      key={p.title}
+                      p={p}
+                      idx={idx}
+                      onSelect={setActiveProjectTitle}
+                    />
+                  ))}
+                </div>
+              ) : null}
+
+              {/* Desktop: all projects in a 4-column grid */}
+              <div className="mt-8 hidden grid-cols-4 gap-4 lg:grid">
+                {allDisplayProjects.map((p, idx) => (
+                  <ProjectGridCard
+                    key={p.title}
+                    p={p}
+                    idx={idx}
+                    onSelect={setActiveProjectTitle}
+                    compact
+                  />
+                ))}
+              </div>
+            </div>
           </section>
         </motion.div>
 
