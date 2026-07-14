@@ -179,8 +179,8 @@ export const projects: Project[] = [
   {
     title: "Foresters Financial - 1st Place Development Challenge 🥇",
     description:
-      "1st place at the Foresters Financial Development Challenge — built and pitched a financial technology solution under competition constraints.",
-    caption: "1st place — Foresters Financial Development Challenge.",
+      "Won 1st place at Foresters Financial's Development Challenge — a fintech case competition where teams take an open-ended financial-services problem from brief to pitch in a single sprint.\n\nWorked end to end: scoped the user problem, structured assumptions, built a working prototype, and presented tradeoffs to judges under tight deadlines. Focused on turning ambiguous business constraints into a clear product story backed by a demo, not just slides.\n\nThe win came down to problem framing, practicality of the solution, and communicating risk and value clearly to a mixed technical and business audience.",
+    caption: "1st place — fintech case competition: prototype, pitch, and problem framing.",
     tags: ["Competition", "Winner", "Finance"],
     image: "/forestorsfinancial.jpeg",
     carouselSlides: [
@@ -198,8 +198,8 @@ export const projects: Project[] = [
   {
     title: "Jane Street - 1st Place Estimation Competition 🥇",
     description:
-      "1st place at the Jane Street Estimation Competition — probabilistic reasoning, Fermi estimation, and structured problem-solving under time pressure.",
-    caption: "1st place — Jane Street Estimation Competition.",
+      "Won 1st place at Jane Street's Estimation Competition — a timed team event built around Fermi estimation, probabilistic reasoning, and structured problem decomposition.\n\nBroke open-ended questions into assumptions you could defend, propagated uncertainty instead of chasing false precision, and sanity-checked answers with back-of-the-envelope logic before committing.\n\nUnder time pressure, the edge wasn't memorizing formulas — it was explaining your model clearly, catching bad assumptions fast, and converging as a team on a defensible range.",
+    caption: "1st place — Fermi estimation and probabilistic reasoning under time pressure.",
     tags: ["Competition", "Winner", "Quant"],
     image: "/janestreet.jpeg",
     carouselSlides: [
