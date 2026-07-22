@@ -89,7 +89,7 @@ export default function DroneRacingSummary() {
             <div className="shrink-0 overflow-hidden rounded-lg border border-border bg-muted sm:w-48">
               <div className="relative aspect-[3/2] w-full bg-muted sm:h-32">
                 <Image
-                  src="/testdrone.jpg"
+                  src="/testdrone.png"
                   alt="Hardware integration"
                   fill
                   className="object-contain object-left-top p-1"

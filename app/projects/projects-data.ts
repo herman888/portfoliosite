@@ -15,6 +15,14 @@ export type ProjectCarouselSlide =
       rightFit?: "cover" | "contain";
     };
 
+export type ProjectVideoClip = {
+  id: string;
+  label: string;
+  src: string;
+  /** Optional emoji shown on clip chips (e.g. LARP V0–V3). */
+  emoji?: string;
+};
+
 export type Project = {
   title: string;
   description: string;
@@ -24,6 +32,8 @@ export type Project = {
   images?: string[];
   /** Multi-image carousel with optional split-frame slides. */
   carouselSlides?: ProjectCarouselSlide[];
+  /** Featured multi-clip deck (e.g. Project L.A.R.P. build logs). */
+  videoClips?: ProjectVideoClip[];
   /** Card preview video (hardware demos). */
   video?: string;
   /** Shown as the video poster / first-frame preview in grids. */
@@ -101,12 +111,19 @@ export function projectCardImageFraming(p: {
 export const PROJECT_LARP: Project = {
   title: "Project L.A.R.P",
   description: "C-UAS Interceptor.\ncounter-UAS (500k+ views, vc interest, sf offers)",
-  caption: "Localized Aerial Response Platform",
+  caption: "Localized Aerial Response Platform — counter-UAS build logs",
   tags: ["Drones", "Hardware", "Build", "UTIAS"],
-  video: "/larp-reel.mp4?v=ig",
+  video: "/larp/larp-intro.mp4",
+  videoClips: [
+    { id: "v0", label: "V0", emoji: "🎬", src: "/larp/larp-intro.mp4" },
+    { id: "v1", label: "V1", emoji: "🎯", src: "/larp/larp-demo3.mp4" },
+    { id: "v2", label: "V2", emoji: "🛠️", src: "/larp/larp-week2.mp4" },
+    { id: "v3", label: "V3", emoji: "🚁", src: "/larp/larp-field.mp4" },
+  ],
   instagramReelId: "DZVuXiRhw1N",
   instagramCardPreview: "autoplay",
   code: "https://www.instagram.com/reel/DZVuXiRhw1N/",
+  link: "https://defenderproject.vercel.app/",
   year: "2026",
   category: "hardware",
 };
@@ -132,7 +149,7 @@ export const projects: Project[] = [
     caption:
       "ROS stack, vision→nav wiring, staged flight tests.",
     tags: ["Drones", "Python", "ROS", "Research", "UTIAS", "UTIAS Summer"],
-    image: "/testdrone.jpg",
+    image: "/testdrone.png",
     imageObjectPosition: "left top",
     video: "/droneracing.mp4",
     link: "/projects/integrating-uav-controls",
@@ -145,7 +162,7 @@ export const projects: Project[] = [
       "Collected flight data, built a Roboflow dataset, and trained/fine-tuned a YOLOv8 gate detector (PyTorch / Ultralytics) with OpenCV tooling for preprocessing and QA.",
     caption: "Roboflow dataset · YOLOv8 (Ultralytics) · OpenCV QA.",
     tags: ["Drones", "Python", "Research", "UTIAS", "UTIAS Summer"],
-    image: "/uav-gate-yolo-detection.png",
+    image: "/uav-gate-yolo-detection.jpg",
     video: "/drone-racing-2023-loop.mp4",
     link: "/projects/uav-navigation-model-training",
     year: "2023",
@@ -158,9 +175,8 @@ export const projects: Project[] = [
     caption:
       "Wing iterations, mesh trade-offs, prototype skin, integrated airframe.",
     tags: ["Aerodynamics", "Fabrication", "Research", "UTIAS", "UTIAS Summer"],
-    image: "/wing-build-prototype-right-rot180.png",
+    image: "/wing-build-prototype-right-rot180.jpg",
     imageObjectPosition: "center 55%",
-    imageUnoptimized: true,
     link: "/projects/fixed-wing-uav-airframe",
     year: "2025",
     category: "software",
@@ -171,7 +187,7 @@ export const projects: Project[] = [
       "CityPath AI quickly analyzes past data, spots dangerous patterns, and tests safer street layout options in minutes, cutting down the time it takes to move from identifying a problem to finding a practical solution.",
     caption: "AI for safer street layouts and city planning.",
     tags: ["AI", "Shopify", "Hackathon", "Winner", "Python"],
-    image: "/shopify.png",
+    image: "/shopify-card.jpg",
     code: gh("citypathai"),
     year: "2025",
     category: "software",
@@ -187,7 +203,7 @@ export const projects: Project[] = [
       { kind: "single", src: "/forestorsfinancial.jpeg", fit: "cover" },
       {
         kind: "single",
-        src: "/forestorfinanciallogo.png",
+        src: "/forestorfinanciallogo-rgb.png",
         fit: "cover",
         background: "#4a2448",
       },
@@ -206,8 +222,8 @@ export const projects: Project[] = [
       { kind: "single", src: "/janestreet.jpeg", fit: "cover" },
       {
         kind: "split",
-        left: "/janeshirt.jpeg",
-        right: "/janestreetlogo.png",
+        left: "/janeshirt-card.jpg",
+        right: "/janestreetlogo-rgb.png",
         leftFit: "cover",
         rightFit: "contain",
       },
@@ -221,7 +237,7 @@ export const projects: Project[] = [
       "RedLamp is a study companion lamp, that detects student stress and responds with encouragement or guidance in real time, making studying feel less isolating while continuing to evolve with more personalized support.",
     caption: "Study lamp that detects stress and responds in real time.",
     tags: ["Hackathon", "Winner", "UofTHacks", "React", "Node.js"],
-    image: "/uofthacks.png",
+    image: "/uofthacks-card.jpg",
     youtubeId: "gwU1twqMq40",
     code: "https://github.com/Hackm0/lelampv3",
     devpost: "https://devpost.com/software/red-lamp",
@@ -260,7 +276,7 @@ export const projects: Project[] = [
       "Students or community members request a meal, Drivers sign in, see the closest requests, and follow one optimized route.",
     caption: "Meal requests and optimized driver routes.",
     tags: ["HackThe6ix", "Web", "React", "Node.js"],
-    image: "/giveway.png",
+    image: "/giveway-card.jpg",
     youtubeId: "man2-PK6fbg",
     code: gh("route-optimizer"),
     devpost: "https://devpost.com/software/placeholder-pomuiy",
@@ -285,7 +301,7 @@ export const projects: Project[] = [
       "Simulate real-world recipes step by step in 3D so cooking feels visual, interactive, and easier to follow — developed for HackCanada 2026.",
     caption: "HackCanada 2026 — step-by-step 3D recipe simulation.",
     tags: ["HackCanada", "Hackathon", "React", "Next.js", "Web", "3D"],
-    image: "/kinkitchen.png",
+    image: "/kinkitchen-card.jpg",
     youtubeId: "1M8MoqCxQCI",
     code: gh("kinkitchen"),
     year: "2026",
@@ -309,7 +325,7 @@ export const projects: Project[] = [
       "A car that follows a line using infrared sensors and Arduino logic.",
     caption: "Line-following car with IR sensors.",
     tags: ["Arduino", "Hardware", "Electronics"],
-    image: "/car.jpg",
+    image: "/car-line-follower.png",
     imageObjectPosition: "center 82%",
     link: "/projects/arduino#car-line-follower",
     year: "2024",

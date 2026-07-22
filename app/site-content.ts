@@ -39,6 +39,7 @@ export const site = {
     schulichLeaders: "https://www.schulichleaders.ca/",
     githubProfile,
     github: `https://github.com/${githubProfile}`,
+    instagram: "https://www.instagram.com/hermanisayenka/",
     x: "https://x.com/hermanisayenka",
     twitterCreator: "@hermanisayenka",
   },

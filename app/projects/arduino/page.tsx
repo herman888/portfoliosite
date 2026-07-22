@@ -33,7 +33,7 @@ const arduinoProjects: ArduinoProject[] = [
     title: "Car line follower",
     description:
       "A car that follows a line using infrared sensors and Arduino logic.",
-    image: "/car.jpg",
+    image: "/car-line-follower.png",
     imageStyle: { objectFit: "cover", objectPosition: "center 80%" },
   },
   {

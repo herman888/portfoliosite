@@ -12,7 +12,7 @@ export default function UavNavigationModelTrainingPage() {
       year="2023"
       breadcrumb="UAV model training"
       hero={{
-        src: "/uav-gate-yolo-detection.png",
+        src: "/uav-gate-yolo-detection.jpg",
         alt: "Racing gate with YOLO-style bounding box overlay from onboard vision",
         heightClass: "h-56 min-h-[14rem] md:h-[22rem] md:min-h-[22rem]",
       }}

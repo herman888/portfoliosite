@@ -12,7 +12,7 @@ export default function IntegratingUavControlsPage() {
       year="2024"
       breadcrumb="UAV hardware integration"
       hero={{
-        src: "/testdrone.jpg",
+        src: "/testdrone.png",
         alt: "Quadrotor test platform with sensors and compute",
         heightClass: "h-56 min-h-[14rem] md:h-[22rem] md:min-h-[22rem]",
       }}

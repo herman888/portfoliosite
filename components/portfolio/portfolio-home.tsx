@@ -6,10 +6,19 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Mail } from "lucide-react";
 import { fullName, workEntries, site } from "@/app/site-content";
-import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/portfolio/social-icons";
+import { GitHubIcon, InstagramIcon, LinkedInIcon, XIcon } from "@/components/portfolio/social-icons";
+import { MarkerHighlight } from "@/components/portfolio/MarkerHighlight";
+import { playPortfolioSound, unlockPortfolioAudio } from "@/lib/portfolio-sounds";
 import { InstagramReelCardPreview } from "@/components/media/InstagramReelCardPreview";
 import { InstagramReelEmbed } from "@/components/media/InstagramReelEmbed";
-import { allPortfolioProjects, projectCardImageFraming, type Project, type ProjectCarouselSlide } from "@/app/projects/projects-data";
+import {
+  allPortfolioProjects,
+  PROJECT_LARP,
+  projectCardImageFraming,
+  type Project,
+  type ProjectCarouselSlide,
+} from "@/app/projects/projects-data";
+import { LarpFeatured } from "@/components/portfolio/LarpFeatured";
 import { easeOut } from "@/components/portfolio/portfolio-motion";
 
 const linkClass =
@@ -67,6 +76,7 @@ function CarouselSlideImage({
   layout: "card" | "detail";
   p: Project;
 }) {
+  const [failed, setFailed] = useState(false);
   const detailFit = layout === "detail";
   const framing = projectCardImageFraming({ ...p, imageCardFit: fit });
   const useContain = fit === "contain";
@@ -75,14 +85,15 @@ function CarouselSlideImage({
     : detailFit
       ? "object-cover object-center"
       : framing.imageClassName;
+  const objectPosition = p.imageObjectPosition ?? "center";
 
-  if (p.imageUnoptimized) {
+  if (p.imageUnoptimized || failed) {
     return (
       <img
         src={src}
         alt={alt}
         className={`absolute inset-0 h-full w-full ${imgClass}`}
-        style={{ objectPosition: p.imageObjectPosition ?? "center" }}
+        style={{ objectPosition }}
         loading="lazy"
         decoding="async"
       />
@@ -95,8 +106,9 @@ function CarouselSlideImage({
       alt={alt}
       fill
       className={imgClass}
-      style={{ objectPosition: p.imageObjectPosition ?? "center" }}
+      style={{ objectPosition }}
       sizes="(max-width: 640px) 100vw, 50vw"
+      onError={() => setFailed(true)}
     />
   );
 }
@@ -289,38 +301,15 @@ function ProjectMedia({
       p.imageObjectScale || p.imageCardFit === "contain"
         ? ""
         : "transition-transform duration-300 group-hover:scale-[1.02]";
-    if (p.imageUnoptimized) {
-      return (
-        <img
-          src={thumb}
-          alt={`${name} preview`}
-          className={
-            detailFit
-              ? "absolute inset-0 h-full w-full object-contain object-center"
-              : `${framing.className} ${cardHoverClass}`
-          }
-          style={detailFit ? { objectPosition: p.imageObjectPosition ?? "center" } : framing.style}
-          loading="lazy"
-          decoding="async"
-        />
-      );
-    }
     return (
-      <Image
+      <ProjectThumbImage
         src={thumb}
         alt={`${name} preview`}
-        fill
-        className={
-          detailFit
-            ? "object-contain object-center"
-            : `${framing.imageClassName} ${cardHoverClass}`
-        }
-        style={
-          detailFit
-            ? { objectPosition: p.imageObjectPosition ?? "center" }
-            : framing.imageStyle
-        }
-        sizes="(max-width: 640px) 100vw, 50vw"
+        unoptimized={Boolean(p.imageUnoptimized)}
+        detailFit={detailFit}
+        framing={framing}
+        cardHoverClass={cardHoverClass}
+        objectPosition={p.imageObjectPosition ?? "center"}
       />
     );
   }
@@ -328,6 +317,59 @@ function ProjectMedia({
     <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
       No preview
     </div>
+  );
+}
+
+function ProjectThumbImage({
+  src,
+  alt,
+  unoptimized,
+  detailFit,
+  framing,
+  cardHoverClass,
+  objectPosition,
+}: {
+  src: string;
+  alt: string;
+  unoptimized: boolean;
+  detailFit: boolean;
+  framing: ReturnType<typeof projectCardImageFraming>;
+  cardHoverClass: string;
+  objectPosition: string;
+}) {
+  const [failed, setFailed] = useState(false);
+
+  if (unoptimized || failed) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={
+          detailFit
+            ? "absolute inset-0 h-full w-full object-contain object-center"
+            : `${framing.className} ${cardHoverClass}`
+        }
+        style={detailFit ? { objectPosition } : framing.style}
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className={
+        detailFit
+          ? "object-contain object-center"
+          : `${framing.imageClassName} ${cardHoverClass}`
+      }
+      style={detailFit ? { objectPosition } : framing.imageStyle}
+      sizes="(max-width: 640px) 100vw, 50vw"
+      onError={() => setFailed(true)}
+    />
   );
 }
 
@@ -353,6 +395,7 @@ function ProjectGridCard({
       className={projectCardClass}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -3 }}
       viewport={revealViewport}
       transition={{ ...easeOut, delay: idx * 0.025 }}
     >
@@ -432,6 +475,8 @@ type CurrentlyRow = {
   linkLabel: string;
   href?: string;
   suffix?: string;
+  highlightColor: string;
+  highlightVariant?: "highlight" | "underline";
 };
 
 const currentlyRows: CurrentlyRow[] = [
@@ -440,27 +485,28 @@ const currentlyRows: CurrentlyRow[] = [
     image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
     linkLabel: "Human Computer Lab",
     href: "https://www.humancomputerlab.com/",
+    highlightColor: "#67e8f9",
   },
   {
     prefix: "building",
     linkLabel: "Project L.A.R.P.",
     suffix: " — counter-UAS (500k+ views, vc interest, sf offers)",
+    highlightColor: "#fda4af",
   },
   {
     prefix: "electrical engineering @",
     image: { src: "/york.png", alt: "York University" },
     linkLabel: "York University",
     href: "https://yorku.ca",
+    highlightColor: "#fde047",
   },
   {
     prefix: `recipient of ${site.person.scholarshipAmount}`,
     image: { src: "/schulich.jpeg", alt: "Schulich Leader" },
     linkLabel: "Schulich Leader",
     href: site.links.schulichLeaders,
-  },
-  {
-    prefix: "seeking summer 2027 internships — autonomy / aerospace / defense",
-    linkLabel: "",
+    highlightColor: "#fcd34d",
+    highlightVariant: "underline",
   },
 ];
 
@@ -473,7 +519,6 @@ export function PortfolioHome() {
   const [activeProjectTitle, setActiveProjectTitle] = useState<string | null>(null);
 
   const featuredProjectTitles = [
-    "Project L.A.R.P",
     "Fixed-Wing UAV Airframe Design",
     "Integrating UAV Controls into Navigation",
     "Optimizing UAV Autonomous Navigation",
@@ -494,11 +539,13 @@ export function PortfolioHome() {
     .map((title) => allPortfolioProjects.find((p) => p.title === title))
     .filter((p): p is Project => Boolean(p));
   const otherProjects = allPortfolioProjects.filter(
-    (p) => !featuredProjectTitles.includes(p.title)
+    (p) => p.title !== PROJECT_LARP.title && !featuredProjectTitles.includes(p.title)
   );
   const allDisplayProjects = [...featuredProjects, ...otherProjects];
   const activeProject =
-    [...featuredProjects, ...otherProjects].find((p) => p.title === activeProjectTitle) ?? null;
+    [PROJECT_LARP, ...featuredProjects, ...otherProjects].find(
+      (p) => p.title === activeProjectTitle
+    ) ?? null;
   const sectionsReady = socialVisible;
 
   useEffect(() => {
@@ -537,8 +584,8 @@ export function PortfolioHome() {
       setSocialVisible(true);
       return;
     }
-    const t1 = window.setTimeout(() => setCurrentlyVisible(true), 200);
-    const t2 = window.setTimeout(() => setSocialVisible(true), 600);
+    const t1 = window.setTimeout(() => setCurrentlyVisible(true), 280);
+    const t2 = window.setTimeout(() => setSocialVisible(true), 1600);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
@@ -578,60 +625,96 @@ export function PortfolioHome() {
           </h1>
         </header>
 
-        {/* CURRENTLY terminal block */}
+        {/* CURRENTLY — pencil highlights */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={currentlyVisible ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.4 }}
+          onPointerDown={() => unlockPortfolioAudio()}
         >
           <div className="mb-10">
-            <div className="flex items-center gap-3 mb-5">
+            <div className="mb-5 flex items-center gap-3">
               <span className="text-xs font-medium tracking-wide text-muted-foreground">
                 Currently
               </span>
-              <div className="h-px flex-1 bg-border" />
+              <motion.div
+                className="h-px flex-1 origin-left bg-border"
+                initial={{ scaleX: 0 }}
+                animate={currentlyVisible ? { scaleX: 1 } : { scaleX: 0 }}
+                transition={{ ...easeOut, duration: 0.55, delay: 0.05 }}
+              />
             </div>
             <ul className="m-0 list-none space-y-4 p-0 text-[0.92rem] leading-relaxed sm:text-[0.95rem]">
-              {currentlyRows.map((row, idx) => (
-                <motion.li
-                  key={idx}
-                  className="flex items-center gap-2"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={currentlyVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                  transition={{ ...easeOut, delay: idx * 0.08 }}
-                >
-                  <span className="shrink-0 text-neutral-500" aria-hidden>
-                    &#x25B8;
-                  </span>
-                  <span className="inline-flex min-w-0 flex-wrap items-center gap-1.5">
-                    <span className="whitespace-nowrap text-muted-foreground">{row.prefix}</span>
-                    {row.image ? (
-                      <InlineThumb src={row.image.src} alt={row.image.alt} size="sm" />
-                    ) : null}
-                    {row.linkLabel && row.href ? (
-                      <a
-                        href={row.href}
-                        className="whitespace-nowrap text-foreground underline decoration-neutral-400 underline-offset-[3px] transition-colors hover:decoration-neutral-600"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {row.linkLabel}
-                      </a>
-                    ) : row.linkLabel ? (
-                      <span className="font-semibold text-foreground">{row.linkLabel}</span>
-                    ) : null}
-                    {row.suffix ? (
-                      <span className="text-muted-foreground">{row.suffix}</span>
-                    ) : null}
-                  </span>
-                </motion.li>
-              ))}
+              {currentlyRows.map((row, idx) => {
+                const markDelay = 0.2 + idx * 0.38;
+                const label = (
+                  <MarkerHighlight
+                    color={row.highlightColor}
+                    delay={markDelay}
+                    active={currentlyVisible}
+                    pencil
+                    variant={row.highlightVariant ?? "highlight"}
+                    sound={row.highlightVariant === "underline" ? "underline" : "marker"}
+                  >
+                    {row.linkLabel}
+                  </MarkerHighlight>
+                );
+
+                return (
+                  <motion.li
+                    key={idx}
+                    className="flex items-center gap-2"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={
+                      currentlyVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }
+                    }
+                    transition={{ ...easeOut, delay: idx * 0.1 }}
+                  >
+                    <motion.span
+                      className="shrink-0 text-neutral-500"
+                      aria-hidden
+                      initial={{ opacity: 0, scale: 0.6 }}
+                      animate={
+                        currentlyVisible
+                          ? { opacity: 1, scale: 1 }
+                          : { opacity: 0, scale: 0.6 }
+                      }
+                      transition={{ ...easeOut, delay: idx * 0.1 + 0.05 }}
+                    >
+                      &#x25B8;
+                    </motion.span>
+                    <span className="inline-flex min-w-0 flex-wrap items-center gap-1.5">
+                      <span className="whitespace-nowrap text-muted-foreground">
+                        {row.prefix}
+                      </span>
+                      {row.image ? (
+                        <InlineThumb src={row.image.src} alt={row.image.alt} size="sm" />
+                      ) : null}
+                      {row.href ? (
+                        <a
+                          href={row.href}
+                          className="whitespace-nowrap transition-opacity hover:opacity-80"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {label}
+                        </a>
+                      ) : (
+                        label
+                      )}
+                      {row.suffix ? (
+                        <span className="text-muted-foreground">{row.suffix}</span>
+                      ) : null}
+                    </span>
+                  </motion.li>
+                );
+              })}
             </ul>
           </div>
         </motion.div>
 
         {/* Social icons */}
-        <div className="mt-8">
+        <div className="mt-8" onPointerDown={() => unlockPortfolioAudio()}>
           <p className="m-0 flex flex-wrap items-center gap-3 pt-1 sm:gap-4">
             <motion.a
               href={`mailto:${site.links.email}`}
@@ -650,6 +733,7 @@ export function PortfolioHome() {
                   : { opacity: 0, x: -220, y: -24, rotate: -26, scale: 0.76 }
               }
               transition={{ ...socialDropTransition, delay: 0 }}
+              onAnimationComplete={() => socialVisible && playPortfolioSound("pop")}
             >
               <Mail className="h-5 w-5" strokeWidth={1.75} aria-hidden />
             </motion.a>
@@ -698,6 +782,29 @@ export function PortfolioHome() {
               <GitHubIcon className="h-5 w-5" />
             </motion.a>
             <motion.a
+              href={site.links.instagram}
+              className={socialIconLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram profile"
+              initial={{ opacity: 0, x: -200, y: 18, rotate: -22, scale: 0.74 }}
+              animate={
+                socialVisible
+                  ? {
+                      opacity: 1,
+                      x: [0, 18, -10, 5, 0],
+                      y: [0, 8, -3, 2, 0],
+                      rotate: [0, 14, -7, 3, 0],
+                      scale: [1, 1.15, 0.94, 1.03, 1],
+                    }
+                  : { opacity: 0, x: -200, y: 18, rotate: -22, scale: 0.74 }
+              }
+              transition={{ ...socialDropTransition, delay: 0.075 }}
+              onAnimationComplete={() => socialVisible && playPortfolioSound("pop")}
+            >
+              <InstagramIcon className="h-5 w-5" />
+            </motion.a>
+            <motion.a
               href={site.links.x}
               className={socialIconLink}
               target="_blank"
@@ -732,29 +839,46 @@ export function PortfolioHome() {
             className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium sm:gap-x-6"
             aria-label="On this page"
           >
-            <a href="#work" className={navClass}>
-              Work
-            </a>
-            <a href="#projects" className={navClass}>
-              Projects
-            </a>
+            {(["work", "projects"] as const).map((id, i) => (
+              <motion.a
+                key={id}
+                href={`#${id}`}
+                className={navClass}
+                initial={{ opacity: 0, y: 8 }}
+                animate={sectionsReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+                transition={{ ...easeOut, delay: 0.05 + i * 0.06 }}
+              >
+                {id === "work" ? "Work" : "Projects"}
+              </motion.a>
+            ))}
           </nav>
 
-          <hr className="my-12 border-border" />
+          <motion.hr
+            className="my-12 origin-left border-border"
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={sectionsReady ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
+            transition={{ ...easeOut, duration: 0.5, delay: 0.1 }}
+          />
 
           <section id="work" className="scroll-mt-8">
-            <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+            <motion.h2
+              className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={revealViewport}
+              transition={easeOut}
+            >
               Work
-            </h2>
+            </motion.h2>
             <div className="mt-8 space-y-10">
               {workEntries.map((job, idx) => (
                 <motion.article
                   key={`${job.role}-${job.company}`}
                   className="flex gap-3 sm:gap-4"
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   viewport={revealViewport}
-                  transition={{ ...easeOut, delay: idx * 0.03 }}
+                  transition={{ ...easeOut, delay: idx * 0.04 }}
                 >
                   {job.thumb ? (
                     <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md border border-border bg-muted">
@@ -809,12 +933,38 @@ export function PortfolioHome() {
 
           <section id="projects" className="mt-16 scroll-mt-8 sm:mt-20">
             <div className="lg:relative lg:left-1/2 lg:w-screen lg:max-w-7xl lg:-translate-x-1/2 lg:px-6 xl:px-8">
-              <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+              <motion.h2
+                className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={revealViewport}
+                transition={easeOut}
+              >
                 Projects
-              </h2>
+              </motion.h2>
+
+              <motion.div
+                className="mt-8"
+                initial={{ opacity: 0, y: 18, scale: 0.985 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={revealViewport}
+                transition={{ ...easeOut, duration: 0.5 }}
+              >
+                <LarpFeatured project={PROJECT_LARP} />
+              </motion.div>
+
+              <motion.h3
+                className="mt-8 text-sm font-medium uppercase tracking-[0.14em] text-muted-foreground"
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={revealViewport}
+                transition={easeOut}
+              >
+                Other projects
+              </motion.h3>
 
               {/* Mobile / tablet: featured first, then optional extras */}
-              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:hidden">
+              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:hidden">
                 {featuredProjects.map((p, idx) => (
                   <ProjectGridCard
                     key={p.title}
@@ -848,8 +998,8 @@ export function PortfolioHome() {
                 </div>
               ) : null}
 
-              {/* Desktop: all projects in a 4-column grid */}
-              <div className="mt-8 hidden grid-cols-4 gap-4 lg:grid">
+              {/* Desktop: remaining projects in a 4-column grid */}
+              <div className="mt-4 hidden grid-cols-4 gap-4 lg:grid">
                 {allDisplayProjects.map((p, idx) => (
                   <ProjectGridCard
                     key={p.title}
