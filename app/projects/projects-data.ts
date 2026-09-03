@@ -15,14 +15,6 @@ export type ProjectCarouselSlide =
       rightFit?: "cover" | "contain";
     };
 
-export type ProjectVideoClip = {
-  id: string;
-  label: string;
-  src: string;
-  /** Optional emoji shown on clip chips (e.g. LARP V0–V3). */
-  emoji?: string;
-};
-
 export type Project = {
   title: string;
   description: string;
@@ -32,8 +24,6 @@ export type Project = {
   images?: string[];
   /** Multi-image carousel with optional split-frame slides. */
   carouselSlides?: ProjectCarouselSlide[];
-  /** Featured multi-clip deck (e.g. Project L.A.R.P. build logs). */
-  videoClips?: ProjectVideoClip[];
   /** Card preview video (hardware demos). */
   video?: string;
   /** Shown as the video poster / first-frame preview in grids. */
@@ -109,17 +99,11 @@ export function projectCardImageFraming(p: {
 }
 
 export const PROJECT_LARP: Project = {
-  title: "Project L.A.R.P",
-  description: "C-UAS Interceptor.\ncounter-UAS (500k+ views, vc interest, sf offers)",
-  caption: "Localized Aerial Response Platform — counter-UAS build logs",
+  title: "Localised Aerial Response Platform",
+  description: "C-UAS Interceptor.",
+  caption: "Counter-UAS build logs",
   tags: ["Drones", "Hardware", "Build", "UTIAS"],
   video: "/larp/larp-intro.mp4",
-  videoClips: [
-    { id: "v0", label: "V0", emoji: "🎬", src: "/larp/larp-intro.mp4" },
-    { id: "v1", label: "V1", emoji: "🎯", src: "/larp/larp-demo3.mp4" },
-    { id: "v2", label: "V2", emoji: "🛠️", src: "/larp/larp-week2.mp4" },
-    { id: "v3", label: "V3", emoji: "🚁", src: "/larp/larp-field.mp4" },
-  ],
   instagramReelId: "DZVuXiRhw1N",
   instagramCardPreview: "autoplay",
   code: "https://www.instagram.com/reel/DZVuXiRhw1N/",

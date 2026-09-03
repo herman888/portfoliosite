@@ -68,7 +68,7 @@ export const questionPrompts: Record<SectionKey, string> = {
 export const fallbackAnswers: Record<SectionKey, string> = {
   age: `I'm ${site.person.age} years old, originally from ${site.person.origin}, and studying Electrical Engineering at York University as a Schulich Leader. Old enough to have shipped real projects and research, young enough to still be obsessed with learning new stacks and building hardware–software hybrids.`,
   projects:
-    "Most of my work sits at the intersection of flight software and hardware: drone defence (Project L.A.R.P), autonomous UAV navigation at UTIAS, fixed-wing airframe builds, onboard vision with ROS, and spacecraft dynamics research at York's SDCN Lab—plus hackathon prototypes when there's time.",
+    "Most of my work sits at the intersection of flight software and hardware: drone defence (Localised Aerial Response Platform), autonomous UAV navigation at UTIAS, fixed-wing airframe builds, onboard vision with ROS, and spacecraft dynamics research at York's SDCN Lab—plus hackathon prototypes when there's time.",
   roles:
     "I'm looking for roles in autonomy, aerospace, and defense-adjacent systems: flight software, embedded control, perception for UAVs, simulation, and anything that ships on real hardware—not just slides.",
   drone:
@@ -103,7 +103,7 @@ knowledge), answer like a normal helpful AI assistant.
 - I'm ${site.person.age} years old and originally from ${site.person.origin}.
 - I'm a Schulich Leader studying Electrical Engineering at York University.
 - Focus areas: aerospace autonomy, UAV perception & control, spacecraft dynamics, defense-adjacent flight systems.
-- Project L.A.R.P — drone defence system (hands-on build + demo).
+- Localised Aerial Response Platform — drone defence system (hands-on build + demo).
 - UTIAS Flight Systems & Control Lab — onboard vision, ROS, autonomous navigation, flight testing.
 - SDCN Lab (York) — spacecraft dynamics, control, and navigation research.
 - Fixed-wing UAV airframe design, Simulink/Gazebo co-simulation, YOLO gate detection pipelines.
@@ -135,7 +135,7 @@ export const aboutBriefs: Record<
   },
   defense: {
     title: "Defense-adjacent systems",
-    body: "Project L.A.R.P and related builds: integrating sensors, actuators, and software into platforms meant to operate under stress—defence-oriented demos with real hardware in the loop.",
+    body: "Localised Aerial Response Platform and related builds: integrating sensors, actuators, and software into platforms meant to operate under stress—defence-oriented demos with real hardware in the loop.",
   },
 };
 
@@ -169,8 +169,8 @@ export const currentlyItems: CurrentlyItem[] = [
     id: "project-larp",
     topic: "projects",
     prefix: "building",
-    linkLabel: "Project L.A.R.P.",
-    suffix: " — counter-UAS (500k+ views, vc interest, sf offers)",
+    linkLabel: "Localised Aerial Response Platform",
+    suffix: " — counter-UAS",
   },
   {
     id: "schulich",
@@ -205,7 +205,7 @@ export const heroTagline =
 
 /** Two paragraphs beside / below the portrait on the home hero. */
 export const heroBioParagraphs: [string, string] = [
-  "I work where code meets airframes, sensors, and control—UAV autonomy at UTIAS, spacecraft dynamics at York's SDCN Lab, and hands-on defense-oriented builds like Project L.A.R.P.",
+  "I work where code meets airframes, sensors, and control—UAV autonomy at UTIAS, spacecraft dynamics at York's SDCN Lab, and hands-on defense-oriented builds like Localised Aerial Response Platform.",
   "Most of my time goes to perception pipelines, ROS integration, simulation before flight, and hardware that has to survive real tests—not just look good in a deck.",
 ];
 

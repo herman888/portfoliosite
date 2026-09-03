@@ -196,7 +196,7 @@ function ProjectMedia({
   p: Project;
   name: string;
   layout?: "card" | "detail";
-  /** Full-width 2-col featured row (e.g. Project L.A.R.P) — wider Instagram embed. */
+  /** Full-width 2-col featured row — wider Instagram embed. */
   visualWide?: boolean;
 }) {
   const thumb = projectThumbSrc(p);
@@ -489,8 +489,8 @@ const currentlyRows: CurrentlyRow[] = [
   },
   {
     prefix: "building",
-    linkLabel: "Project L.A.R.P.",
-    suffix: " — counter-UAS (500k+ views, vc interest, sf offers)",
+    linkLabel: "Localised Aerial Response Platform",
+    suffix: " — counter-UAS",
     highlightColor: "#fda4af",
   },
   {
@@ -944,7 +944,7 @@ export function PortfolioHome() {
               </motion.h2>
 
               <motion.div
-                className="mt-8"
+                className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
                 initial={{ opacity: 0, y: 18, scale: 0.985 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={revealViewport}
