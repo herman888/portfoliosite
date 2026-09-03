@@ -535,9 +535,12 @@ export function PortfolioHome() {
     "Meal2Go - Eureka Hacks",
     "KinKitchen - Hack Canada",
   ];
-  const featuredProjects = featuredProjectTitles
-    .map((title) => allPortfolioProjects.find((p) => p.title === title))
-    .filter((p): p is Project => Boolean(p));
+  const featuredProjects = [
+    PROJECT_LARP,
+    ...featuredProjectTitles
+      .map((title) => allPortfolioProjects.find((p) => p.title === title))
+      .filter((p): p is Project => Boolean(p)),
+  ];
   const otherProjects = allPortfolioProjects.filter(
     (p) => p.title !== PROJECT_LARP.title && !featuredProjectTitles.includes(p.title)
   );
@@ -943,36 +946,20 @@ export function PortfolioHome() {
                 Projects
               </motion.h2>
 
-              <motion.div
-                className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
-                initial={{ opacity: 0, y: 18, scale: 0.985 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={revealViewport}
-                transition={{ ...easeOut, duration: 0.5 }}
-              >
-                <LarpFeatured project={PROJECT_LARP} />
-              </motion.div>
-
-              <motion.h3
-                className="mt-8 text-sm font-medium uppercase tracking-[0.14em] text-muted-foreground"
-                initial={{ opacity: 0, x: -8 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={revealViewport}
-                transition={easeOut}
-              >
-                Other projects
-              </motion.h3>
-
               {/* Mobile / tablet: featured first, then optional extras */}
-              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:hidden">
-                {featuredProjects.map((p, idx) => (
-                  <ProjectGridCard
-                    key={p.title}
-                    p={p}
-                    idx={idx}
-                    onSelect={setActiveProjectTitle}
-                  />
-                ))}
+              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:hidden">
+                {featuredProjects.map((p, idx) =>
+                  p.title === PROJECT_LARP.title ? (
+                    <LarpFeatured key={p.title} project={p} idx={idx} />
+                  ) : (
+                    <ProjectGridCard
+                      key={p.title}
+                      p={p}
+                      idx={idx}
+                      onSelect={setActiveProjectTitle}
+                    />
+                  )
+                )}
               </div>
 
               <div className="mt-6 lg:hidden">
@@ -999,16 +986,20 @@ export function PortfolioHome() {
               ) : null}
 
               {/* Desktop: remaining projects in a 4-column grid */}
-              <div className="mt-4 hidden grid-cols-4 gap-4 lg:grid">
-                {allDisplayProjects.map((p, idx) => (
-                  <ProjectGridCard
-                    key={p.title}
-                    p={p}
-                    idx={idx}
-                    onSelect={setActiveProjectTitle}
-                    compact
-                  />
-                ))}
+              <div className="mt-8 hidden grid-cols-4 gap-4 lg:grid">
+                {allDisplayProjects.map((p, idx) =>
+                  p.title === PROJECT_LARP.title ? (
+                    <LarpFeatured key={p.title} project={p} compact idx={idx} />
+                  ) : (
+                    <ProjectGridCard
+                      key={p.title}
+                      p={p}
+                      idx={idx}
+                      onSelect={setActiveProjectTitle}
+                      compact
+                    />
+                  )
+                )}
               </div>
             </div>
           </section>
