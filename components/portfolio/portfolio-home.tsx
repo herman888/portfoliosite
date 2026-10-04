@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Mail } from "lucide-react";
 import { fullName, site } from "@/app/site-content";
 import { GitHubIcon, InstagramIcon, LinkedInIcon, XIcon } from "@/components/portfolio/social-icons";
-import { MarkerHighlight } from "@/components/portfolio/MarkerHighlight";
 import { playPortfolioSound, unlockPortfolioAudio } from "@/lib/portfolio-sounds";
 import { InstagramReelCardPreview } from "@/components/media/InstagramReelCardPreview";
 import { InstagramReelEmbed } from "@/components/media/InstagramReelEmbed";
@@ -439,78 +438,11 @@ const socialDropTransition = {
   ease: [0.18, 0.9, 0.24, 1],
 };
 
-function InlineThumb({
-  src,
-  alt,
-  size = "md",
-}: {
-  src: string;
-  alt: string;
-  size?: "sm" | "md";
-}) {
-  const dim = size === "sm" ? "h-6 w-6" : "h-7 w-7";
-  return (
-    <div
-      className={`relative ${dim} shrink-0 overflow-hidden rounded border border-border bg-muted`}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover"
-        sizes={size === "sm" ? "24px" : "28px"}
-      />
-    </div>
-  );
-}
-
 const typedDisplayName = `${site.person.firstName} ${site.person.lastName}`;
-
-type CurrentlyRow = {
-  prefix: string;
-  image?: { src: string; alt: string };
-  linkLabel: string;
-  href?: string;
-  suffix?: string;
-  highlightColor: string;
-  highlightVariant?: "highlight" | "underline";
-};
-
-const currentlyRows: CurrentlyRow[] = [
-  {
-    prefix: "embedded systems engineer intern @",
-    image: { src: "/humancomputerlab.jpeg", alt: "Human Computer Lab" },
-    linkLabel: "Human Computer Lab",
-    href: "https://www.humancomputerlab.com/",
-    highlightColor: "#67e8f9",
-  },
-  {
-    prefix: "building",
-    linkLabel: "Localised Aerial Response Platform",
-    suffix: " — counter-UAS",
-    highlightColor: "#fda4af",
-  },
-  {
-    prefix: "electrical engineering @",
-    image: { src: "/york.png", alt: "York University" },
-    linkLabel: "York University",
-    href: "https://yorku.ca",
-    highlightColor: "#fde047",
-  },
-  {
-    prefix: `recipient of ${site.person.scholarshipAmount}`,
-    image: { src: "/schulich.jpeg", alt: "Schulich Leader" },
-    linkLabel: "Schulich Leader",
-    href: site.links.schulichLeaders,
-    highlightColor: "#fcd34d",
-    highlightVariant: "underline",
-  },
-];
 
 export function PortfolioHome() {
   const [typedName, setTypedName] = useState("");
   const [typingDone, setTypingDone] = useState(false);
-  const [currentlyVisible, setCurrentlyVisible] = useState(false);
   const [socialVisible, setSocialVisible] = useState(false);
   const [showOtherProjects, setShowOtherProjects] = useState(false);
   const [activeProjectTitle, setActiveProjectTitle] = useState<string | null>(null);
@@ -580,16 +512,11 @@ export function PortfolioHome() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
-      setCurrentlyVisible(true);
       setSocialVisible(true);
       return;
     }
-    const t1 = window.setTimeout(() => setCurrentlyVisible(true), 280);
-    const t2 = window.setTimeout(() => setSocialVisible(true), 1600);
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-    };
+    const t = window.setTimeout(() => setSocialVisible(true), 280);
+    return () => window.clearTimeout(t);
   }, [typingDone]);
 
   useEffect(() => {
@@ -624,94 +551,6 @@ export function PortfolioHome() {
             ) : null}
           </h1>
         </header>
-
-        {/* CURRENTLY — pencil highlights */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={currentlyVisible ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          onPointerDown={() => unlockPortfolioAudio()}
-        >
-          <div className="mb-10">
-            <div className="mb-5 flex items-center gap-3">
-              <span className="text-xs font-medium tracking-wide text-muted-foreground">
-                Currently
-              </span>
-              <motion.div
-                className="h-px flex-1 origin-left bg-border"
-                initial={{ scaleX: 0 }}
-                animate={currentlyVisible ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ ...easeOut, duration: 0.55, delay: 0.05 }}
-              />
-            </div>
-            <ul className="m-0 list-none space-y-4 p-0 text-[0.92rem] leading-relaxed sm:text-[0.95rem]">
-              {currentlyRows.map((row, idx) => {
-                const markDelay = 0.2 + idx * 0.38;
-                const label = (
-                  <MarkerHighlight
-                    color={row.highlightColor}
-                    delay={markDelay}
-                    active={currentlyVisible}
-                    pencil
-                    variant={row.highlightVariant ?? "highlight"}
-                    sound={row.highlightVariant === "underline" ? "underline" : "marker"}
-                  >
-                    {row.linkLabel}
-                  </MarkerHighlight>
-                );
-
-                return (
-                  <motion.li
-                    key={idx}
-                    className="flex items-center gap-2"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={
-                      currentlyVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }
-                    }
-                    transition={{ ...easeOut, delay: idx * 0.1 }}
-                  >
-                    <motion.span
-                      className="shrink-0 text-neutral-500"
-                      aria-hidden
-                      initial={{ opacity: 0, scale: 0.6 }}
-                      animate={
-                        currentlyVisible
-                          ? { opacity: 1, scale: 1 }
-                          : { opacity: 0, scale: 0.6 }
-                      }
-                      transition={{ ...easeOut, delay: idx * 0.1 + 0.05 }}
-                    >
-                      &#x25B8;
-                    </motion.span>
-                    <span className="inline-flex min-w-0 flex-wrap items-center gap-1.5">
-                      <span className="whitespace-nowrap text-muted-foreground">
-                        {row.prefix}
-                      </span>
-                      {row.image ? (
-                        <InlineThumb src={row.image.src} alt={row.image.alt} size="sm" />
-                      ) : null}
-                      {row.href ? (
-                        <a
-                          href={row.href}
-                          className="whitespace-nowrap transition-opacity hover:opacity-80"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {label}
-                        </a>
-                      ) : (
-                        label
-                      )}
-                      {row.suffix ? (
-                        <span className="text-muted-foreground">{row.suffix}</span>
-                      ) : null}
-                    </span>
-                  </motion.li>
-                );
-              })}
-            </ul>
-          </div>
-        </motion.div>
 
         {/* Social icons */}
         <div className="mt-8" onPointerDown={() => unlockPortfolioAudio()}>
