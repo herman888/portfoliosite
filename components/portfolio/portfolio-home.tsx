@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Mail } from "lucide-react";
-import { fullName, workEntries, site } from "@/app/site-content";
+import { fullName, site } from "@/app/site-content";
 import { GitHubIcon, InstagramIcon, LinkedInIcon, XIcon } from "@/components/portfolio/social-icons";
 import { MarkerHighlight } from "@/components/portfolio/MarkerHighlight";
 import { playPortfolioSound, unlockPortfolioAudio } from "@/lib/portfolio-sounds";
@@ -20,9 +20,6 @@ import {
 } from "@/app/projects/projects-data";
 import { LarpFeatured } from "@/components/portfolio/LarpFeatured";
 import { easeOut } from "@/components/portfolio/portfolio-motion";
-
-const linkClass =
-  "underline decoration-neutral-400 underline-offset-[5px] transition-colors hover:decoration-neutral-600 text-foreground";
 
 const navClass =
   "font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:text-foreground";
@@ -842,7 +839,7 @@ export function PortfolioHome() {
             className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium sm:gap-x-6"
             aria-label="On this page"
           >
-            {(["work", "projects"] as const).map((id, i) => (
+            {(["projects"] as const).map((id, i) => (
               <motion.a
                 key={id}
                 href={`#${id}`}
@@ -851,7 +848,7 @@ export function PortfolioHome() {
                 animate={sectionsReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
                 transition={{ ...easeOut, delay: 0.05 + i * 0.06 }}
               >
-                {id === "work" ? "Work" : "Projects"}
+                Projects
               </motion.a>
             ))}
           </nav>
@@ -863,78 +860,7 @@ export function PortfolioHome() {
             transition={{ ...easeOut, duration: 0.5, delay: 0.1 }}
           />
 
-          <section id="work" className="scroll-mt-8">
-            <motion.h2
-              className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={revealViewport}
-              transition={easeOut}
-            >
-              Work
-            </motion.h2>
-            <div className="mt-8 space-y-10">
-              {workEntries.map((job, idx) => (
-                <motion.article
-                  key={`${job.role}-${job.company}`}
-                  className="flex gap-3 sm:gap-4"
-                  initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  viewport={revealViewport}
-                  transition={{ ...easeOut, delay: idx * 0.04 }}
-                >
-                  {job.thumb ? (
-                    <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md border border-border bg-muted">
-                      <Image
-                        src={job.thumb.src}
-                        alt={job.thumb.alt}
-                        fill
-                        className="object-cover"
-                        sizes="44px"
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      className="h-11 w-11 shrink-0 rounded-md border border-dashed border-border bg-muted"
-                      aria-hidden
-                    />
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[1.05rem] leading-relaxed sm:text-[1.0625rem]">
-                      <span className="font-medium text-foreground">{job.role}</span>
-                      <span className="text-muted-foreground"> | </span>
-                      {job.companyUrl ? (
-                        <a
-                          href={job.companyUrl}
-                          className={linkClass}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {job.company}
-                        </a>
-                      ) : (
-                        <span className="text-foreground">{job.company}</span>
-                      )}
-                      <span className="text-muted-foreground"> | </span>
-                      <span className="text-muted-foreground">{job.period}</span>
-                    </p>
-                    {job.note ? (
-                      <p className="mt-1.5 text-[0.95rem] leading-relaxed text-muted-foreground">
-                        {job.note}
-                      </p>
-                    ) : null}
-                    {job.description ? (
-                      <p className="mt-3 text-[1.05rem] leading-relaxed text-muted-foreground sm:text-[1.0625rem]">
-                        {job.description}
-                      </p>
-                    ) : null}
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-          </section>
-
-          <section id="projects" className="mt-16 scroll-mt-8 sm:mt-20">
+          <section id="projects" className="scroll-mt-8">
             <div className="lg:relative lg:left-1/2 lg:w-screen lg:max-w-7xl lg:-translate-x-1/2 lg:px-6 xl:px-8">
               <motion.h2
                 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl"
