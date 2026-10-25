@@ -69,7 +69,7 @@ export default function SharinganProject() {
       </header>
 
       <section className={styles.projectHero}>
-        <div className={styles.kb} style={{ backgroundImage: "url('/bracket-angle.png')" }}></div>
+        <div className={styles.kb} style={{ backgroundImage: "url('/sharingan-drone.jpg')" }}></div>
         <div className={`${styles.projectHeroInner} ${styles.container}`}>
           <Link className={styles.back} href="/#projects">
             ← ALL PROJECTS
