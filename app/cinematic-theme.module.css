@@ -2,28 +2,10 @@
    Herman Isayenka — portfolio theme v2
    "Flight briefing" cinematic aesthetic
    Scoped CSS module — used by app/page.tsx and app/projects/sharingan/page.tsx
+   NOTE: the --bg/--text/etc. custom-property values this file relies on
+   are defined globally in app/globals.css (CSS Modules can't contain a
+   fully-global :root rule with no local class, so they live there).
    ============================================================ */
-
-:global(:root) {
-  --bg: #07080a;
-  --bg-panel: #0f1210;
-  --bg-panel-2: #141811;
-  --line: #262b22;
-  --line-bright: #3a4233;
-  --text: #e8ece3;
-  --text-dim: #9aa393;
-  --text-faint: #5e6657;
-  --amber: #ffb454;
-  --green: #7fd99a;
-  --cyan: #5fd4d0;
-  --red: #ff6b5e;
-  --mono: "IBM Plex Mono", "SF Mono", Menlo, monospace;
-  --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --radius: 2px;
-  --ease: cubic-bezier(.16,1,.3,1);
-}
-
-:global(html) { scroll-behavior: smooth; }
 
 .pageRoot {
   min-height: 100vh;
@@ -378,7 +360,7 @@
 .trailer {
   position: relative;
   min-height: 420px;
-  border-radius: var(--radius);
+  border-radius: var(--cine-radius);
   overflow: hidden;
   border: 1px solid rgba(255,180,84,0.3);
   display: flex;
@@ -422,7 +404,7 @@
 .trailerTags span {
   font-family: var(--mono); font-size: 11px;
   border: 1px solid var(--line-bright); color: var(--text-dim);
-  padding: 4px 10px; border-radius: var(--radius);
+  padding: 4px 10px; border-radius: var(--cine-radius);
 }
 .btnCta {
   font-family: var(--mono);
@@ -432,7 +414,7 @@
   text-decoration: none;
   background: var(--amber);
   padding: 12px 22px;
-  border-radius: var(--radius);
+  border-radius: var(--cine-radius);
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -447,7 +429,7 @@
   margin-bottom: 28px;
   border: 1px solid var(--line);
   width: fit-content;
-  border-radius: var(--radius);
+  border-radius: var(--cine-radius);
   overflow: hidden;
 }
 .tab {
@@ -477,7 +459,7 @@
   position: relative;
   background: var(--bg-panel);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--cine-radius);
   overflow: hidden;
   transition: border-color .2s ease, transform .2s ease;
 }
@@ -531,7 +513,7 @@
 .pcard .tech { display: flex; flex-wrap: wrap; gap: 6px; }
 .pcard .tech span {
   font-family: var(--mono); font-size: 10px; color: var(--text-dim);
-  border: 1px solid var(--line); padding: 2px 7px; border-radius: var(--radius);
+  border: 1px solid var(--line); padding: 2px 7px; border-radius: var(--cine-radius);
 }
 
 /* ================= Footer ================= */
@@ -605,7 +587,7 @@
 .projectHero .tags span {
   font-family: var(--mono); font-size: 11px;
   border: 1px solid var(--line-bright); color: var(--text-dim);
-  padding: 4px 10px; border-radius: var(--radius);
+  padding: 4px 10px; border-radius: var(--cine-radius);
 }
 
 .psection { padding: 72px 0; border-bottom: 1px solid var(--line); }
@@ -620,7 +602,7 @@
 .pgrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
 @media (max-width: 860px) { .pgrid2 { grid-template-columns: 1fr; } }
 
-.imgFrame { border: 1px solid var(--line); background: #06070b; border-radius: var(--radius); padding: 18px; position: relative; }
+.imgFrame { border: 1px solid var(--line); background: #06070b; border-radius: var(--cine-radius); padding: 18px; position: relative; }
 .imgFrame .corner { position: absolute; width: 14px; height: 14px; border: 1px solid var(--amber); opacity: 0.6; }
 .imgFrame .corner.tl { top: 6px; left: 6px; border-right: none; border-bottom: none; }
 .imgFrame .corner.tr { top: 6px; right: 6px; border-left: none; border-bottom: none; }
@@ -636,19 +618,19 @@
 .specList li .v { color: var(--text); text-align: right; }
 
 .videoPlaceholder {
-  border: 1px dashed var(--line-bright); border-radius: var(--radius);
+  border: 1px dashed var(--line-bright); border-radius: var(--cine-radius);
   background: var(--bg-panel); padding: 48px 24px; text-align: center; margin: 20px 0;
 }
 .videoPlaceholder .icon { font-family: var(--mono); font-size: 32px; color: var(--text-faint); margin-bottom: 12px; }
 .videoPlaceholder .label { font-family: var(--mono); font-size: 12px; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; }
 .videoPlaceholder .note { font-size: 12px; color: var(--text-faint); margin-top: 8px; }
 
-.diagramBox { border: 1px solid var(--line); background: #06070b; border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+.diagramBox { border: 1px solid var(--line); background: #06070b; border-radius: var(--cine-radius); padding: 24px; margin: 20px 0; }
 .diagramBox svg { width: 100%; height: auto; display: block; }
 
 .callout {
   border-left: 2px solid var(--cyan); background: rgba(95, 212, 208, 0.05);
   padding: 14px 18px; font-size: 13px; color: var(--text-dim); margin: 20px 0;
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border-radius: 0 var(--cine-radius) var(--cine-radius) 0;
 }
 .callout strong { color: var(--cyan); }
