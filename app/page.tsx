@@ -178,10 +178,22 @@ export default function Home() {
         <div className={styles.heroInner}>
           <h1 className={styles.heroTitle}>
             <span className={styles.line}>
-              <span>Building autonomy for</span>
+              <span className={styles.heroPrompt}>{"> "}</span>
+              <span
+                className={`${styles.typeLine} ${styles.green}`}
+                style={{ "--chars": "21", animationDuration: "1.05s", animationDelay: "0.3s" } as React.CSSProperties}
+              >
+                Building autonomy for
+              </span>
             </span>
-            <span className={styles.line}>
-              <span className={styles.accent}>aerospace, space, and defense.</span>
+            <span className={`${styles.line} ${styles.typeLine2}`}>
+              <span
+                className={`${styles.typeLine} ${styles.amber}`}
+                style={{ "--chars": "30", animationDuration: "1.45s", animationDelay: "1.45s" } as React.CSSProperties}
+              >
+                aerospace, space, and defense.
+              </span>
+              <span className={styles.typeCursor} style={{ animationDelay: "2.9s" }}></span>
             </span>
           </h1>
           <div className={styles.heroSocials}>
