@@ -237,24 +237,14 @@
 
 @keyframes lineUp { to { transform: translateY(0); } }
 
-/* Terminal-style letter-by-letter typing headline */
+/* Terminal-style letter-by-letter typing headline (typed via JS in page.tsx) */
 .heroPrompt {
   color: var(--text-faint);
 }
-.typeLine {
+.typeTarget {
   display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
   vertical-align: bottom;
-  width: 0;
-  animation-name: typeReveal;
-  animation-timing-function: steps(var(--chars), end);
-  animation-fill-mode: forwards;
-}
-.typeLine.green { color: var(--green); }
-.typeLine.amber { color: var(--amber); }
-@keyframes typeReveal {
-  to { width: calc(var(--chars) * 1ch); }
+  min-height: 1em;
 }
 .heroTitle .typeCursor {
   display: inline-block;
@@ -263,7 +253,6 @@
   background: var(--amber);
   vertical-align: -0.1em;
   margin-left: 6px;
-  opacity: 0;
   animation: pulse 1s steps(2) infinite;
 }
 .heroTitle .typeLine2 {

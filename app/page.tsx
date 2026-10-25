@@ -89,6 +89,30 @@ export default function Home() {
       tabHandlers.push([tab, handler]);
     });
 
+    // Terminal-style letter-by-letter typing headline
+    const typeTimers: Array<ReturnType<typeof setTimeout>> = [];
+    const typeTargets = Array.from(root.querySelectorAll<HTMLElement>(`.${styles.typeTarget}`));
+    const typeNext = (index: number) => {
+      if (index >= typeTargets.length) return;
+      const el = typeTargets[index];
+      const text = el.dataset.typeText || "";
+      const color = el.dataset.typeColor;
+      if (color === "green") el.style.color = "var(--green)";
+      if (color === "amber") el.style.color = "var(--amber)";
+      let charIndex = 0;
+      const typeChar = () => {
+        charIndex++;
+        el.textContent = text.slice(0, charIndex);
+        if (charIndex < text.length) {
+          typeTimers.push(setTimeout(typeChar, 45));
+        } else {
+          typeTimers.push(setTimeout(() => typeNext(index + 1), 180));
+        }
+      };
+      typeTimers.push(setTimeout(typeChar, 45));
+    };
+    typeTimers.push(setTimeout(() => typeNext(0), 350));
+
     // Lazy-play card videos only when visible
     const cardVideos = root.querySelectorAll<HTMLVideoElement>(`.${styles.pcard} video`);
     const videoIO = new IntersectionObserver(
@@ -112,6 +136,7 @@ export default function Home() {
       videoIO.disconnect();
       window.removeEventListener("scroll", onScroll);
       tabHandlers.forEach(([tab, handler]) => tab.removeEventListener("click", handler));
+      typeTimers.forEach((t) => clearTimeout(t));
     };
   }, []);
 
@@ -179,21 +204,11 @@ export default function Home() {
           <h1 className={styles.heroTitle}>
             <span className={styles.line}>
               <span className={styles.heroPrompt}>{"> "}</span>
-              <span
-                className={`${styles.typeLine} ${styles.green}`}
-                style={{ "--chars": "21", animationDuration: "1.05s", animationDelay: "0.3s" } as any}
-              >
-                Building autonomy for
-              </span>
+              <span className={styles.typeTarget} data-type-text="Building autonomy for" data-type-color="green"></span>
             </span>
             <span className={`${styles.line} ${styles.typeLine2}`}>
-              <span
-                className={`${styles.typeLine} ${styles.amber}`}
-                style={{ "--chars": "30", animationDuration: "1.45s", animationDelay: "1.45s" } as any}
-              >
-                aerospace, space, and defense.
-              </span>
-              <span className={styles.typeCursor} style={{ animationDelay: "2.9s" }}></span>
+              <span className={styles.typeTarget} data-type-text="aerospace, space, and defense." data-type-color="amber"></span>
+              <span className={styles.typeCursor}></span>
             </span>
           </h1>
           <div className={styles.heroSocials}>
