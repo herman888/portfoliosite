@@ -244,10 +244,10 @@ export default function Home() {
             <span className={styles.num}>02</span> FEATURED — ACTIVE PROJECT
           </div>
           <div className={`${styles.trailer} ${styles.reveal}`}>
-            <div className={styles.kb} style={{ backgroundImage: "url('/bracket-angle.png')" }}></div>
+            <div className={styles.kb} style={{ backgroundImage: "url('/sharingan-drone.jpg')" }}></div>
             <div
               className={`${styles.kb} ${styles.kb2}`}
-              style={{ backgroundImage: "url('/bracket-top.png')", opacity: 0 }}
+              style={{ backgroundImage: "url('/bracket-angle.png')", opacity: 0 }}
             ></div>
             <div className={styles.trailerContent}>
               <span className={styles.trailerBadge}>// Embedded Systems — New</span>
