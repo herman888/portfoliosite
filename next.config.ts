@@ -23,11 +23,11 @@ const nextConfig: NextConfig = {
   /**
    * iCloud / sync on ~/Documents can break webpack’s atomic renames into `.next/cache`.
    * In-memory-only cache avoids ENOENT on `_buildManifest.js.tmp.*` and missing manifests.
+   * Disabled in prod builds too — stale persistent cache has caused mismatched
+   * build output on Vercel after fixing source errors.
    */
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.cache = false;
-    }
+  webpack: (config) => {
+    config.cache = false;
     return config;
   },
 };
