@@ -489,6 +489,7 @@ export default function Home() {
                   src="https://www.youtube.com/embed/gwU1twqMq40?autoplay=1&mute=1&loop=1&playlist=gwU1twqMq40&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
                   allow="autoplay; encrypted-media"
                   loading="lazy"
+                  title="RedLamp project video"
                 />
               </div>
               <div className={styles.caption}>
@@ -521,6 +522,7 @@ export default function Home() {
                   src="https://www.youtube.com/embed/P3chEYABVYA?autoplay=1&mute=1&loop=1&playlist=P3chEYABVYA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
                   allow="autoplay; encrypted-media"
                   loading="lazy"
+                  title="GrowthSync project video"
                 />
               </div>
               <div className={styles.caption}>
@@ -539,6 +541,7 @@ export default function Home() {
                   src="https://www.youtube.com/embed/PQBeq-7WKRE?autoplay=1&mute=1&loop=1&playlist=PQBeq-7WKRE&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
                   allow="autoplay; encrypted-media"
                   loading="lazy"
+                  title="Finding N.E.M.O project video"
                 />
               </div>
               <div className={styles.caption}>
@@ -557,6 +560,7 @@ export default function Home() {
                   src="https://www.youtube.com/embed/man2-PK6fbg?autoplay=1&mute=1&loop=1&playlist=man2-PK6fbg&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
                   allow="autoplay; encrypted-media"
                   loading="lazy"
+                  title="Giveway project video"
                 />
               </div>
               <div className={styles.caption}>
@@ -589,6 +593,7 @@ export default function Home() {
                   src="https://www.youtube.com/embed/1M8MoqCxQCI?autoplay=1&mute=1&loop=1&playlist=1M8MoqCxQCI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
                   allow="autoplay; encrypted-media"
                   loading="lazy"
+                  title="KinKitchen project video"
                 />
               </div>
               <div className={styles.caption}>
