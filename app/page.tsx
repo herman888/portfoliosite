@@ -181,7 +181,7 @@ export default function Home() {
               <span className={styles.heroPrompt}>{"> "}</span>
               <span
                 className={`${styles.typeLine} ${styles.green}`}
-                style={{ "--chars": "21", animationDuration: "1.05s", animationDelay: "0.3s" } as React.CSSProperties}
+                style={{ "--chars": "21", animationDuration: "1.05s", animationDelay: "0.3s" } as any}
               >
                 Building autonomy for
               </span>
@@ -189,7 +189,7 @@ export default function Home() {
             <span className={`${styles.line} ${styles.typeLine2}`}>
               <span
                 className={`${styles.typeLine} ${styles.amber}`}
-                style={{ "--chars": "30", animationDuration: "1.45s", animationDelay: "1.45s" } as React.CSSProperties}
+                style={{ "--chars": "30", animationDuration: "1.45s", animationDelay: "1.45s" } as any}
               >
                 aerospace, space, and defense.
               </span>
