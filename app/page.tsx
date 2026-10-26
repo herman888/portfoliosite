@@ -48,47 +48,6 @@ export default function Home() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Stat counters
-    const stats = root.querySelectorAll<HTMLElement>(`.${styles.stat} .num[data-count]`);
-    const statIO = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const el = entry.target as HTMLElement;
-          const target = parseInt(el.dataset.count || "0", 10);
-          const duration = 1100;
-          const start = performance.now();
-          function tick(now: number) {
-            const p = Math.min(1, (now - start) / duration);
-            const eased = 1 - Math.pow(1 - p, 3);
-            el.textContent = String(Math.round(eased * target));
-            if (p < 1) requestAnimationFrame(tick);
-          }
-          requestAnimationFrame(tick);
-          statIO.unobserve(el);
-        });
-      },
-      { threshold: 0.6 }
-    );
-    stats.forEach((el) => statIO.observe(el));
-
-    // Category tabs
-    const tabs = root.querySelectorAll<HTMLElement>(`.${styles.tab}`);
-    const onTabClick = (tab: HTMLElement) => {
-      tabs.forEach((t) => t.classList.remove(styles.active));
-      tab.classList.add(styles.active);
-      const cat = tab.dataset.cat;
-      root.querySelectorAll<HTMLElement>(`.${styles.pgrid}[data-cat]`).forEach((g) => {
-        g.style.display = g.dataset.cat === cat ? "grid" : "none";
-      });
-    };
-    const tabHandlers: Array<[HTMLElement, () => void]> = [];
-    tabs.forEach((tab) => {
-      const handler = () => onTabClick(tab);
-      tab.addEventListener("click", handler);
-      tabHandlers.push([tab, handler]);
-    });
-
     // Terminal-style letter-by-letter typing headline
     const typeTimers: Array<ReturnType<typeof setTimeout>> = [];
     const typeTargets = Array.from(root.querySelectorAll<HTMLElement>(`.${styles.typeTarget}`));
@@ -102,11 +61,27 @@ export default function Home() {
       let charIndex = 0;
       const typeChar = () => {
         charIndex++;
-        el.textContent = text.slice(0, charIndex);
+        const ch = text[charIndex - 1];
+        const span = document.createElement("span");
+        span.className = `${styles.typeChar} ${styles.typeCharActive}`;
+        span.textContent = ch;
+        el.appendChild(span);
+        // settle the previous flash out, leave this one lit for a beat
+        const prior = span.previousElementSibling as HTMLElement | null;
+        if (prior) prior.classList.remove(styles.typeCharActive);
         if (charIndex < text.length) {
           typeTimers.push(setTimeout(typeChar, 45));
         } else {
-          typeTimers.push(setTimeout(() => typeNext(index + 1), 180));
+          typeTimers.push(
+            setTimeout(() => {
+              span.classList.remove(styles.typeCharActive);
+              const next = el.nextElementSibling as HTMLElement | null;
+              if (next && next.hasAttribute("data-type-reveal")) {
+                next.classList.add(styles.visible);
+              }
+              typeNext(index + 1);
+            }, 180)
+          );
         }
       };
       typeTimers.push(setTimeout(typeChar, 45));
@@ -132,20 +107,18 @@ export default function Home() {
 
     return () => {
       io.disconnect();
-      statIO.disconnect();
       videoIO.disconnect();
       window.removeEventListener("scroll", onScroll);
-      tabHandlers.forEach(([tab, handler]) => tab.removeEventListener("click", handler));
       typeTimers.forEach((t) => clearTimeout(t));
     };
   }, []);
 
   return (
-    <div ref={rootRef} className={styles.pageRoot}>
+    <div ref={rootRef} className={styles.pageRoot} style={{ fontFamily: "var(--mono)" }}>
       <header className={styles.topbar}>
         <div className={styles.topbarInner}>
           <div className={styles.brand}>
-            <span className={styles.dot}></span> HERMAN ISAYENKA
+            HERMAN ISAYENKA
           </div>
           <nav className={styles.links}>
             <a href="#projects">PROJECTS</a>
@@ -164,31 +137,31 @@ export default function Home() {
         <div className={styles.flightRig}>
           <div className={styles.droneTrail} aria-hidden="true">
             <svg viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="18" r="9" stroke="#ffb454" strokeWidth="2" />
-              <circle cx="100" cy="18" r="9" stroke="#ffb454" strokeWidth="2" />
-              <circle cx="20" cy="46" r="9" stroke="#ffb454" strokeWidth="2" />
-              <circle cx="100" cy="46" r="9" stroke="#ffb454" strokeWidth="2" />
+              <circle cx="20" cy="18" r="9" stroke="#1d4ed8" strokeWidth="2" />
+              <circle cx="100" cy="18" r="9" stroke="#1d4ed8" strokeWidth="2" />
+              <circle cx="20" cy="46" r="9" stroke="#1d4ed8" strokeWidth="2" />
+              <circle cx="100" cy="46" r="9" stroke="#1d4ed8" strokeWidth="2" />
               <path
                 d="M30 20L50 30M90 20L70 30M30 44L50 32M90 44L70 32"
-                stroke="#ffb454"
+                stroke="#1d4ed8"
                 strokeWidth="2"
               />
-              <rect x="48" y="26" width="24" height="12" rx="2" stroke="#ffb454" strokeWidth="2" />
+              <rect x="48" y="26" width="24" height="12" rx="2" stroke="#1d4ed8" strokeWidth="2" />
             </svg>
           </div>
           <div className={styles.droneIcon} aria-hidden="true">
             <svg viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="18" r="9" stroke="#ffb454" strokeWidth="2" />
-              <circle cx="100" cy="18" r="9" stroke="#ffb454" strokeWidth="2" />
-              <circle cx="20" cy="46" r="9" stroke="#ffb454" strokeWidth="2" />
-              <circle cx="100" cy="46" r="9" stroke="#ffb454" strokeWidth="2" />
+              <circle cx="20" cy="18" r="9" stroke="#1d4ed8" strokeWidth="2" />
+              <circle cx="100" cy="18" r="9" stroke="#1d4ed8" strokeWidth="2" />
+              <circle cx="20" cy="46" r="9" stroke="#1d4ed8" strokeWidth="2" />
+              <circle cx="100" cy="46" r="9" stroke="#1d4ed8" strokeWidth="2" />
               <path
                 d="M30 20L50 30M90 20L70 30M30 44L50 32M90 44L70 32"
-                stroke="#ffb454"
+                stroke="#1d4ed8"
                 strokeWidth="2"
               />
-              <rect x="48" y="26" width="24" height="12" rx="2" stroke="#ffb454" strokeWidth="2" />
-              <circle cx="60" cy="32" r="2.4" fill="#5fd4d0" />
+              <rect x="48" y="26" width="24" height="12" rx="2" stroke="#1d4ed8" strokeWidth="2" />
+              <circle cx="60" cy="32" r="2.4" fill="#38bdf8" />
             </svg>
           </div>
         </div>
@@ -217,6 +190,7 @@ export default function Home() {
             <a href="https://github.com/herman888">GITHUB</a>
             <a href="https://hermanisayenka.ca">INSTAGRAM</a>
             <a href="https://hermanisayenka.ca">X</a>
+            <span className={styles.internshipBadge}>Looking for Winter 2028 Internships</span>
           </div>
         </div>
 
@@ -226,411 +200,420 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ========== ABOUT ========== */}
+      <section className={styles.aboutBand}>
+        <div className={styles.aboutFloor}></div>
+        <div className={styles.aboutVignette}></div>
+        <div className={styles.aboutInner}>
+          <div className={styles.aboutTag}>{"// About"}</div>
+          <p className={styles.aboutLine}>
+            <span className={styles.aboutPrompt}>{">> "}</span>
+            <span
+              className={styles.typeTarget}
+              data-type-text="2nd Year Electrical Engineering Student at York University"
+              data-type-color="amber"
+            ></span>
+          </p>
+          <p className={styles.aboutLine}>
+            <span className={styles.aboutPrompt}>{">> "}</span>
+            <span
+              className={styles.typeTarget}
+              data-type-text="Recipient of a $120,000 Schulich Leader Scholarship"
+              data-type-color="amber"
+            ></span>
+          </p>
+          <p className={styles.aboutLine}>
+            <span className={styles.aboutPrompt}>{">> "}</span>
+            <span
+              className={styles.typeTarget}
+              data-type-text="Incoming Hardware Engineering Intern @ Dominion Dynamics"
+              data-type-color="amber"
+            ></span>
+          </p>
+          <p className={styles.aboutLine}>
+            <span className={styles.aboutPrompt}>{">> "}</span>
+            <span
+              className={styles.typeTarget}
+              data-type-text="Recently built"
+              data-type-color="amber"
+            ></span>
+            <Link href="/projects/sharingan" className={styles.aboutLink} data-type-reveal="">
+              Sharingan
+            </Link>
+          </p>
+        </div>
+      </section>
+
       <div className={styles.container}>
         <div className={`${styles.terminalLine} ${styles.reveal}`}>
           <span>FEED LOCKED — TARGET: PORTFOLIO.LOG</span>
           <span className={styles.cursor}></span>
         </div>
 
-        {/* ========== ABOUT ========== */}
-        <section className={styles.panel}>
-          <div className={`${styles.sectionTag} ${styles.reveal}`}>
-            <span className={styles.num}>01</span> ORIGIN
-          </div>
-          <div className={styles.aboutSplit}>
-            <div className={styles.reveal}>
-              <h2>From line-followers to counter-UAS interceptors.</h2>
-              <p>
-                I&apos;m an <strong>Electrical Engineering</strong> student at York University
-                Lassonde, building across embedded systems, control theory, and applied software.
-                My work spans UAV flight stacks, sensor fusion, computer vision, and the kind of
-                hardware that has to work the first time it leaves the bench.
-              </p>
-              <p>
-                Outside coursework, I build and fly things — from a scout drone that sees through
-                walls to a fixed-wing interceptor platform — and compete in hackathons and case
-                competitions along the way.
-              </p>
-              <div className={styles.statRow}>
-                <div className={styles.stat}>
-                  <div className={styles.num} data-count="20">0</div>
-                  <div className={styles.label}>Projects shipped</div>
-                </div>
-                <div className={styles.stat}>
-                  <div className={styles.num} data-count="4">0</div>
-                  <div className={styles.label}>Hackathon podiums</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========== FEATURED / SHARINGAN TRAILER ========== */}
-        <section className={styles.panel}>
-          <div className={`${styles.sectionTag} ${styles.reveal}`}>
-            <span className={styles.num}>02</span> FEATURED — ACTIVE PROJECT
-          </div>
-          <div className={`${styles.trailer} ${styles.reveal}`}>
-            <div className={styles.kb} style={{ backgroundImage: "url('/sharingan-drone.jpg')" }}></div>
-            <div
-              className={`${styles.kb} ${styles.kb2}`}
-              style={{ backgroundImage: "url('/bracket-angle.png')", opacity: 0 }}
-            ></div>
-            <div className={styles.trailerContent}>
-              <span className={styles.trailerBadge}>// Embedded Systems — New</span>
-              <h3>Sharingan</h3>
-              <p>
-                A scout drone built to see through walls from its own vantage point — fusing an
-                onboard camera, mmWave radar, and WiFi CSI sensing into a single live picture of
-                what&apos;s on the other side. Custom flight stack, 3D-printed sensor mounts, and a
-                Raspberry Pi payload running the fusion pipeline in real time.
-              </p>
-              <div className={styles.trailerTags}>
-                <span>Sensor Fusion</span>
-                <span>FPV / Betaflight</span>
-                <span>Raspberry Pi</span>
-                <span>3D Printing</span>
-              </div>
-              <Link className={styles.btnCta} href="/projects/sharingan">
-                WATCH THE BRIEFING →
-              </Link>
-            </div>
-          </div>
-        </section>
-
         {/* ========== PROJECTS ========== */}
         <section id="projects" className={styles.panel}>
           <div className={`${styles.sectionTag} ${styles.reveal}`}>
-            <span className={styles.num}>03</span> MISSION LOG — ALL PROJECTS
+            <span className={styles.num}>01</span> ALL PROJECTS
           </div>
 
-          <div className={`${styles.tabs} ${styles.reveal}`} role="tablist">
-            <button className={`${styles.tab} ${styles.active}`} data-cat="embedded">
-              Embedded Systems
-            </button>
-            <button className={styles.tab} data-cat="math">
-              Math
-            </button>
-            <button className={styles.tab} data-cat="software">
-              Software
-            </button>
+          <div className={`${styles.projectsHeaderRow} ${styles.reveal}`}>
+            <h2>My Projects</h2>
           </div>
 
-          {/* Embedded Systems */}
-          <div className={`${styles.pgrid} ${styles.reveal}`} data-cat="embedded">
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <video src="/larp/larp-intro.mp4" muted loop playsInline />
+          <div className={`${styles.pgroup} ${styles.reveal}`}>
+            <h3 className={styles.groupLabel}>Work</h3>
+            <div className={styles.workGrid}>
+              <div className={styles.workCard}>
+                <div className={`${styles.workLogo} ${styles.dark}`}>
+                  <img src="/dominion-dynamics-logo.jpg" alt="Dominion Dynamics" />
+                </div>
+                <div className={styles.workInfo}>
+                  <h4>Dominion Dynamics</h4>
+                  <div className={styles.workRole}>Incoming Hardware Engineering Intern</div>
+                </div>
               </div>
-              <div className={styles.caption}>
-                <span>C-UAS</span>
-                <span className={styles.yr}>2026</span>
+              <div className={styles.workCard}>
+                <div className={`${styles.workLogo} ${styles.dark}`}>
+                  <img src="/human-computer-lab-logo.jpg" alt="Human Computer Lab" />
+                </div>
+                <div className={styles.workInfo}>
+                  <h4>Human Computer Lab</h4>
+                  <div className={styles.workRole}>Technical Staff Intern</div>
+                </div>
               </div>
-              <div className={styles.body}>
-                <h3>Localised Aerial Response Platform</h3>
-                <p>C-UAS interceptor system for localized aerial threat response.</p>
-                <div className={styles.tech}><span>Docs</span></div>
+              <div className={styles.workCard}>
+                <div className={`${styles.workLogo} ${styles.light}`}>
+                  <img src="/sellstatic-logo.png" alt="Sellstatic" />
+                </div>
+                <div className={styles.workInfo}>
+                  <h4>Sellstatic</h4>
+                  <div className={styles.workRole}>Software Engineering Intern</div>
+                </div>
               </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/wing-build-prototype-right-rot180.jpg" alt="Fixed-wing UAV airframe" />
-              </div>
-              <div className={styles.caption}>
-                <span>Fixed-Wing</span>
-                <span className={styles.yr}>2025</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Fixed-Wing UAV Airframe Design</h3>
-                <p>Laser-cut wing iterations and a heat-shrink prototype skin for a fixed-wing airframe.</p>
-                <div className={styles.tech}><span>CAD</span><span>Laser Cut</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <video src="/droneracing.mp4" muted loop playsInline />
-              </div>
-              <div className={styles.caption}>
-                <span>Vision + ROS</span>
-                <span className={styles.yr}>2024</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Integrating UAV Controls into Navigation</h3>
-                <p>Vision models deployed on a drone&apos;s onboard compute, integrated with ROS for navigation control.</p>
-                <div className={styles.tech}><span>ROS</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/car-line-follower.png" alt="Car line follower" />
-              </div>
-              <div className={styles.caption}>
-                <span>Arduino</span>
-                <span className={styles.yr}>2024</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Car Line Follower</h3>
-                <p>Infrared sensors and Arduino logic for autonomous line-following.</p>
-                <div className={styles.tech}><span>Arduino</span><span>IR Sensors</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <video src="/car.mov" muted loop playsInline />
-              </div>
-              <div className={styles.caption}>
-                <span>Arduino</span>
-                <span className={styles.yr}>2024</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Car with Obstacle Detection</h3>
-                <p>An Arduino-controlled car that detects and avoids obstacles in real time.</p>
-                <div className={styles.tech}><span>Arduino</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/water.jpg" alt="Autonomous water pump" />
-              </div>
-              <div className={styles.caption}>
-                <span>Automation</span>
-                <span className={styles.yr}>2024</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Autonomous Water Pump</h3>
-                <p>Waters plants automatically based on live soil moisture readings.</p>
-                <div className={styles.tech}><span>Arduino</span><span>Sensors</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <video src="/timer.mp4" muted loop playsInline />
-              </div>
-              <div className={styles.caption}>
-                <span>Circuits</span>
-                <span className={styles.yr}>2025</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Digital Timer</h3>
-                <p>An Arduino-driven timer built around a 555 timer IC.</p>
-                <div className={styles.tech}><span>Arduino</span><span>EasyEDA</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <video src="/clock.mp4" muted loop playsInline />
-              </div>
-              <div className={styles.caption}>
-                <span>Circuits</span>
-                <span className={styles.yr}>2025</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Digital Clock</h3>
-                <p>An Arduino-based clock driving a 7-segment display.</p>
-                <div className={styles.tech}><span>Arduino</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/heateddriveway.png" alt="Heated driveway" />
-              </div>
-              <div className={styles.caption}>
-                <span>IoT</span>
-                <span className={styles.yr}>2026</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Heated Driveway</h3>
-                <p>Snow detection and heating controller with a live monitoring dashboard.</p>
-                <div className={styles.tech}><span>Arduino</span><span>Relay State Machine</span></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Math */}
-          <div className={styles.pgrid} data-cat="math" style={{ display: "none" }}>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/simulation.png" alt="UAV navigation simulation" />
-              </div>
-              <div className={styles.caption}>
-                <span>Controls</span>
-                <span className={styles.yr}>2025</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Optimizing UAV Autonomous Navigation</h3>
-                <p>Quadrotor co-simulation with cascaded attitude control design and tuning.</p>
-                <div className={styles.tech}><span>MATLAB</span><span>Simulink</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/janestreet.jpeg" alt="Jane Street Estimation Competition" />
-              </div>
-              <div className={styles.caption}>
-                <span>Estimation</span>
-                <span className={styles.yr}>2025</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Jane Street Estimation Competition</h3>
-                <p>Fermi estimation competition. Placed 1st.</p>
-                <div className={styles.tech}><span>Fermi Estimation</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/forestorsfinancial.jpeg" alt="Foresters Financial Development Challenge" />
-              </div>
-              <div className={styles.caption}>
-                <span>Case Comp</span>
-                <span className={styles.yr}>2026</span>
-              </div>
-              <div className={styles.body}>
-                <h3>Foresters Financial Development Challenge</h3>
-                <p>Fintech case competition. Placed 1st.</p>
-                <div className={styles.tech}><span>Financial Modeling</span></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Software */}
-          <div className={styles.pgrid} data-cat="software" style={{ display: "none" }}>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <video src="/drone-racing-2023-loop.mp4" muted loop playsInline />
-              </div>
-              <div className={styles.caption}>
-                <span>ML / CV</span>
-                <span className={styles.yr}>2023</span>
-              </div>
-              <div className={styles.body}>
-                <h3>UAV Navigation Model Training</h3>
-                <p>A YOLOv8 gate detector trained for autonomous drone racing navigation.</p>
-                <div className={styles.tech}>
-                  <span>YOLOv8</span><span>PyTorch</span><span>OpenCV</span><span>Roboflow</span>
+              <div className={styles.workCard}>
+                <div className={`${styles.workLogo} ${styles.light}`}>
+                  <img src="/utias-fsc-logo.jpg" alt="UTIAS Flight Systems and Control" />
+                </div>
+                <div className={styles.workInfo}>
+                  <h4>UTIAS</h4>
+                  <div className={styles.workRole}>UAV Research Intern</div>
                 </div>
               </div>
             </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <iframe
-                  src="https://www.youtube.com/embed/gwU1twqMq40?autoplay=1&mute=1&loop=1&playlist=gwU1twqMq40&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  allow="autoplay; encrypted-media"
-                  loading="lazy"
-                  title="RedLamp project video"
-                />
+          </div>
+
+          <div className={`${styles.pgroup} ${styles.reveal}`}>
+            <h3 className={styles.groupLabel}>Research</h3>
+            <div className={styles.pgrid}>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <video src="/droneracing.mp4" muted loop playsInline />
+                </div>
+                <div className={styles.caption}>
+                  <span>Vision + ROS</span>
+                  <span className={styles.yr}>2024</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Integrating UAV Controls into Navigation</h3>
+                  <p>Vision models deployed on a drone&apos;s onboard compute, integrated with ROS for navigation control.</p>
+                  <div className={styles.tech}><span>ROS</span></div>
+                </div>
               </div>
-              <div className={styles.caption}>
-                <span>UofTHacks</span>
-                <span className={styles.yr}>2025</span>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/simulation.png" alt="UAV navigation simulation" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Controls</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Optimizing UAV Autonomous Navigation</h3>
+                  <p>Quadrotor co-simulation with cascaded attitude control design and tuning.</p>
+                  <div className={styles.tech}><span>MATLAB</span><span>Simulink</span></div>
+                </div>
               </div>
-              <div className={styles.body}>
-                <h3>RedLamp</h3>
-                <p>A study lamp that detects student stress. 2nd place.</p>
-                <div className={styles.tech}><span>Hardware + Software</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/shopify-card.jpg" alt="CityPath AI" />
-              </div>
-              <div className={styles.caption}>
-                <span>Shopify Hackathon</span>
-                <span className={styles.yr}>2025</span>
-              </div>
-              <div className={styles.body}>
-                <h3>CityPath AI</h3>
-                <p>Analyzes street safety patterns from city data. 3rd place.</p>
-                <div className={styles.tech}><span>Data Analysis</span></div>
-              </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <iframe
-                  src="https://www.youtube.com/embed/P3chEYABVYA?autoplay=1&mute=1&loop=1&playlist=P3chEYABVYA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  allow="autoplay; encrypted-media"
-                  loading="lazy"
-                  title="GrowthSync project video"
-                />
-              </div>
-              <div className={styles.caption}>
-                <span>CtrlHackDel 2.0</span>
-                <span className={styles.yr}>2026</span>
-              </div>
-              <div className={styles.body}>
-                <h3>GrowthSync</h3>
-                <p>Visualizes subdivision impact for city planners.</p>
-                <div className={styles.tech}><span>Visualization</span></div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <video src="/drone-racing-2023-loop.mp4" muted loop playsInline />
+                </div>
+                <div className={styles.caption}>
+                  <span>ML / CV</span>
+                  <span className={styles.yr}>2023</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>UAV Navigation Model Training</h3>
+                  <p>A YOLOv8 gate detector trained for autonomous drone racing navigation.</p>
+                  <div className={styles.tech}>
+                    <span>YOLOv8</span><span>PyTorch</span><span>OpenCV</span><span>Roboflow</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <iframe
-                  src="https://www.youtube.com/embed/PQBeq-7WKRE?autoplay=1&mute=1&loop=1&playlist=PQBeq-7WKRE&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  allow="autoplay; encrypted-media"
-                  loading="lazy"
-                  title="Finding N.E.M.O project video"
-                />
+          </div>
+
+          <div className={`${styles.pgroup} ${styles.reveal}`}>
+            <h3 className={styles.groupLabel}>Projects</h3>
+            <div className={styles.pgrid}>
+              <Link href="/projects/sharingan" className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/sharingan-team.jpg" alt="Sharingan scout drone team" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Embedded Systems</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Sharingan</h3>
+                  <p>A scout drone built to see through walls from its own vantage point — fusing an onboard camera, mmWave radar, and WiFi CSI sensing into a single live picture of what&apos;s on the other side.</p>
+                  <div className={styles.tech}>
+                    <span>Sensor Fusion</span><span>FPV / Betaflight</span><span>Raspberry Pi</span><span>3D Printing</span>
+                  </div>
+                </div>
+              </Link>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/wing-build-prototype-right-rot180.jpg" alt="Fixed-wing UAV airframe" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Fixed-Wing</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Fixed-Wing UAV Airframe Design</h3>
+                  <p>Laser-cut wing iterations and a heat-shrink prototype skin for a fixed-wing airframe.</p>
+                  <div className={styles.tech}><span>CAD</span><span>Laser Cut</span></div>
+                </div>
               </div>
-              <div className={styles.caption}>
-                <span>Hack Concordia</span>
-                <span className={styles.yr}>2025</span>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/shopify-card.jpg" alt="CityPath AI" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Shopify Hackathon</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>CityPath AI</h3>
+                  <p>Analyzes street safety patterns from city data. 3rd place.</p>
+                  <div className={styles.tech}><span>Data Analysis</span></div>
+                </div>
               </div>
-              <div className={styles.body}>
-                <h3>Finding N.E.M.O</h3>
-                <p>A shipping-container recovery simulation.</p>
-                <div className={styles.tech}><span>Simulation</span></div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/uofthacks-team.jpg" alt="RedLamp team at UofTHacks, holding the lamp prototype after placing 2nd" />
+                </div>
+                <div className={styles.caption}>
+                  <span>UofTHacks</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>RedLamp</h3>
+                  <p>A study lamp that detects student stress. 2nd place.</p>
+                  <div className={styles.tech}><span>Hardware + Software</span></div>
+                </div>
               </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <iframe
-                  src="https://www.youtube.com/embed/man2-PK6fbg?autoplay=1&mute=1&loop=1&playlist=man2-PK6fbg&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  allow="autoplay; encrypted-media"
-                  loading="lazy"
-                  title="Giveway project video"
-                />
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/janestreet.jpeg" alt="Jane Street Estimation Competition" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Estimation</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Jane Street Estimation Competition</h3>
+                  <p>Fermi estimation competition. Placed 1st.</p>
+                  <div className={styles.tech}><span>Fermi Estimation</span></div>
+                </div>
               </div>
-              <div className={styles.caption}>
-                <span>Hack the 6ix</span>
-                <span className={styles.yr}>2025</span>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/forestorsfinancial.jpeg" alt="Foresters Financial Development Challenge" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Case Comp</span>
+                  <span className={styles.yr}>2026</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Foresters Financial Development Challenge</h3>
+                  <p>Fintech case competition. Placed 1st.</p>
+                  <div className={styles.tech}><span>Financial Modeling</span></div>
+                </div>
               </div>
-              <div className={styles.body}>
-                <h3>Giveway</h3>
-                <p>Meal requests paired with optimized driver routing.</p>
-                <div className={styles.tech}><span>Routing</span></div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/car-line-follower.png" alt="Car line follower" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Arduino</span>
+                  <span className={styles.yr}>2024</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Car Line Follower</h3>
+                  <p>Infrared sensors and Arduino logic for autonomous line-following.</p>
+                  <div className={styles.tech}><span>Arduino</span><span>IR Sensors</span></div>
+                </div>
               </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <img src="/meal2go.png" alt="Meal2Go" />
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <video src="/car.mov" muted loop playsInline />
+                </div>
+                <div className={styles.caption}>
+                  <span>Arduino</span>
+                  <span className={styles.yr}>2024</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Car with Obstacle Detection</h3>
+                  <p>An Arduino-controlled car that detects and avoids obstacles in real time.</p>
+                  <div className={styles.tech}><span>Arduino</span></div>
+                </div>
               </div>
-              <div className={styles.caption}>
-                <span>Eureka Hacks</span>
-                <span className={styles.yr}>2024</span>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/water.jpg" alt="Autonomous water pump" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Automation</span>
+                  <span className={styles.yr}>2024</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Autonomous Water Pump</h3>
+                  <p>Waters plants automatically based on live soil moisture readings.</p>
+                  <div className={styles.tech}><span>Arduino</span><span>Sensors</span></div>
+                </div>
               </div>
-              <div className={styles.body}>
-                <h3>Meal2Go</h3>
-                <p>Health-tailored meal recommendations.</p>
-                <div className={styles.tech}><span>Software</span></div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <video src="/timer.mp4" muted loop playsInline />
+                </div>
+                <div className={styles.caption}>
+                  <span>Circuits</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Digital Timer</h3>
+                  <p>An Arduino-driven timer built around a 555 timer IC.</p>
+                  <div className={styles.tech}><span>Arduino</span><span>EasyEDA</span></div>
+                </div>
               </div>
-            </div>
-            <div className={styles.pcard}>
-              <div className={styles.media}>
-                <iframe
-                  src="https://www.youtube.com/embed/1M8MoqCxQCI?autoplay=1&mute=1&loop=1&playlist=1M8MoqCxQCI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  allow="autoplay; encrypted-media"
-                  loading="lazy"
-                  title="KinKitchen project video"
-                />
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <video src="/clock.mp4" muted loop playsInline />
+                </div>
+                <div className={styles.caption}>
+                  <span>Circuits</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Digital Clock</h3>
+                  <p>An Arduino-based clock driving a 7-segment display.</p>
+                  <div className={styles.tech}><span>Arduino</span></div>
+                </div>
               </div>
-              <div className={styles.caption}>
-                <span>Hack Canada</span>
-                <span className={styles.yr}>2026</span>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/heateddriveway.png" alt="Heated driveway" />
+                </div>
+                <div className={styles.caption}>
+                  <span>IoT</span>
+                  <span className={styles.yr}>2026</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Heated Driveway</h3>
+                  <p>Snow detection and heating controller with a live monitoring dashboard.</p>
+                  <div className={styles.tech}><span>Arduino</span><span>Relay State Machine</span></div>
+                </div>
               </div>
-              <div className={styles.body}>
-                <h3>KinKitchen</h3>
-                <p>3D step-by-step recipe walkthroughs.</p>
-                <div className={styles.tech}><span>3D</span><span>Software</span></div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <iframe
+                    src="https://www.youtube.com/embed/P3chEYABVYA?autoplay=1&mute=1&loop=1&playlist=P3chEYABVYA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="GrowthSync project video"
+                  />
+                </div>
+                <div className={styles.caption}>
+                  <span>CtrlHackDel 2.0</span>
+                  <span className={styles.yr}>2026</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>GrowthSync</h3>
+                  <p>Visualizes subdivision impact for city planners.</p>
+                  <div className={styles.tech}><span>Visualization</span></div>
+                </div>
+              </div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <iframe
+                    src="https://www.youtube.com/embed/PQBeq-7WKRE?autoplay=1&mute=1&loop=1&playlist=PQBeq-7WKRE&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="Finding N.E.M.O project video"
+                  />
+                </div>
+                <div className={styles.caption}>
+                  <span>Hack Concordia</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Finding N.E.M.O</h3>
+                  <p>A shipping-container recovery simulation.</p>
+                  <div className={styles.tech}><span>Simulation</span></div>
+                </div>
+              </div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <iframe
+                    src="https://www.youtube.com/embed/man2-PK6fbg?autoplay=1&mute=1&loop=1&playlist=man2-PK6fbg&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="Giveway project video"
+                  />
+                </div>
+                <div className={styles.caption}>
+                  <span>Hack the 6ix</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Giveway</h3>
+                  <p>Meal requests paired with optimized driver routing.</p>
+                  <div className={styles.tech}><span>Routing</span></div>
+                </div>
+              </div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/meal2go.png" alt="Meal2Go" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Eureka Hacks</span>
+                  <span className={styles.yr}>2024</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Meal2Go</h3>
+                  <p>Health-tailored meal recommendations.</p>
+                  <div className={styles.tech}><span>Software</span></div>
+                </div>
+              </div>
+              <div className={styles.pcard}>
+                <div className={styles.media}>
+                  <iframe
+                    src="https://www.youtube.com/embed/1M8MoqCxQCI?autoplay=1&mute=1&loop=1&playlist=1M8MoqCxQCI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="KinKitchen project video"
+                  />
+                </div>
+                <div className={styles.caption}>
+                  <span>Hack Canada</span>
+                  <span className={styles.yr}>2026</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>KinKitchen</h3>
+                  <p>3D step-by-step recipe walkthroughs.</p>
+                  <div className={styles.tech}><span>3D</span><span>Software</span></div>
+                </div>
               </div>
             </div>
           </div>
