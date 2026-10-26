@@ -88,16 +88,37 @@ export default function Home() {
     };
     typeTimers.push(setTimeout(() => typeNext(0), 350));
 
-    // Lazy-play card videos only when visible
+    // Lazy-play card videos only when visible, one at a time, fully
+    // releasing the decoder for any video that isn't the active one.
+    // (iOS Safari — especially in Private Browsing — can hang the whole
+    // page if too many <video> elements are loaded/decoding at once, even
+    // if most of them are paused; removing `src` + calling load() frees
+    // the decoder instead of just pausing it.)
     const cardVideos = root.querySelectorAll<HTMLVideoElement>(`.${styles.pcard} video`);
+    let activeVideo: HTMLVideoElement | null = null;
+    const unloadVideo = (v: HTMLVideoElement) => {
+      v.pause();
+      if (v.getAttribute("src")) {
+        v.removeAttribute("src");
+        v.load();
+      }
+      if (activeVideo === v) activeVideo = null;
+    };
     const videoIO = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const v = entry.target as HTMLVideoElement;
           if (entry.isIntersecting) {
+            if (activeVideo && activeVideo !== v) unloadVideo(activeVideo);
+            const src = v.dataset.src;
+            if (src && v.getAttribute("src") !== src) {
+              v.setAttribute("src", src);
+              v.load();
+            }
             v.play().catch(() => {});
+            activeVideo = v;
           } else {
-            v.pause();
+            unloadVideo(v);
           }
         });
       },
@@ -307,7 +328,7 @@ export default function Home() {
             <div className={styles.pgrid}>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/droneracing.mp4" muted loop playsInline preload="none" />
+                  <video data-src="/droneracing.mp4" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Vision + ROS</span>
@@ -335,7 +356,7 @@ export default function Home() {
               </div>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/drone-racing-2023-loop.mp4" muted loop playsInline preload="none" />
+                  <video data-src="/drone-racing-2023-loop.mp4" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>ML / CV</span>
@@ -457,7 +478,7 @@ export default function Home() {
               </div>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/car.mov" muted loop playsInline preload="none" />
+                  <video data-src="/car.mov" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Arduino</span>
@@ -485,7 +506,7 @@ export default function Home() {
               </div>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/timer.mp4" muted loop playsInline preload="none" />
+                  <video data-src="/timer.mp4" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
@@ -499,7 +520,7 @@ export default function Home() {
               </div>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/clock.mp4" muted loop playsInline preload="none" />
+                  <video data-src="/clock.mp4" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
