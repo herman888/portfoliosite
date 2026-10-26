@@ -307,7 +307,7 @@ export default function Home() {
             <div className={styles.pgrid}>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/droneracing.mp4" muted loop playsInline />
+                  <video src="/droneracing.mp4" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Vision + ROS</span>
@@ -335,7 +335,7 @@ export default function Home() {
               </div>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/drone-racing-2023-loop.mp4" muted loop playsInline />
+                  <video src="/drone-racing-2023-loop.mp4" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>ML / CV</span>
@@ -457,7 +457,7 @@ export default function Home() {
               </div>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/car.mov" muted loop playsInline />
+                  <video src="/car.mov" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Arduino</span>
@@ -485,7 +485,7 @@ export default function Home() {
               </div>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/timer.mp4" muted loop playsInline />
+                  <video src="/timer.mp4" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
@@ -499,7 +499,7 @@ export default function Home() {
               </div>
               <div className={styles.pcard}>
                 <div className={styles.media}>
-                  <video src="/clock.mp4" muted loop playsInline />
+                  <video src="/clock.mp4" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
