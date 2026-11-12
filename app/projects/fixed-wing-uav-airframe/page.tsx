@@ -15,8 +15,8 @@ export default function FixedWingUavAirframePage() {
       year="2025"
       breadcrumb="Fixed-wing airframe"
       hero={{
-        src: "/fixed-wing-cad.svg",
-        alt: "General-arrangement drawing of the fixed-wing UAV airframe: top view, side profile, and a wing rib/spar section detail",
+        src: "/img_7211.jpg",
+        alt: "Wing build: heat-shrink covering on one panel and internal rib mesh on the other",
         variant: "contain",
         objectPosition: "center center",
         heightClass:

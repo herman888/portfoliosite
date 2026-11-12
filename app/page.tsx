@@ -345,7 +345,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/fixed-wing-uav-airframe" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="/wing-build-prototype-right-rot180.jpg" alt="Fixed-wing UAV airframe" />
+                  <img src="/fixed-wing-cad.svg" alt="Fixed-wing UAV airframe — general-arrangement drawing" />
                 </div>
                 <div className={styles.caption}>
                   <span>Fixed-Wing</span>
