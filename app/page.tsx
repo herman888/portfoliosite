@@ -1,9 +1,61 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import styles from "./cinematic-theme.module.css";
 
 export default function Home() {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    // Lazy-play card videos only when visible, one at a time, fully
+    // releasing the decoder for any video that isn't the active one.
+    // (iOS Safari — especially in Private Browsing — can hang the whole
+    // page if too many <video> elements are loaded/decoding at once, even
+    // if most of them are paused; removing `src` + calling load() frees
+    // the decoder instead of just pausing it.)
+    const cardVideos = root.querySelectorAll<HTMLVideoElement>(`.${styles.pcard} video`);
+    let activeVideo: HTMLVideoElement | null = null;
+    const unloadVideo = (v: HTMLVideoElement) => {
+      v.pause();
+      if (v.getAttribute("src")) {
+        v.removeAttribute("src");
+        v.load();
+      }
+      if (activeVideo === v) activeVideo = null;
+    };
+    const videoIO = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const v = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) {
+            if (activeVideo && activeVideo !== v) unloadVideo(activeVideo);
+            const src = v.dataset.src;
+            if (src && v.getAttribute("src") !== src) {
+              v.setAttribute("src", src);
+              v.load();
+            }
+            v.play().catch(() => {});
+            activeVideo = v;
+          } else {
+            unloadVideo(v);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    cardVideos.forEach((v) => videoIO.observe(v));
+
+    return () => {
+      videoIO.disconnect();
+    };
+  }, []);
+
   return (
-    <div className={styles.pageRoot} style={{ fontFamily: "var(--mono)" }}>
+    <div ref={rootRef} className={styles.pageRoot} style={{ fontFamily: "var(--mono)" }}>
       <header className={styles.topbar}>
         <div className={styles.topbarInner}>
           <div className={styles.brand}>
@@ -90,7 +142,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/integrating-uav-controls" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="/droneracing.jpg" alt="UAV controls integrated with ROS navigation" />
+                  <video data-src="/droneracing.mp4" poster="/droneracing.jpg" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Vision + ROS</span>
@@ -118,7 +170,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/uav-navigation-model-training" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="/uav-gate-yolo-detection.jpg" alt="YOLOv8 gate detection for drone racing" />
+                  <video data-src="/drone-racing-2023-loop.mp4" poster="/uav-gate-yolo-detection.jpg" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>ML / CV</span>
@@ -218,7 +270,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/arduino#car-obstacle" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="/car-obstacle-poster.jpg" alt="Car with obstacle detection" />
+                  <video data-src="/car.mov" poster="/car-obstacle-poster.jpg" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Arduino</span>
@@ -246,7 +298,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/arduino#digital-timer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="/digital-timer-poster.jpg" alt="Digital timer" />
+                  <video data-src="/timer.mp4" poster="/digital-timer-poster.jpg" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
@@ -260,7 +312,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/arduino#digital-clock" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="/digital-clock-poster.jpg" alt="Digital clock" />
+                  <video data-src="/clock.mp4" poster="/digital-clock-poster.jpg" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
@@ -288,7 +340,12 @@ export default function Home() {
               </a>
               <a href="https://devpost.com/software/growthsync" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="https://img.youtube.com/vi/P3chEYABVYA/hqdefault.jpg" alt="GrowthSync project video thumbnail" />
+                  <iframe
+                    src="https://www.youtube.com/embed/P3chEYABVYA?autoplay=1&mute=1&loop=1&playlist=P3chEYABVYA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="GrowthSync project video"
+                  />
                 </div>
                 <div className={styles.caption}>
                   <span>CtrlHackDel 2.0</span>
@@ -302,7 +359,12 @@ export default function Home() {
               </a>
               <a href="https://devpost.com/software/finding-n-e-m-o" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="https://img.youtube.com/vi/PQBeq-7WKRE/hqdefault.jpg" alt="Finding N.E.M.O project video thumbnail" />
+                  <iframe
+                    src="https://www.youtube.com/embed/PQBeq-7WKRE?autoplay=1&mute=1&loop=1&playlist=PQBeq-7WKRE&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="Finding N.E.M.O project video"
+                  />
                 </div>
                 <div className={styles.caption}>
                   <span>Hack Concordia</span>
@@ -316,7 +378,12 @@ export default function Home() {
               </a>
               <a href="https://github.com/herman888/route-optimizer" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="https://img.youtube.com/vi/man2-PK6fbg/hqdefault.jpg" alt="Giveway project video thumbnail" />
+                  <iframe
+                    src="https://www.youtube.com/embed/man2-PK6fbg?autoplay=1&mute=1&loop=1&playlist=man2-PK6fbg&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="Giveway project video"
+                  />
                 </div>
                 <div className={styles.caption}>
                   <span>Hack the 6ix</span>
@@ -344,7 +411,12 @@ export default function Home() {
               </a>
               <a href="https://github.com/herman888/kinkitchen" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <img src="https://img.youtube.com/vi/1M8MoqCxQCI/hqdefault.jpg" alt="KinKitchen project video thumbnail" />
+                  <iframe
+                    src="https://www.youtube.com/embed/1M8MoqCxQCI?autoplay=1&mute=1&loop=1&playlist=1M8MoqCxQCI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                    allow="autoplay; encrypted-media"
+                    loading="lazy"
+                    title="KinKitchen project video"
+                  />
                 </div>
                 <div className={styles.caption}>
                   <span>Hack Canada</span>
