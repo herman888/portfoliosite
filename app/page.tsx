@@ -282,99 +282,6 @@ export default function Home() {
           </div>
 
           <div className={`${styles.pgroup} ${styles.reveal}`}>
-            <h3 className={styles.groupLabel}>Work</h3>
-            <div className={styles.workGrid}>
-              <div className={styles.workCard}>
-                <div className={`${styles.workLogo} ${styles.dark}`}>
-                  <img src="/dominion-dynamics-logo.jpg" alt="Dominion Dynamics" />
-                </div>
-                <div className={styles.workInfo}>
-                  <h4>Dominion Dynamics</h4>
-                  <div className={styles.workRole}>Incoming Hardware Engineering Intern</div>
-                </div>
-              </div>
-              <div className={styles.workCard}>
-                <div className={`${styles.workLogo} ${styles.dark}`}>
-                  <img src="/human-computer-lab-logo.jpg" alt="Human Computer Lab" />
-                </div>
-                <div className={styles.workInfo}>
-                  <h4>Human Computer Lab</h4>
-                  <div className={styles.workRole}>Technical Staff Intern</div>
-                </div>
-              </div>
-              <div className={styles.workCard}>
-                <div className={`${styles.workLogo} ${styles.light}`}>
-                  <img src="/sellstatic-logo.png" alt="Sellstatic" />
-                </div>
-                <div className={styles.workInfo}>
-                  <h4>Sellstatic</h4>
-                  <div className={styles.workRole}>Software Engineering Intern</div>
-                </div>
-              </div>
-              <div className={styles.workCard}>
-                <div className={`${styles.workLogo} ${styles.light}`}>
-                  <img src="/utias-fsc-logo.jpg" alt="UTIAS Flight Systems and Control" />
-                </div>
-                <div className={styles.workInfo}>
-                  <h4>UTIAS</h4>
-                  <div className={styles.workRole}>UAV Research Intern</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.pgroup} ${styles.reveal}`}>
-            <h3 className={styles.groupLabel}>Research</h3>
-            <div className={styles.pgrid}>
-              <div className={styles.pcard}>
-                <div className={styles.media}>
-                  <video data-src="/droneracing.mp4" muted loop playsInline preload="none" />
-                </div>
-                <div className={styles.caption}>
-                  <span>Vision + ROS</span>
-                  <span className={styles.yr}>2024</span>
-                </div>
-                <div className={styles.body}>
-                  <h3>Integrating UAV Controls into Navigation</h3>
-                  <p>Vision models deployed on a drone&apos;s onboard compute, integrated with ROS for navigation control.</p>
-                  <div className={styles.tech}><span>ROS</span></div>
-                </div>
-              </div>
-              <div className={styles.pcard}>
-                <div className={styles.media}>
-                  <img src="/simulation.png" alt="UAV navigation simulation" />
-                </div>
-                <div className={styles.caption}>
-                  <span>Controls</span>
-                  <span className={styles.yr}>2025</span>
-                </div>
-                <div className={styles.body}>
-                  <h3>Optimizing UAV Autonomous Navigation</h3>
-                  <p>Quadrotor co-simulation with cascaded attitude control design and tuning.</p>
-                  <div className={styles.tech}><span>MATLAB</span><span>Simulink</span></div>
-                </div>
-              </div>
-              <div className={styles.pcard}>
-                <div className={styles.media}>
-                  <video data-src="/drone-racing-2023-loop.mp4" muted loop playsInline preload="none" />
-                </div>
-                <div className={styles.caption}>
-                  <span>ML / CV</span>
-                  <span className={styles.yr}>2023</span>
-                </div>
-                <div className={styles.body}>
-                  <h3>UAV Navigation Model Training</h3>
-                  <p>A YOLOv8 gate detector trained for autonomous drone racing navigation.</p>
-                  <div className={styles.tech}>
-                    <span>YOLOv8</span><span>PyTorch</span><span>OpenCV</span><span>Roboflow</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={`${styles.pgroup} ${styles.reveal}`}>
-            <h3 className={styles.groupLabel}>Projects</h3>
             <div className={styles.pgrid}>
               <Link href="/projects/sharingan" className={styles.pcard}>
                 <div className={styles.media}>
@@ -392,7 +299,51 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-              <div className={styles.pcard}>
+              <Link href="/projects/integrating-uav-controls" className={styles.pcard}>
+                <div className={styles.media}>
+                  <video data-src="/droneracing.mp4" poster="/droneracing.jpg" muted loop playsInline preload="none" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Vision + ROS</span>
+                  <span className={styles.yr}>2024</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Integrating UAV Controls into Navigation</h3>
+                  <p>Vision models deployed on a drone&apos;s onboard compute, integrated with ROS for navigation control.</p>
+                  <div className={styles.tech}><span>ROS</span></div>
+                </div>
+              </Link>
+              <Link href="/projects/optimizing-uav-navigation" className={styles.pcard}>
+                <div className={styles.media}>
+                  <img src="/simulation.png" alt="UAV navigation simulation" />
+                </div>
+                <div className={styles.caption}>
+                  <span>Controls</span>
+                  <span className={styles.yr}>2025</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>Optimizing UAV Autonomous Navigation</h3>
+                  <p>Quadrotor co-simulation with cascaded attitude control design and tuning.</p>
+                  <div className={styles.tech}><span>MATLAB</span><span>Simulink</span></div>
+                </div>
+              </Link>
+              <Link href="/projects/uav-navigation-model-training" className={styles.pcard}>
+                <div className={styles.media}>
+                  <video data-src="/drone-racing-2023-loop.mp4" poster="/uav-gate-yolo-detection.jpg" muted loop playsInline preload="none" />
+                </div>
+                <div className={styles.caption}>
+                  <span>ML / CV</span>
+                  <span className={styles.yr}>2023</span>
+                </div>
+                <div className={styles.body}>
+                  <h3>UAV Navigation Model Training</h3>
+                  <p>A YOLOv8 gate detector trained for autonomous drone racing navigation.</p>
+                  <div className={styles.tech}>
+                    <span>YOLOv8</span><span>PyTorch</span><span>OpenCV</span><span>Roboflow</span>
+                  </div>
+                </div>
+              </Link>
+              <Link href="/projects/fixed-wing-uav-airframe" className={styles.pcard}>
                 <div className={styles.media}>
                   <img src="/wing-build-prototype-right-rot180.jpg" alt="Fixed-wing UAV airframe" />
                 </div>
@@ -405,8 +356,8 @@ export default function Home() {
                   <p>Laser-cut wing iterations and a heat-shrink prototype skin for a fixed-wing airframe.</p>
                   <div className={styles.tech}><span>CAD</span><span>Laser Cut</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </Link>
+              <a href="https://github.com/herman888/citypathai" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
                   <img src="/shopify-card.jpg" alt="CityPath AI" />
                 </div>
@@ -419,8 +370,8 @@ export default function Home() {
                   <p>Analyzes street safety patterns from city data. 3rd place.</p>
                   <div className={styles.tech}><span>Data Analysis</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </a>
+              <a href="https://devpost.com/software/red-lamp" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
                   <img src="/uofthacks-team.jpg" alt="RedLamp team at UofTHacks, holding the lamp prototype after placing 2nd" />
                 </div>
@@ -433,7 +384,7 @@ export default function Home() {
                   <p>A study lamp that detects student stress. 2nd place.</p>
                   <div className={styles.tech}><span>Hardware + Software</span></div>
                 </div>
-              </div>
+              </a>
               <div className={styles.pcard}>
                 <div className={styles.media}>
                   <img src="/janestreet.jpeg" alt="Jane Street Estimation Competition" />
@@ -462,7 +413,7 @@ export default function Home() {
                   <div className={styles.tech}><span>Financial Modeling</span></div>
                 </div>
               </div>
-              <div className={styles.pcard}>
+              <Link href="/projects/arduino#car-line-follower" className={styles.pcard}>
                 <div className={styles.media}>
                   <img src="/car-line-follower.png" alt="Car line follower" />
                 </div>
@@ -475,10 +426,10 @@ export default function Home() {
                   <p>Infrared sensors and Arduino logic for autonomous line-following.</p>
                   <div className={styles.tech}><span>Arduino</span><span>IR Sensors</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </Link>
+              <Link href="/projects/arduino#car-obstacle" className={styles.pcard}>
                 <div className={styles.media}>
-                  <video data-src="/car.mov" muted loop playsInline preload="none" />
+                  <video data-src="/car.mov" poster="/car-obstacle-poster.jpg" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Arduino</span>
@@ -489,8 +440,8 @@ export default function Home() {
                   <p>An Arduino-controlled car that detects and avoids obstacles in real time.</p>
                   <div className={styles.tech}><span>Arduino</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </Link>
+              <Link href="/projects/arduino#water-pump" className={styles.pcard}>
                 <div className={styles.media}>
                   <img src="/water.jpg" alt="Autonomous water pump" />
                 </div>
@@ -503,10 +454,10 @@ export default function Home() {
                   <p>Waters plants automatically based on live soil moisture readings.</p>
                   <div className={styles.tech}><span>Arduino</span><span>Sensors</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </Link>
+              <Link href="/projects/arduino#digital-timer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <video data-src="/timer.mp4" muted loop playsInline preload="none" />
+                  <video data-src="/timer.mp4" poster="/digital-timer-poster.jpg" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
@@ -517,10 +468,10 @@ export default function Home() {
                   <p>An Arduino-driven timer built around a 555 timer IC.</p>
                   <div className={styles.tech}><span>Arduino</span><span>EasyEDA</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </Link>
+              <Link href="/projects/arduino#digital-clock" className={styles.pcard}>
                 <div className={styles.media}>
-                  <video data-src="/clock.mp4" muted loop playsInline preload="none" />
+                  <video data-src="/clock.mp4" poster="/digital-clock-poster.jpg" muted loop playsInline preload="none" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
@@ -531,8 +482,8 @@ export default function Home() {
                   <p>An Arduino-based clock driving a 7-segment display.</p>
                   <div className={styles.tech}><span>Arduino</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </Link>
+              <a href="https://github.com/herman888/heated-driveway" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
                   <img src="/heateddriveway.png" alt="Heated driveway" />
                 </div>
@@ -545,8 +496,8 @@ export default function Home() {
                   <p>Snow detection and heating controller with a live monitoring dashboard.</p>
                   <div className={styles.tech}><span>Arduino</span><span>Relay State Machine</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </a>
+              <a href="https://devpost.com/software/growthsync" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
                   <iframe
                     src="https://www.youtube.com/embed/P3chEYABVYA?autoplay=1&mute=1&loop=1&playlist=P3chEYABVYA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -564,8 +515,8 @@ export default function Home() {
                   <p>Visualizes subdivision impact for city planners.</p>
                   <div className={styles.tech}><span>Visualization</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </a>
+              <a href="https://devpost.com/software/finding-n-e-m-o" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
                   <iframe
                     src="https://www.youtube.com/embed/PQBeq-7WKRE?autoplay=1&mute=1&loop=1&playlist=PQBeq-7WKRE&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -583,8 +534,8 @@ export default function Home() {
                   <p>A shipping-container recovery simulation.</p>
                   <div className={styles.tech}><span>Simulation</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </a>
+              <a href="https://github.com/herman888/route-optimizer" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
                   <iframe
                     src="https://www.youtube.com/embed/man2-PK6fbg?autoplay=1&mute=1&loop=1&playlist=man2-PK6fbg&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -602,8 +553,8 @@ export default function Home() {
                   <p>Meal requests paired with optimized driver routing.</p>
                   <div className={styles.tech}><span>Routing</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </a>
+              <a href="https://devpost.com/software/mealtogo" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
                   <img src="/meal2go.png" alt="Meal2Go" />
                 </div>
@@ -616,8 +567,8 @@ export default function Home() {
                   <p>Health-tailored meal recommendations.</p>
                   <div className={styles.tech}><span>Software</span></div>
                 </div>
-              </div>
-              <div className={styles.pcard}>
+              </a>
+              <a href="https://github.com/herman888/kinkitchen" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
                   <iframe
                     src="https://www.youtube.com/embed/1M8MoqCxQCI?autoplay=1&mute=1&loop=1&playlist=1M8MoqCxQCI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -635,7 +586,7 @@ export default function Home() {
                   <p>3D step-by-step recipe walkthroughs.</p>
                   <div className={styles.tech}><span>3D</span><span>Software</span></div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
         </section>
