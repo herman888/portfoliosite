@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" width="1200" height="1600">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e7ebee" stroke-width="1"/>
+</pattern>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+  <path d="M0,0 L10,5 L0,10 z" fill="#3a4248"/>
+</marker>
+</defs>
+<rect x="0" y="0" width="1200" height="1600" fill="#fbfbf9"/>
+<rect x="0" y="0" width="1200" height="1600" fill="url(#grid)"/>
+<rect x="34" y="34" width="1132" height="1532" fill="none" stroke="#1a2024" stroke-width="3"/>
+<rect x="46" y="46" width="1108" height="1508" fill="none" stroke="#1a2024" stroke-width="1"/>
+<text x="600" y="100" font-family="'JetBrains Mono','Courier New',monospace" font-size="38" font-weight="700" fill="#1a2024" text-anchor="middle" letter-spacing="2">FIXED&#8211;WING UAV AIRFRAME</text>
+<line x1="90" y1="122" x2="1110" y2="122" stroke="#1a2024" stroke-width="1.5"/>
+<text x="600" y="148" font-family="'JetBrains Mono','Courier New',monospace" font-size="16" font-weight="400" fill="#5b6670" text-anchor="middle" letter-spacing="3">GENERAL ARRANGEMENT &#183; THREE&#8211;VIEW &#183; NOT TO SCALE</text>
+<text x="90" y="205" font-family="'JetBrains Mono','Courier New',monospace" font-size="20" font-weight="700" fill="#1a2024" text-anchor="start" letter-spacing="0">01&#8201;&#8212;&#8201;TOP VIEW: WING PLANFORM</text>
+<path d="M 600 240 C 576.6 268, 574 295, 574 310 L 574 495 C 574 535, 585.7 549, 590 555 L 610 555 C 614.3 549, 626 535, 626 495 L 626 310 C 626 295, 623.4 268, 600 240 Z" fill="#ffffff" stroke="#20262b" stroke-width="2.4"/>
+<path d="M 626 390 L 1046 424 L 1046 454 L 626 468 Z" fill="#ffffff" stroke="#20262b" stroke-width="2.4"/>
+<line x1="731.0" y1="398.5" x2="731.0" y2="464.5" stroke="#9aa7ad" stroke-width="1"/>
+<line x1="836.0" y1="407.0" x2="836.0" y2="461.0" stroke="#9aa7ad" stroke-width="1"/>
+<line x1="941.0" y1="415.5" x2="941.0" y2="457.5" stroke="#9aa7ad" stroke-width="1"/>
+<line x1="626" y1="411.84000000000003" x2="1046" y2="432.4" stroke="#3a4248" stroke-width="1.6" stroke-dasharray="7 4"/>
+<path d="M 574 390 L 154 424 L 154 454 L 574 468 Z" fill="#ffffff" stroke="#20262b" stroke-width="2.4"/>
+<line x1="469.0" y1="398.5" x2="469.0" y2="464.5" stroke="#9aa7ad" stroke-width="1"/>
+<line x1="364.0" y1="407.0" x2="364.0" y2="461.0" stroke="#9aa7ad" stroke-width="1"/>
+<line x1="259.0" y1="415.5" x2="259.0" y2="457.5" stroke="#9aa7ad" stroke-width="1"/>
+<line x1="574" y1="411.84000000000003" x2="154" y2="432.4" stroke="#3a4248" stroke-width="1.6" stroke-dasharray="7 4"/>
+<path d="M 612 485 L 695 499 L 695 517 L 612 527 Z" fill="#ffffff" stroke="#20262b" stroke-width="2"/>
+<path d="M 588 485 L 505 499 L 505 517 L 588 527 Z" fill="#ffffff" stroke="#20262b" stroke-width="2"/>
+<rect x="593" y="477" width="14" height="46" fill="none" stroke="#3a4248" stroke-width="1.4" stroke-dasharray="5 3"/>
+<text x="616" y="505" font-family="'JetBrains Mono','Courier New',monospace" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="0">VERT. FIN (REF)</text>
+<line x1="600" y1="195" x2="600" y2="560" stroke="#3a4248" stroke-width="1" stroke-dasharray="14 5 2 5"/>
+<line x1="154" y1="582" x2="1046" y2="582" stroke="#3a4248" stroke-width="1.2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<line x1="154" y1="424" x2="154" y2="588" stroke="#3a4248" stroke-width="1"/>
+<line x1="1046" y1="424" x2="1046" y2="588" stroke="#3a4248" stroke-width="1"/>
+<rect x="552" y="560" width="96" height="18" fill="#fbfbf9"/>
+<text x="600" y="574" font-family="'JetBrains Mono','Courier New',monospace" font-size="14" font-weight="400" fill="#5b6670" text-anchor="middle" letter-spacing="0">SPAN &#8212; b</text>
+<line x1="1101" y1="240" x2="1101" y2="555" stroke="#3a4248" stroke-width="1.2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<text x="1119" y="397.5" font-family="'JetBrains Mono','Courier New',monospace" font-size="13" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="0" transform="rotate(90 1119 397.5)">FUSELAGE LENGTH &#8212; L</text>
+<line x1="90" y1="605" x2="1110" y2="605" stroke="#9aa7ad" stroke-width="1"/>
+<text x="90" y="655" font-family="'JetBrains Mono','Courier New',monospace" font-size="20" font-weight="700" fill="#1a2024" text-anchor="start" letter-spacing="0">02&#8201;&#8212;&#8201;SIDE VIEW: PROFILE</text>
+<path d="M 260 775 C 235 760, 235 755, 270 745 L 860 739 C 960 735, 980 745, 1020 760 L 1020 775 C 990 795, 940 814, 830 810 L 290 812 C 255 810, 260 800, 260 775 Z" fill="#ffffff" stroke="#20262b" stroke-width="2.4"/>
+<path d="M 430 779 Q 495.0 759 560 779 Q 495.0 793 430 779 Z" fill="#ffffff" stroke="#20262b" stroke-width="2"/>
+<line x1="440" y1="777" x2="546" y2="777" stroke="#9aa7ad" stroke-width="1" stroke-dasharray="4 3"/>
+<line x1="860" y1="743" x2="1050" y2="737" stroke="#20262b" stroke-width="2"/>
+<path d="M 1020 760 L 1065 665 L 1080 665 L 1042 775 Z" fill="#ffffff" stroke="#20262b" stroke-width="2"/>
+<line x1="1000" y1="753" x2="1075" y2="751" stroke="#20262b" stroke-width="3"/>
+<circle cx="232" cy="777" r="7" fill="#1a2024"/>
+<line x1="232" y1="737" x2="232" y2="817" stroke="#3a4248" stroke-width="2.4"/>
+<line x1="300" y1="821" x2="800" y2="821" stroke="#3a4248" stroke-width="2"/>
+<line x1="315" y1="821" x2="300" y2="820" stroke="#3a4248" stroke-width="1.6"/>
+<line x1="780" y1="821" x2="795" y2="820" stroke="#3a4248" stroke-width="1.6"/>
+<line x1="150" y1="815" x2="1050" y2="815" stroke="#9aa7ad" stroke-width="1" stroke-dasharray="14 5 2 5"/>
+<text x="1060" y="820" font-family="'JetBrains Mono','Courier New',monospace" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="0">WL</text>
+<line x1="90" y1="950" x2="1110" y2="950" stroke="#9aa7ad" stroke-width="1"/>
+<text x="90" y="1000" font-family="'JetBrains Mono','Courier New',monospace" font-size="20" font-weight="700" fill="#1a2024" text-anchor="start" letter-spacing="0">03&#8201;&#8212;&#8201;SECTION A&#8211;A: WING RIB / SPAR DETAIL</text>
+<path d="M 320.0 1150 Q 460.0 1065.0 656.0 1071.8 Q 812.8 1099.0 880.0 1146 Q 768.0 1187.4 544.0 1180.6 Q 404.0 1170.4 320.0 1150 Z" fill="#ffffff" stroke="#20262b" stroke-width="2.6"/>
+<rect x="420.79999999999995" y="1112.6" width="60" height="92" fill="#ffffff" stroke="#20262b" stroke-width="2"/>
+<clipPath id="hatch-clip"><rect x="420.79999999999995" y="1112.6" width="60" height="92"/></clipPath>
+<line x1="328.79999999999995" y1="1204.6" x2="420.79999999999995" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="340.79999999999995" y1="1204.6" x2="432.79999999999995" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="352.79999999999995" y1="1204.6" x2="444.79999999999995" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="364.79999999999995" y1="1204.6" x2="456.79999999999995" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="376.79999999999995" y1="1204.6" x2="468.79999999999995" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="388.79999999999995" y1="1204.6" x2="480.79999999999995" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="400.79999999999995" y1="1204.6" x2="492.79999999999995" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="412.79999999999995" y1="1204.6" x2="504.79999999999995" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="424.79999999999995" y1="1204.6" x2="516.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="436.79999999999995" y1="1204.6" x2="528.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="448.79999999999995" y1="1204.6" x2="540.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="460.79999999999995" y1="1204.6" x2="552.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="472.79999999999995" y1="1204.6" x2="564.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="484.79999999999995" y1="1204.6" x2="576.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="496.79999999999995" y1="1204.6" x2="588.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="508.79999999999995" y1="1204.6" x2="600.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="520.8" y1="1204.6" x2="612.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="532.8" y1="1204.6" x2="624.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="544.8" y1="1204.6" x2="636.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="556.8" y1="1204.6" x2="648.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/><line x1="568.8" y1="1204.6" x2="660.8" y2="1112.6" stroke="#3a4248" stroke-width="1.1" clip-path="url(#hatch-clip)"/>
+<line x1="420.8" y1="1099.0" x2="420.8" y2="1175.5" stroke="#3a4248" stroke-width="1.6"/>
+<line x1="600.0" y1="1099.0" x2="600.0" y2="1175.5" stroke="#3a4248" stroke-width="1.6"/>
+<line x1="779.2" y1="1099.0" x2="779.2" y2="1175.5" stroke="#3a4248" stroke-width="1.6"/>
+<line x1="450.79999999999995" y1="1112.6" x2="640" y2="1030" stroke="#3a4248" stroke-width="1"/>
+<circle cx="450.79999999999995" cy="1112.6" r="2.4" fill="#3a4248"/>
+<text x="650" y="1026" font-family="'JetBrains Mono','Courier New',monospace" font-size="14" font-weight="400" fill="#1a2024" text-anchor="start" letter-spacing="0">MAIN SPAR (CAP + SHEAR WEB)</text>
+<line x1="544.0" y1="1082.0" x2="350" y2="1075" stroke="#3a4248" stroke-width="1"/>
+<circle cx="544.0" cy="1082.0" r="2.4" fill="#3a4248"/>
+<text x="350" y="1071" font-family="'JetBrains Mono','Courier New',monospace" font-size="14" font-weight="400" fill="#1a2024" text-anchor="start" letter-spacing="0">SKIN &#8212; HEAT&#8211;SHRINK FILM</text>
+<line x1="600.0" y1="1175.5" x2="750" y2="1260" stroke="#3a4248" stroke-width="1"/>
+<circle cx="600.0" cy="1175.5" r="2.4" fill="#3a4248"/>
+<text x="750" y="1256" font-family="'JetBrains Mono','Courier New',monospace" font-size="14" font-weight="400" fill="#1a2024" text-anchor="start" letter-spacing="0">RIB (LASER&#8211;CUT PLY)</text>
+<line x1="90" y1="1295" x2="1110" y2="1295" stroke="#9aa7ad" stroke-width="1"/>
+<rect x="90" y="1320" width="1020" height="220" fill="none" stroke="#1a2024" stroke-width="1.6"/>
+<line x1="450" y1="1320" x2="450" y2="1540" stroke="#1a2024" stroke-width="1"/>
+<line x1="780" y1="1320" x2="780" y2="1540" stroke="#1a2024" stroke-width="1"/>
+<line x1="90" y1="1430.0" x2="450" y2="1430.0" stroke="#1a2024" stroke-width="1"/>
+<text x="110" y="1354" font-family="'JetBrains Mono','Courier New',monospace" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="2">TITLE</text>
+<text x="110" y="1382" font-family="'JetBrains Mono','Courier New',monospace" font-size="19" font-weight="700" fill="#1a2024" text-anchor="start" letter-spacing="0">Fixed&#8211;Wing UAV Airframe</text>
+<text x="110" y="1456.0" font-family="'JetBrains Mono','Courier New',monospace" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="2">PROJECT</text>
+<text x="110" y="1482.0" font-family="'JetBrains Mono','Courier New',monospace" font-size="16" font-weight="400" fill="#1a2024" text-anchor="start" letter-spacing="0">Portfolio Build &#8212; Herman Isayenka</text>
+<text x="470" y="1354" font-family="'JetBrains Mono','Courier New',monospace" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="2">DRAWN BY</text>
+<text x="470" y="1384" font-family="'JetBrains Mono','Courier New',monospace" font-size="18" font-weight="700" fill="#1a2024" text-anchor="start" letter-spacing="0">H. ISAYENKA</text>
+<text x="800" y="1354" font-family="'JetBrains Mono','Courier New',monospace" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="2">REV</text>
+<text x="800" y="1384" font-family="'JetBrains Mono','Courier New',monospace" font-size="18" font-weight="700" fill="#1a2024" text-anchor="start" letter-spacing="0">C</text>
+<text x="470" y="1456.0" font-family="'JetBrains Mono','Courier New',monospace" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="2">SCALE</text>
+<text x="470" y="1482.0" font-family="'JetBrains Mono','Courier New',monospace" font-size="16" font-weight="700" fill="#1a2024" text-anchor="start" letter-spacing="0">NTS</text>
+<text x="800" y="1456.0" font-family="'JetBrains Mono','Courier New',monospace" font-size="12" font-weight="400" fill="#5b6670" text-anchor="start" letter-spacing="2">SHEET</text>
+<text x="800" y="1482.0" font-family="'JetBrains Mono','Courier New',monospace" font-size="16" font-weight="700" fill="#1a2024" text-anchor="start" letter-spacing="0">1 OF 1</text>
+</svg>
