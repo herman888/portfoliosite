@@ -96,111 +96,10 @@
   transition: width 80ms linear;
 }
 
-/* ================= Hero (cinematic) ================= */
-.heroCinematic {
-  position: relative;
-  height: 100vh;
-  min-height: 560px;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+/* ================= Intro (static) ================= */
+.heroStatic {
+  padding: 140px 0 72px;
   border-bottom: 1px solid var(--line);
-}
-
-.heroFloor {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 48px 48px;
-  background-position: center;
-  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 40%, #000 0%, transparent 72%);
-  mask-image: radial-gradient(ellipse 85% 65% at 50% 40%, #000 0%, transparent 72%);
-  animation: gridDrift 7s linear infinite;
-  opacity: 0.9;
-}
-@keyframes gridDrift {
-  from { background-position: 0px 0px; }
-  to   { background-position: 48px 48px; }
-}
-
-.heroVignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 90% 70% at 50% 35%, transparent 40%, var(--bg) 100%);
-  pointer-events: none;
-}
-
-.radar {
-  position: absolute;
-  top: 56px; right: 48px;
-  width: 120px; height: 120px;
-  border-radius: 50%;
-  border: 1px solid var(--line-bright);
-  opacity: 0.8;
-}
-.radar::before {
-  content: "";
-  position: absolute;
-  inset: 22px;
-  border-radius: 50%;
-  border: 1px solid var(--line-bright);
-}
-.radar .sweep {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(56,189,248,0.55), transparent 28%);
-  animation: radarSpin 3.2s linear infinite;
-}
-.radar .blip {
-  position: absolute;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--amber);
-  box-shadow: 0 0 6px var(--amber);
-  top: 34px; left: 70px;
-  animation: blipPulse 3.2s linear infinite;
-}
-@keyframes radarSpin { to { transform: rotate(360deg); } }
-@keyframes blipPulse { 0%,78%,100% { opacity: 0; } 80%,92% { opacity: 1; } }
-@media (max-width: 760px) { .radar { display: none; } }
-
-.flightRig {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.droneTrail {
-  position: absolute;
-  top: 26%;
-  left: -12%;
-  width: 92px;
-  opacity: 0.35;
-  filter: blur(9px) saturate(1.1);
-  animation: flyAcross 3.4s var(--ease) 0.1s forwards;
-}
-.droneIcon {
-  position: absolute;
-  top: 26%;
-  left: -12%;
-  width: 92px;
-  animation: flyAcross 3.4s var(--ease) 0.25s forwards, bob 3.6s ease-in-out 3.6s infinite;
-}
-.droneIcon svg, .droneTrail svg { display: block; width: 100%; }
-@keyframes flyAcross {
-  0%   { transform: translate(0, 0) rotate(-8deg) scale(.7); opacity: 0; }
-  12%  { opacity: 1; }
-  62%  { transform: translate(62vw, -6vh) rotate(3deg) scale(1.02); }
-  100% { transform: translate(74vw, -2vh) rotate(0deg) scale(1); opacity: 1; }
-}
-@keyframes bob {
-  0%,100% { transform: translate(74vw, -2vh) rotate(0deg); }
-  50%     { transform: translate(74vw, -3.4vh) rotate(1.5deg); }
-}
-@media (max-width: 760px) {
-  .droneIcon, .droneTrail { display: none; }
 }
 
 .heroInner {
@@ -216,65 +115,19 @@
   font-family: var(--mono);
   font-size: clamp(22px, 4.2vw, 48px);
   line-height: 1.45;
-  margin: 0 0 20px;
+  margin: 0 0 28px;
   font-weight: 500;
   letter-spacing: -0.2px;
+  max-width: 920px;
 }
-.heroTitle .line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.2em;
-  margin-bottom: -0.2em;
-}
-.heroTitle .line span {
-  display: block;
-  transform: translateY(100%);
-  animation: lineUp 760ms var(--ease) forwards;
-}
-.heroTitle .line:nth-child(1) span { animation-delay: .25s; }
-.heroTitle .line:nth-child(2) span { animation-delay: .38s; }
 .heroTitle .accent { color: var(--amber); }
 
-@keyframes lineUp { to { transform: translateY(0); } }
-
-/* Terminal-style letter-by-letter typing headline (typed via JS in page.tsx) */
 .heroPrompt {
   color: var(--text-faint);
 }
-.typeTarget {
-  display: inline-block;
-  vertical-align: bottom;
-  min-height: 1em;
-}
-.heroTitle .typeCursor {
-  display: inline-block;
-  width: 0.5em;
-  height: 0.85em;
-  background: var(--amber);
-  vertical-align: -0.1em;
-  margin-left: 6px;
-  animation: pulse 1s steps(2) infinite;
-}
-.heroTitle .typeLine2 {
-  display: block;
-  padding-left: 1.6ch;
-}
-@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Terminal highlight sweep — flashes each character as it's typed, then fades.
-   Scoped + higher specificity than ".heroTitle .line span" (the line-reveal rule)
-   so individual characters don't inherit its display:block / slide-up transform. */
-.heroTitle .line .typeChar {
-  display: inline;
-  transform: none;
-  animation: none;
-  border-radius: 2px;
-  transition: background-color 420ms ease, color 420ms ease, box-shadow 420ms ease;
-}
-.heroTitle .line .typeChar.typeCharActive {
-  background-color: var(--amber);
-  color: var(--bg);
-  box-shadow: 0 0 10px var(--amber);
+.aboutLines {
+  margin-bottom: 32px;
 }
 
 .heroSocials {
@@ -285,8 +138,6 @@
   font-size: 12px;
   letter-spacing: 1px;
   color: var(--text-dim);
-  opacity: 0;
-  animation: fadeUp 700ms var(--ease) 0.3s forwards;
 }
 .heroSocials a {
   color: var(--text-dim);
@@ -304,67 +155,6 @@
   transform: translateY(-1px);
 }
 
-.scrollCue {
-  position: absolute;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--text-faint);
-  text-align: center;
-  z-index: 2;
-  opacity: 0;
-  animation: fadeUp 700ms var(--ease) 1s forwards;
-}
-.scrollCue .chev {
-  margin-top: 8px;
-  animation: chevBounce 1.8s ease-in-out infinite;
-}
-@keyframes chevBounce { 0%,100% { transform: translateY(0); opacity: .4; } 50% { transform: translateY(6px); opacity: 1; } }
-
-/* ================= About band (mini hero — same grid/typing treatment, smaller) ================= */
-.aboutBand {
-  position: relative;
-  padding: 56px 0;
-  overflow: hidden;
-  border-bottom: 1px solid var(--line);
-}
-.aboutFloor {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 40px 40px;
-  background-position: center;
-  -webkit-mask-image: radial-gradient(ellipse 80% 95% at 50% 50%, #000 0%, transparent 75%);
-  mask-image: radial-gradient(ellipse 80% 95% at 50% 50%, #000 0%, transparent 75%);
-  animation: gridDrift 7s linear infinite;
-  opacity: 0.7;
-}
-.aboutVignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 95% 95% at 50% 50%, transparent 45%, var(--bg) 100%);
-  pointer-events: none;
-}
-.aboutInner {
-  position: relative;
-  z-index: 2;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-.aboutTag {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  margin-bottom: 14px;
-}
 .aboutLine {
   font-family: var(--mono);
   font-size: clamp(13px, 1.5vw, 16px);
@@ -385,10 +175,7 @@
   font-style: italic;
   text-decoration: underline;
   text-underline-offset: 3px;
-  opacity: 0;
-  transition: opacity 500ms ease, color 180ms ease;
 }
-.aboutLink.visible { opacity: 1; }
 .aboutLink:hover { color: var(--amber); }
 
 /* ================= Terminal divider ================= */

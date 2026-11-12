@@ -1,141 +1,9 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import Link from "next/link";
 import styles from "./cinematic-theme.module.css";
 
 export default function Home() {
-  const rootRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-
-    // Reveal on scroll
-    const revealEls = root.querySelectorAll(`.${styles.reveal}`);
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(styles.visible);
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
-    );
-    revealEls.forEach((el) => io.observe(el));
-
-    // Nav hide-on-scroll-down + progress bar
-    const nav = root.querySelector(`.${styles.topbar}`);
-    const progress = root.querySelector(`.${styles.scrollProgress}`) as HTMLElement | null;
-    let lastY = window.scrollY;
-
-    const onScroll = () => {
-      const y = window.scrollY;
-      const docH = document.documentElement.scrollHeight - window.innerHeight;
-      if (progress && docH > 0) {
-        progress.style.width = `${Math.min(100, (y / docH) * 100)}%`;
-      }
-      if (nav) {
-        if (y > lastY && y > 140) {
-          nav.classList.add(styles.navHidden);
-        } else {
-          nav.classList.remove(styles.navHidden);
-        }
-      }
-      lastY = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    // Terminal-style letter-by-letter typing headline
-    const typeTimers: Array<ReturnType<typeof setTimeout>> = [];
-    const typeTargets = Array.from(root.querySelectorAll<HTMLElement>(`.${styles.typeTarget}`));
-    const typeNext = (index: number) => {
-      if (index >= typeTargets.length) return;
-      const el = typeTargets[index];
-      const text = el.dataset.typeText || "";
-      const color = el.dataset.typeColor;
-      if (color === "green") el.style.color = "var(--green)";
-      if (color === "amber") el.style.color = "var(--amber)";
-      let charIndex = 0;
-      const typeChar = () => {
-        charIndex++;
-        const ch = text[charIndex - 1];
-        const span = document.createElement("span");
-        span.className = `${styles.typeChar} ${styles.typeCharActive}`;
-        span.textContent = ch;
-        el.appendChild(span);
-        // settle the previous flash out, leave this one lit for a beat
-        const prior = span.previousElementSibling as HTMLElement | null;
-        if (prior) prior.classList.remove(styles.typeCharActive);
-        if (charIndex < text.length) {
-          typeTimers.push(setTimeout(typeChar, 45));
-        } else {
-          typeTimers.push(
-            setTimeout(() => {
-              span.classList.remove(styles.typeCharActive);
-              const next = el.nextElementSibling as HTMLElement | null;
-              if (next && next.hasAttribute("data-type-reveal")) {
-                next.classList.add(styles.visible);
-              }
-              typeNext(index + 1);
-            }, 180)
-          );
-        }
-      };
-      typeTimers.push(setTimeout(typeChar, 45));
-    };
-    typeTimers.push(setTimeout(() => typeNext(0), 350));
-
-    // Lazy-play card videos only when visible, one at a time, fully
-    // releasing the decoder for any video that isn't the active one.
-    // (iOS Safari — especially in Private Browsing — can hang the whole
-    // page if too many <video> elements are loaded/decoding at once, even
-    // if most of them are paused; removing `src` + calling load() frees
-    // the decoder instead of just pausing it.)
-    const cardVideos = root.querySelectorAll<HTMLVideoElement>(`.${styles.pcard} video`);
-    let activeVideo: HTMLVideoElement | null = null;
-    const unloadVideo = (v: HTMLVideoElement) => {
-      v.pause();
-      if (v.getAttribute("src")) {
-        v.removeAttribute("src");
-        v.load();
-      }
-      if (activeVideo === v) activeVideo = null;
-    };
-    const videoIO = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const v = entry.target as HTMLVideoElement;
-          if (entry.isIntersecting) {
-            if (activeVideo && activeVideo !== v) unloadVideo(activeVideo);
-            const src = v.dataset.src;
-            if (src && v.getAttribute("src") !== src) {
-              v.setAttribute("src", src);
-              v.load();
-            }
-            v.play().catch(() => {});
-            activeVideo = v;
-          } else {
-            unloadVideo(v);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-    cardVideos.forEach((v) => videoIO.observe(v));
-
-    return () => {
-      io.disconnect();
-      videoIO.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      typeTimers.forEach((t) => clearTimeout(t));
-    };
-  }, []);
-
   return (
-    <div ref={rootRef} className={styles.pageRoot} style={{ fontFamily: "var(--mono)" }}>
+    <div className={styles.pageRoot} style={{ fontFamily: "var(--mono)" }}>
       <header className={styles.topbar}>
         <div className={styles.topbarInner}>
           <div className={styles.brand}>
@@ -148,63 +16,38 @@ export default function Home() {
             <a href="https://github.com/herman888">GITHUB</a>
           </nav>
         </div>
-        <div className={styles.scrollProgress}></div>
       </header>
 
-      {/* ========== HERO ========== */}
-      <section className={styles.heroCinematic}>
-        <div className={styles.heroFloor}></div>
-
-        <div className={styles.flightRig}>
-          <div className={styles.droneTrail} aria-hidden="true">
-            <svg viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="18" r="9" stroke="#1d4ed8" strokeWidth="2" />
-              <circle cx="100" cy="18" r="9" stroke="#1d4ed8" strokeWidth="2" />
-              <circle cx="20" cy="46" r="9" stroke="#1d4ed8" strokeWidth="2" />
-              <circle cx="100" cy="46" r="9" stroke="#1d4ed8" strokeWidth="2" />
-              <path
-                d="M30 20L50 30M90 20L70 30M30 44L50 32M90 44L70 32"
-                stroke="#1d4ed8"
-                strokeWidth="2"
-              />
-              <rect x="48" y="26" width="24" height="12" rx="2" stroke="#1d4ed8" strokeWidth="2" />
-            </svg>
-          </div>
-          <div className={styles.droneIcon} aria-hidden="true">
-            <svg viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="18" r="9" stroke="#1d4ed8" strokeWidth="2" />
-              <circle cx="100" cy="18" r="9" stroke="#1d4ed8" strokeWidth="2" />
-              <circle cx="20" cy="46" r="9" stroke="#1d4ed8" strokeWidth="2" />
-              <circle cx="100" cy="46" r="9" stroke="#1d4ed8" strokeWidth="2" />
-              <path
-                d="M30 20L50 30M90 20L70 30M30 44L50 32M90 44L70 32"
-                stroke="#1d4ed8"
-                strokeWidth="2"
-              />
-              <rect x="48" y="26" width="24" height="12" rx="2" stroke="#1d4ed8" strokeWidth="2" />
-              <circle cx="60" cy="32" r="2.4" fill="#38bdf8" />
-            </svg>
-          </div>
-        </div>
-
-        <div className={styles.radar} aria-hidden="true">
-          <div className={styles.sweep}></div>
-          <div className={styles.blip}></div>
-        </div>
-
-        <div className={styles.heroVignette}></div>
-
+      {/* ========== INTRO ========== */}
+      <section className={styles.heroStatic}>
         <div className={styles.heroInner}>
           <h1 className={styles.heroTitle}>
-            <span className={styles.line}>
-              <span className={styles.heroPrompt}>{"> "}</span>
-              <span className={styles.typeTarget} data-type-text="Building autonomy for" data-type-color="green"></span>
-            </span>
-            <span className={`${styles.line} ${styles.typeLine2}`}>
-              <span className={styles.typeTarget} data-type-text="aerospace, space, and defense." data-type-color="amber"></span>
-              <span className={styles.typeCursor}></span>
-            </span>
+            <span className={styles.heroPrompt}>{"> "}</span>
+            Building autonomy for aerospace, space, and defense.
           </h1>
+
+          <div className={styles.aboutLines}>
+            <p className={styles.aboutLine}>
+              <span className={styles.aboutPrompt}>{">> "}</span>
+              2nd Year Electrical Engineering Student at York University
+            </p>
+            <p className={styles.aboutLine}>
+              <span className={styles.aboutPrompt}>{">> "}</span>
+              Recipient of a $120,000 Schulich Leader Scholarship
+            </p>
+            <p className={styles.aboutLine}>
+              <span className={styles.aboutPrompt}>{">> "}</span>
+              Incoming Hardware Engineering Intern @ Dominion Dynamics
+            </p>
+            <p className={styles.aboutLine}>
+              <span className={styles.aboutPrompt}>{">> "}</span>
+              Recently built{" "}
+              <Link href="/projects/sharingan" className={styles.aboutLink}>
+                Sharingan
+              </Link>
+            </p>
+          </div>
+
           <div className={styles.heroSocials}>
             <a href="mailto:herman@my.yorku.ca">EMAIL</a>
             <a href="https://linkedin.com/in/hermanisayenka">LINKEDIN</a>
@@ -214,74 +57,20 @@ export default function Home() {
             <span className={styles.internshipBadge}>Looking for Winter 2028 Internships</span>
           </div>
         </div>
-
-        <div className={styles.scrollCue}>
-          SCROLL TO EXPLORE
-          <div className={styles.chev}>▾</div>
-        </div>
-      </section>
-
-      {/* ========== ABOUT ========== */}
-      <section className={styles.aboutBand}>
-        <div className={styles.aboutFloor}></div>
-        <div className={styles.aboutVignette}></div>
-        <div className={styles.aboutInner}>
-          <div className={styles.aboutTag}>{"// About"}</div>
-          <p className={styles.aboutLine}>
-            <span className={styles.aboutPrompt}>{">> "}</span>
-            <span
-              className={styles.typeTarget}
-              data-type-text="2nd Year Electrical Engineering Student at York University"
-              data-type-color="amber"
-            ></span>
-          </p>
-          <p className={styles.aboutLine}>
-            <span className={styles.aboutPrompt}>{">> "}</span>
-            <span
-              className={styles.typeTarget}
-              data-type-text="Recipient of a $120,000 Schulich Leader Scholarship"
-              data-type-color="amber"
-            ></span>
-          </p>
-          <p className={styles.aboutLine}>
-            <span className={styles.aboutPrompt}>{">> "}</span>
-            <span
-              className={styles.typeTarget}
-              data-type-text="Incoming Hardware Engineering Intern @ Dominion Dynamics"
-              data-type-color="amber"
-            ></span>
-          </p>
-          <p className={styles.aboutLine}>
-            <span className={styles.aboutPrompt}>{">> "}</span>
-            <span
-              className={styles.typeTarget}
-              data-type-text="Recently built"
-              data-type-color="amber"
-            ></span>
-            <Link href="/projects/sharingan" className={styles.aboutLink} data-type-reveal="">
-              Sharingan
-            </Link>
-          </p>
-        </div>
       </section>
 
       <div className={styles.container}>
-        <div className={`${styles.terminalLine} ${styles.reveal}`}>
-          <span>FEED LOCKED — TARGET: PORTFOLIO.LOG</span>
-          <span className={styles.cursor}></span>
-        </div>
-
         {/* ========== PROJECTS ========== */}
         <section id="projects" className={styles.panel}>
-          <div className={`${styles.sectionTag} ${styles.reveal}`}>
+          <div className={styles.sectionTag}>
             <span className={styles.num}>01</span> ALL PROJECTS
           </div>
 
-          <div className={`${styles.projectsHeaderRow} ${styles.reveal}`}>
+          <div className={styles.projectsHeaderRow}>
             <h2>My Projects</h2>
           </div>
 
-          <div className={`${styles.pgroup} ${styles.reveal}`}>
+          <div className={styles.pgroup}>
             <div className={styles.pgrid}>
               <Link href="/projects/sharingan" className={styles.pcard}>
                 <div className={styles.media}>
@@ -301,7 +90,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/integrating-uav-controls" className={styles.pcard}>
                 <div className={styles.media}>
-                  <video data-src="/droneracing.mp4" poster="/droneracing.jpg" muted loop playsInline preload="none" />
+                  <img src="/droneracing.jpg" alt="UAV controls integrated with ROS navigation" />
                 </div>
                 <div className={styles.caption}>
                   <span>Vision + ROS</span>
@@ -329,7 +118,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/uav-navigation-model-training" className={styles.pcard}>
                 <div className={styles.media}>
-                  <video data-src="/drone-racing-2023-loop.mp4" poster="/uav-gate-yolo-detection.jpg" muted loop playsInline preload="none" />
+                  <img src="/uav-gate-yolo-detection.jpg" alt="YOLOv8 gate detection for drone racing" />
                 </div>
                 <div className={styles.caption}>
                   <span>ML / CV</span>
@@ -429,7 +218,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/arduino#car-obstacle" className={styles.pcard}>
                 <div className={styles.media}>
-                  <video data-src="/car.mov" poster="/car-obstacle-poster.jpg" muted loop playsInline preload="none" />
+                  <img src="/car-obstacle-poster.jpg" alt="Car with obstacle detection" />
                 </div>
                 <div className={styles.caption}>
                   <span>Arduino</span>
@@ -457,7 +246,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/arduino#digital-timer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <video data-src="/timer.mp4" poster="/digital-timer-poster.jpg" muted loop playsInline preload="none" />
+                  <img src="/digital-timer-poster.jpg" alt="Digital timer" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
@@ -471,7 +260,7 @@ export default function Home() {
               </Link>
               <Link href="/projects/arduino#digital-clock" className={styles.pcard}>
                 <div className={styles.media}>
-                  <video data-src="/clock.mp4" poster="/digital-clock-poster.jpg" muted loop playsInline preload="none" />
+                  <img src="/digital-clock-poster.jpg" alt="Digital clock" />
                 </div>
                 <div className={styles.caption}>
                   <span>Circuits</span>
@@ -499,12 +288,7 @@ export default function Home() {
               </a>
               <a href="https://devpost.com/software/growthsync" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <iframe
-                    src="https://www.youtube.com/embed/P3chEYABVYA?autoplay=1&mute=1&loop=1&playlist=P3chEYABVYA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                    allow="autoplay; encrypted-media"
-                    loading="lazy"
-                    title="GrowthSync project video"
-                  />
+                  <img src="https://img.youtube.com/vi/P3chEYABVYA/hqdefault.jpg" alt="GrowthSync project video thumbnail" />
                 </div>
                 <div className={styles.caption}>
                   <span>CtrlHackDel 2.0</span>
@@ -518,12 +302,7 @@ export default function Home() {
               </a>
               <a href="https://devpost.com/software/finding-n-e-m-o" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <iframe
-                    src="https://www.youtube.com/embed/PQBeq-7WKRE?autoplay=1&mute=1&loop=1&playlist=PQBeq-7WKRE&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                    allow="autoplay; encrypted-media"
-                    loading="lazy"
-                    title="Finding N.E.M.O project video"
-                  />
+                  <img src="https://img.youtube.com/vi/PQBeq-7WKRE/hqdefault.jpg" alt="Finding N.E.M.O project video thumbnail" />
                 </div>
                 <div className={styles.caption}>
                   <span>Hack Concordia</span>
@@ -537,12 +316,7 @@ export default function Home() {
               </a>
               <a href="https://github.com/herman888/route-optimizer" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <iframe
-                    src="https://www.youtube.com/embed/man2-PK6fbg?autoplay=1&mute=1&loop=1&playlist=man2-PK6fbg&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                    allow="autoplay; encrypted-media"
-                    loading="lazy"
-                    title="Giveway project video"
-                  />
+                  <img src="https://img.youtube.com/vi/man2-PK6fbg/hqdefault.jpg" alt="Giveway project video thumbnail" />
                 </div>
                 <div className={styles.caption}>
                   <span>Hack the 6ix</span>
@@ -570,12 +344,7 @@ export default function Home() {
               </a>
               <a href="https://github.com/herman888/kinkitchen" target="_blank" rel="noopener noreferrer" className={styles.pcard}>
                 <div className={styles.media}>
-                  <iframe
-                    src="https://www.youtube.com/embed/1M8MoqCxQCI?autoplay=1&mute=1&loop=1&playlist=1M8MoqCxQCI&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                    allow="autoplay; encrypted-media"
-                    loading="lazy"
-                    title="KinKitchen project video"
-                  />
+                  <img src="https://img.youtube.com/vi/1M8MoqCxQCI/hqdefault.jpg" alt="KinKitchen project video thumbnail" />
                 </div>
                 <div className={styles.caption}>
                   <span>Hack Canada</span>
@@ -593,7 +362,6 @@ export default function Home() {
       </div>
 
       <footer className={styles.footer}>
-        <div className={styles.ping}></div>
         Herman Isayenka
       </footer>
     </div>
